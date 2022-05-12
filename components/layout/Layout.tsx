@@ -13,7 +13,10 @@ const Layout = (props: { children: React.ReactNode }) => {
     <Centering>
       <FixedWidth>
         <Header />
-        {props.children} {/* 라우터 별 화면 표시 */}
+        <Body>
+          {props.children} {/* 라우터 별 화면 표시 */}
+        </Body>
+
         <Navbar />
       </FixedWidth>
     </Centering>
@@ -27,6 +30,9 @@ const Centering = styled.div`
 `;
 const FixedWidth = styled.main`
   /* 화면 너비 고정*/
-  width: 640px; /* 640px 정도로 화면의 width 를 고정. 카카오도 이정도로 쓰길래.. */
+  width: 500px; /* 500px 정도로 화면의 width 를 고정. 카카오도 이정도로 쓰길래.. */
+`;
+const Body = styled.main`
+  padding: 0.5rem;
 `;
 export default Layout;

@@ -49,6 +49,7 @@ const MenuButtonWrapper = styled.li`
     background-color: #77b8c0;
     color:white;
     font-weight:bold;
+    cursor:pointer;
   }
 `;
 export default Navbar;
