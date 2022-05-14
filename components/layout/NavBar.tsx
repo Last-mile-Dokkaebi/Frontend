@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { BsClockHistory, BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
-const Navbar = () => {
+const NavBar = () => {
   return (
     <NavWrapper>
       <MenuWrapper>
@@ -27,7 +27,7 @@ const Navbar = () => {
 
 const NavWrapper = styled.nav`
   width: 500px;
-  height:60px;
+  height: 60px;
   position: fixed;
   bottom: 0;
 
@@ -50,7 +50,7 @@ const MenuButtonWrapper = styled.li`
   padding: 0.5rem;
   transition: 0.2s;
   color: #77b8c0;
-  background-color:white;
+  background-color: white;
   /* 아이콘 margin 추가 */
   *:nth-child(1) {
     margin-bottom: 4px;
@@ -62,4 +62,4 @@ const MenuButtonWrapper = styled.li`
     cursor: pointer;
   }
 `;
-export default Navbar;
+export default NavBar;
