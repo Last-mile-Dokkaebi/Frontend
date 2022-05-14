@@ -14,7 +14,7 @@ const initialState:UserTypes = {
 
 // user스토어 동작부 설계
 const userSlice = createSlice({
-  name: 'user',
+  name: 'user', //name으로 지정한 부분이 추후 useSelector에서의 이름이 됨 ex) 이경우 useSelector(state=>state.user)
   initialState,
   reducers:{
     loginAction: (state, action: PayloadAction<{nickname: string}>) => {
@@ -24,8 +24,10 @@ const userSlice = createSlice({
   }
 })
 
-
-//createSlice에서 reducers로 만든 action들을 여기서 export
+/*
+  createSlice에서 reducers로 만든 action들을 여기서 export
+  추후 사용은 dispatch로 dispatch(loginAction({nickname : 입력값}))의 형식으로
+*/
 export const {loginAction} = userSlice.actions;
 
 //userSlice를 export할려면 이렇게 .reducer로
