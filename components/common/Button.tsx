@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 //Button에 사용될 타입 지정
 interface ButtonTypes {
-  color?: string | 'red' | 'green' | 'blue' | 'rgb(128, 128, 128)';
+  color?: string;
   children?: React.ReactNode;
   onClick?: () => void;
 }

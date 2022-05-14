@@ -28,7 +28,9 @@ const test: NextPage = () => {
     <div>
       <div>당신의 닉네임은 {nickname}</div>
       <div>
-        <Button onClick={onClickLogin}>로그인</Button>
+        <Button onClick={onClickLogin} color="red">
+          로그인
+        </Button>
         <input value={input} onChange={onChangeInput} />
       </div>
     </div>
