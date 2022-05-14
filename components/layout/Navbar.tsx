@@ -29,8 +29,7 @@ const NavWrapper = styled.nav`
   width: 500px;
   position: fixed;
   bottom: 0;
-  right:0;
-  left:0;
+
   @media screen and (max-width: 500px) {
     width: 100%;
   }
