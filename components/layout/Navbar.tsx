@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { BsClockHistory, BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
 const Navbar = () => {
   return (
-    <nav>
+    <NavWrapper>
       <MenuWrapper>
         <MenuButtonWrapper>
           <BsClockHistory size={24} />
@@ -21,25 +21,34 @@ const Navbar = () => {
           <div>마이페이지</div>
         </MenuButtonWrapper>
       </MenuWrapper>
-    </nav>
+    </NavWrapper>
   );
 };
 
+const NavWrapper = styled.nav`
+  width: 500px;
+  position: fixed;
+  bottom: 0;
+  right:0;
+  left:0;
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
+`;
 const MenuWrapper = styled.ul`
-  width: 100%;
   display: flex;
-  padding:0;
-  margin:0;
-  border-top:solid 1px rgba(119,184,192,0.5);
+  padding: 0;
+  margin: 0;
+  border-top: solid 1px rgba(119, 184, 192, 0.5);
 `;
 const MenuButtonWrapper = styled.li`
   width: 100%;
   font-size: 10px;
   display: flex;
-  align-items:center;
+  align-items: center;
   flex-direction: column;
-  padding:0.5rem;
-  transition:0.2s;
+  padding: 0.5rem;
+  transition: 0.2s;
   color: #77b8c0;
   /* 아이콘 margin 추가 */
   *:nth-child(1) {
@@ -47,9 +56,9 @@ const MenuButtonWrapper = styled.li`
   }
   &:hover {
     background-color: #77b8c0;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
   }
 `;
 export default Navbar;
