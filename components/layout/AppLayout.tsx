@@ -1,14 +1,15 @@
 /* 
-  index.tsx 에서 파일의 기본 레이아웃을 세팅할 수 있음. 
+  모든 페이지에서 AppLayout을 import해와서 사용하면됨. 
   FiexedWidth 컴포넌트로 페이지의 너비를 고정시킨 후 , 
   모든 페이지에서 볼 수 있는 상단 헤더와 하단 메뉴바(NavBar)를 고정 부착함.
+  로그인 이후의 페이지 레이아웃을 관리함
 
 */
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 import Navbar from './NavBar';
-const Layout = (props: { children: React.ReactNode }) => {
+const AppLayout = (props: { children: React.ReactNode }) => {
   return (
     <Centering>
       <FixedWidth>
@@ -35,5 +36,7 @@ const FixedWidth = styled.main`
 const Body = styled.div`
   padding: 0.5rem;
   margin-top:50px;
+  background-color:#fafbfc;
+  min-height:calc(100vh - 110px);
 `;
-export default Layout;
+export default AppLayout;

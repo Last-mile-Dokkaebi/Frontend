@@ -27,6 +27,7 @@ const Navbar = () => {
 
 const NavWrapper = styled.nav`
   width: 500px;
+  height:60px;
   position: fixed;
   bottom: 0;
 
@@ -49,6 +50,7 @@ const MenuButtonWrapper = styled.li`
   padding: 0.5rem;
   transition: 0.2s;
   color: #77b8c0;
+  background-color:white;
   /* 아이콘 margin 추가 */
   *:nth-child(1) {
     margin-bottom: 4px;
