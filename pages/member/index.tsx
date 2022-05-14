@@ -41,12 +41,17 @@ const ButtonWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const LoginButton = styled.button`
+
+interface LoginButtonTypes {
+  bgcolor?: string | 'red' | 'green' | 'blue' | 'rgb(128, 128, 128)' | 'rgba(128, 128, 128, 0.5)';
+  border?: string | '1px solid black';
+}
+const LoginButton = styled.button<LoginButtonTypes>`
   font-size: 12px;
   background-color: ${(props) => props.bgcolor || 'none'};
   border-radius: 12px;
   width: 400px;
-  border: none;
+  border: ${(props) => props.border || 'none'};
   cursor: pointer;
   padding: 0.5rem 0.25rem 0.5rem 0.25rem;
   margin-bottom: 0.5rem;

@@ -1,6 +1,6 @@
 import AppLayout from '../components/layout/AppLayout';
 import styled from 'styled-components';
-import Link from 'next/Link';
+import Link from 'next/link';
 import Button from '../components/common/Button';
 const Custom404 = () => {
   return (

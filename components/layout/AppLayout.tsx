@@ -8,7 +8,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
-import Navbar from './NavBar';
+import NavBar from './NavBar';
 const AppLayout = (props: { children: React.ReactNode }) => {
   return (
     <Centering>
@@ -18,7 +18,7 @@ const AppLayout = (props: { children: React.ReactNode }) => {
           {props.children} {/* 라우터 별 화면 표시 */}
         </Body>
 
-        <Navbar />
+        <NavBar />
       </FixedWidth>
     </Centering>
   );
@@ -35,8 +35,8 @@ const FixedWidth = styled.main`
 `;
 const Body = styled.div`
   padding: 0.5rem;
-  margin-top:50px;
-  background-color:#fafbfc;
-  min-height:calc(100vh - 110px);
+  margin-top: 50px;
+  background-color: #fafbfc;
+  min-height: calc(100vh - 110px);
 `;
 export default AppLayout;
