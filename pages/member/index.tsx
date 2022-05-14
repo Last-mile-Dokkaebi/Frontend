@@ -3,7 +3,7 @@
   중첩라우팅에서 폴더에 index 파일을 생성하면 /member 에 index가 뿌려짐
 */
 
-import MemberLayout from '../../components/layout/MemberLayout';
+import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
 
 const Home = () => {

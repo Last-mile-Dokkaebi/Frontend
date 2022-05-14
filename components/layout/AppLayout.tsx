@@ -7,8 +7,8 @@
 */
 import React from 'react';
 import styled from 'styled-components';
-import Header from './Header';
-import NavBar from './NavBar';
+import Header from 'components/layout/Header';
+import NavBar from 'components/layout/NavBar';
 const AppLayout = (props: { children: React.ReactNode }) => {
   return (
     <Centering>

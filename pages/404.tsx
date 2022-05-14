@@ -1,7 +1,7 @@
-import AppLayout from '../components/layout/AppLayout';
+import AppLayout from 'components/layout/AppLayout';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Button from '../components/common/Button';
+import Button from 'components/common/Button';
 const Custom404 = () => {
   return (
     <AppLayout>
@@ -16,7 +16,31 @@ const Custom404 = () => {
             <Link href="/">홈으로 이동</Link>
           </Button>
         </ExplainWrapper>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </Custom404Wrapper>
     </AppLayout>
   );
@@ -26,7 +50,7 @@ const Custom404Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top:100px;
+  margin-top: 100px;
 `;
 
 const ImageWrapper = styled.div`
