@@ -4,6 +4,7 @@ import { loginAction } from 'stores/user';
 import { RootState } from 'stores';
 import Button from 'components/common/Button';
 import { useEffect, useState } from 'react';
+import { AppLayout } from 'components/layout';
 
 const test: NextPage = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const test: NextPage = () => {
   };
 
   return (
-    <div>
+    <AppLayout>
       <div>당신의 닉네임은 {nickname}</div>
       <div>
         <Button onClick={onClickLogin} color="red">
@@ -33,7 +34,7 @@ const test: NextPage = () => {
         </Button>
         <input value={input} onChange={onChangeInput} />
       </div>
-    </div>
+    </AppLayout>
   );
 };
 

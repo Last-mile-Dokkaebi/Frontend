@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import AppLayout from 'components/layout/AppLayout'; // 메인화면 레이아웃 지정
+import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지정
 
 const Home: NextPage = () => {
   return (
