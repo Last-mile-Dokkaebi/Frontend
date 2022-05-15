@@ -14,11 +14,6 @@ const test: NextPage = () => {
     setInput(e.target.value);
   };
 
-  useEffect(() => {
-    console.log(isLoggedin);
-    console.log(nickname);
-  }, [isLoggedin, nickname]);
-
   const onClickLogin = () => {
     alert('로그인하기');
     dispatch(loginAction({ nickname: input }));
