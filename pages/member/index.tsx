@@ -13,13 +13,9 @@ const Home = () => {
         <Image src={'/assets/img/도깨비메인.PNG'} />
       </ImageWrapper>
       <ButtonWrapper>
-        <LoginButton bgcolor="#FEE500" color="#00000085">
-          카카오로 시작하기
-        </LoginButton>
+        <LoginButton bgcolor="#FEE500" color="#00000085">카카오로 시작하기</LoginButton>
         <LoginButton bgcolor="#4867AA">페이스북 로그인</LoginButton>
-        <LoginButton bgcolor="white" border="#00000005">
-          구글 로그인
-        </LoginButton>
+        <LoginButton bgcolor="white" border="#00000005">구글 로그인</LoginButton>
         <LoginButton bgcolor="#77b8c0">일반 로그인</LoginButton>
       </ButtonWrapper>
     </MemberLayout>
@@ -42,13 +38,11 @@ const ButtonWrapper = styled.div`
   align-items: center;
 `;
 const LoginButton = styled.button`
-  font-size: 12px;
-  background-color: ${(props) => props.bgcolor || 'none'};
-  border-radius: 12px;
+  background-color:${(props) => props.bgcolor || "none"};
+  border-radius:12px;
   width: 400px;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.25rem 0.5rem 0.25rem;
-  margin-bottom: 0.5rem;
 `;
 export default Home;
