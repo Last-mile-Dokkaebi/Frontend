@@ -18,8 +18,8 @@ const login:NextPage = () => {
   const dispatch = useDispatch();
   const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
 
-  const [identity , identityHandler] = useStringInput(); // 값을 넣지 않으면 "" 로 초기화
-  const [password , passwordHandler] = useStringInput();
+  const [identity , identityHandler] = useStringInput(""); // 값을 넣지 않으면 "" 로 초기화
+  const [password , passwordHandler] = useStringInput("");
 
   const [errorMessage,setErrorMessage] = useState<string>('');
 
