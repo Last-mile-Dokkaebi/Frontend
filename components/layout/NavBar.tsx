@@ -30,9 +30,11 @@ const NavWrapper = styled.nav`
   height: 60px;
   position: fixed;
   bottom: 0;
-
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     width: 100%;
+  }
+  @media (max-width:320px){
+    font-size:12px;
   }
 `;
 const MenuWrapper = styled.ul`

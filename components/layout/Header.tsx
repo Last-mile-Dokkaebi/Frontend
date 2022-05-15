@@ -22,7 +22,7 @@ const HeaderWrapper = styled.div`
   position: fixed;
   top: 0;
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     width: 100%;
   }
 `;

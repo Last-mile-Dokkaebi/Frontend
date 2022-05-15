@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout>
-        <div>메인화면이 될 예정!</div>
+        <div>메인화면이 될 예정!zzzzzzzzzzzzzzzzzzzzzzzzzzzz</div>
       </AppLayout>
     </div>
   );
