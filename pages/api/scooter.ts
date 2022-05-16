@@ -1,1 +1,5 @@
-import axios from 'utils/customAxios'
+const hello = () => {
+  return
+}
+
+export default hello;

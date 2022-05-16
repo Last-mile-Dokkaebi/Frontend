@@ -32,11 +32,15 @@ const Centering = styled.div`
 const FixedWidth = styled.main`
   /* 화면 너비 고정*/
   width: 500px; /* 500px 정도로 화면의 width 를 고정. 카카오도 이정도로 쓰길래.. */
+
 `;
 const Body = styled.div`
   padding: 0.5rem;
   margin-top: 50px;
   background-color: #fafbfc;
   min-height: calc(100vh - 110px);
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 export default AppLayout;

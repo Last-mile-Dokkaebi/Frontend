@@ -2,12 +2,12 @@
 import styled from 'styled-components';
 import Router from 'next/router';
 const Header = () => {
-  const goHome = () => {
+  const onClickLogo = () => {
     Router.push('/');
   };
   return (
     <HeaderWrapper>
-      <LogoTitle onClick={goHome}>도깨비</LogoTitle>
+      <LogoTitle onClick={onClickLogo}>도깨비</LogoTitle>
     </HeaderWrapper>
   );
 };
@@ -22,7 +22,7 @@ const HeaderWrapper = styled.div`
   position: fixed;
   top: 0;
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     width: 100%;
   }
 `;

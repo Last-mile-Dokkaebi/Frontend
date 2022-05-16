@@ -9,9 +9,7 @@ const MemberLayout = (props: { children: React.ReactNode }) => {
   return (
     <Centering>
       <FixedWidth>
-        <Body>
           {props.children}
-        </Body>
       </FixedWidth>
     </Centering>
   );
@@ -20,11 +18,10 @@ const MemberLayout = (props: { children: React.ReactNode }) => {
 const Centering = styled.div`
   display: flex;
   justify-content: center;
+  
 `;
 const FixedWidth = styled.main`
   width: 500px; 
 `;
-const Body = styled.div`
-  padding: 0.5rem;
-`;
+
 export default MemberLayout;
