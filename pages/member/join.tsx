@@ -26,7 +26,7 @@ const join: NextPage = () => {
       console.log(res)
       if(res.isSuccess){
         alert("회원가입을 환영합니다! 🤗");
-        Router.push("/member/login")
+        Router.push("/member/login"); // 로그인 화면으로 이동.
       }
       else{
         alert("알 수 없는 에러 발생")
