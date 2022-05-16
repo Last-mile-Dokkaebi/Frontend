@@ -8,9 +8,9 @@ interface ButtonTypes {
   onClick?: () => void;
 }
 
-const Button = ({ color = 'grey', children, onClick }: ButtonTypes) => {
+const Button = ({ color = 'grey', children, onClick, ...rest }: ButtonTypes) => {
   return (
-    <CustomButton color={color} onClick={onClick}>
+    <CustomButton color={color} onClick={onClick} {...rest}>
       {children}
     </CustomButton>
   );
