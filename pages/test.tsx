@@ -7,6 +7,7 @@ import Button from 'components/common/Button';
 import { useEffect, useState } from 'react';
 import { AppLayout } from 'components/layout';
 import { Dialog } from 'components/common';
+import { useInput } from 'hooks';
 
 const test: NextPage = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,14 @@ const test: NextPage = () => {
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
+
+  // changeEvent의 경우 e.target.value이므로 아래의 두개는 동일하게 작동
+  const [value1, onChangeValue1] = useInput<string>('value1');
+  const [value2, onChangeValue2] = useInput<string>('value2', ['target', 'value']);
+
+  //만약 e자체로 바꾸고 싶으면 이렇게
+  //근데 이 경우에는 e가 object이므로 제대로 동작 안함
+  // const [value3, onChangeValue3] = useInput<string>('value3', []);
 
   const onClickLogin = () => {
     alert('로그인하기');
@@ -39,6 +48,12 @@ const test: NextPage = () => {
           <input value={input} onChange={onChangeInput} />
           <div>{process.env.NEXT_PUBLIC_BACKEND}</div>
           <Button onClick={onClickDialog}>Dialog 테스트</Button>
+          <div>{value1}</div>
+          <input value={value1} onChange={onChangeValue1} />
+          <div>{value2}</div>
+          <input value={value2} onChange={onChangeValue2} />
+          {/* <div>{value3}</div>
+          <input value={value3} onChange={onChangeValue3} /> */}
         </div>
       </AppLayout>
     </>
