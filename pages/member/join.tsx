@@ -4,16 +4,16 @@ import { useState } from 'react';
 import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
 import Button from 'components/common/Button';
-import useStringInput from 'hooks/useStringInput';
+import { useInput } from 'hooks';
 import { joinApi } from 'pages/api/member'; // 로그인 api
 import Router from 'next/router';
 
 const join: NextPage = () => {
-  const [name, nameHandler] = useStringInput();
-  const [identity, identityHandler] = useStringInput();
-  const [password, passwordHandler] = useStringInput();
-  const [passwordConfirm, passwordConfirmHandler] = useStringInput();
-  const [phoneNumber, phoneNumberHandler] = useStringInput();
+  const [name, nameHandler] = useInput<string>('');
+  const [identity, identityHandler] = useInput<string>('');
+  const [password, passwordHandler] = useInput<string>('');
+  const [passwordConfirm, passwordConfirmHandler] = useInput<string>('');
+  const [phoneNumber, phoneNumberHandler] = useInput<string>('');
   const [errorMessage, setErrorMessage] = useState<string[]>([]); // 0: 이름에러, 1: 아이디 에러 2: 비밀번호에러 3: 전화번호 에러
 
   const onClickJoin = async () => {
