@@ -1,5 +1,4 @@
 import React from 'react';
-import { RiGitBranchFill } from 'react-icons/ri';
 import styled from 'styled-components';
 
 //Button에 사용될 타입 지정
@@ -18,6 +17,7 @@ const Button = ({ bgcolor = 'grey', children, onClick, ...rest }: ButtonTypes) =
     </CustomButton>
   );
 };
+
 // GlobalStyle에서 사용할 변수 타입 지정
 interface ColorProps {
   bgcolor?: string;

@@ -7,17 +7,9 @@ interface LoginResponseObjectType {
 /* 로그인을 위한 함수*/
 const loginApi = async (identity: string, password: string) => {
   const body = { identity, password };
-  let loginObj: LoginResponseObjectType = {
-    isSuccess: true,
-  };
-  try {
-    const res = await axios.post("/member/login", body);
-    console.log(res)
-  } catch (err) {
-    loginObj.isSuccess = false;
-  }
+  const res = await axios.post("/member/login", body)
+  return res
 
-  return loginObj;
 };
 
 /* 회원가입을 위한 함수*/
@@ -28,24 +20,13 @@ interface joinTypes {
   phoneNumberArray: string[];
 }
 const joinApi = async ({ name, identity, password, phoneNumberArray }: joinTypes) => {
-  let res = {
-    isSuccess: false,
-    data: null,
-  };
   const body = {
     name,
     identity,
     password,
     phoneNumber:phoneNumberArray,
   };
-  try {
-    await axios.post("/member/new", body);
-    res.isSuccess = true;
-  } catch (err) {
-    console.log(err)
-    res.isSuccess = false;
-  }
-  return res;
+  await axios.post("/member/new", body);
 };
 
 export { loginApi, joinApi };
