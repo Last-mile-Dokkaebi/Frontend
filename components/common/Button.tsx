@@ -1,37 +1,46 @@
 import React from 'react';
+import { RiGitBranchFill } from 'react-icons/ri';
 import styled from 'styled-components';
 
 //Button에 사용될 타입 지정
 interface ButtonTypes {
-  color?: string;
+  bgcolor?: string;
   children?: React.ReactNode;
   onClick?: () => void;
+  [x: string]: any;
 }
 
-const Button = ({ color = 'grey', children, onClick }: ButtonTypes) => {
+// rest로 해서 너무 기본적인 props들은 그냥 처리되도록 변경
+const Button = ({ bgcolor = 'grey', children, onClick, ...rest }: ButtonTypes) => {
   return (
-    <CustomButton color={color} onClick={onClick}>
+    <CustomButton bgcolor={bgcolor} onClick={onClick} {...rest}>
       {children}
     </CustomButton>
   );
 };
 // GlobalStyle에서 사용할 변수 타입 지정
 interface ColorProps {
-  color: string;
+  bgcolor?: string;
+  color?: string;
+  width?: string;
+  height?: string;
 }
 
 const CustomButton = styled.button<ColorProps>`
+  width: ${(props) => props?.width || '100%'};
+  height: ${(props) => props?.height || '3rem'};
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 12px;
   border: none;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) => props.bgcolor};
   cursor: pointer;
   font-size: 12px;
-  color: white;
+  color: ${(props) => props?.color || 'rgb(59, 59, 59)'};
   font-weight: bold;
+  margin: 1rem 0 1rem 0;
 `;
 
 export default Button;

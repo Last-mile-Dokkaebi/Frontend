@@ -17,7 +17,7 @@ const userSlice = createSlice({
   name: 'user', //name으로 지정한 부분이 추후 useSelector에서의 이름이 됨 ex) 이경우 useSelector(state=>state.user)
   initialState,
   reducers:{
-    loginAction: (state, action: PayloadAction<{nickname: string}>) => {
+    loginAction: (state:UserTypes, action: PayloadAction<{nickname: string}>) => {
       state.isLoggedin = true,
       state.nickname = action.payload.nickname
     }
