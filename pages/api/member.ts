@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-axios.defaults.baseURL =
-  process.env.NODE_ENV === 'development'
-    ? process.env.NEXT_PUBLIC_BACKEND_DEVELOP2
-    : process.env.NEXT_PUBLIC_BACKEND_DEVELOP2;
-// axios.defaults.withCredentials = true;
+// axios.defaults.baseURL =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.NEXT_PUBLIC_BACKEND_DEVELOP2
+//     : process.env.NEXT_PUBLIC_BACKEND_DEVELOP2;
+// // axios.defaults.withCredentials = true;
 
+const tempBaseUrl :string = "http://115.85.181.24:8083"
 interface LoginResponseObjectType {
   isSuccess?: boolean;
 }
@@ -23,7 +24,8 @@ const loginApi = async (identity: string, password: string) => {
     isSuccess: true,
   };
   try {
-    const res = await axios.post('/member/login', body);
+    const res = await axios.post(`${tempBaseUrl}/member/login`, body);
+    console.log(res)
   } catch (err) {
     loginObj.isSuccess = false;
   }
@@ -36,9 +38,9 @@ interface joinTypes {
   name: string;
   identity: string;
   password: string;
-  phoneNumber: string;
+  phoneNumberArray: string[];
 }
-const joinApi = async ({ name, identity, password, phoneNumber }: joinTypes) => {
+const joinApi = async ({ name, identity, password, phoneNumberArray }: joinTypes) => {
   let res = {
     isSuccess: false,
     data: null,
@@ -47,12 +49,13 @@ const joinApi = async ({ name, identity, password, phoneNumber }: joinTypes) => 
     name,
     identity,
     password,
-    phoneNumber,
+    phoneNumber:phoneNumberArray,
   };
   try {
-    await axios.post(`/member/new`, body);
+    await axios.post(`${tempBaseUrl}/member/new`, body);
     res.isSuccess = true;
   } catch (err) {
+    console.log(err)
     res.isSuccess = false;
   }
   return res;

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Button from 'components/common/Button';
 import useStringInput from 'hooks/useStringInput';
 import { joinApi } from 'pages/api/member'; // 로그인 api
-
+import Router from 'next/router';
 
 const join: NextPage = () => {
   const [name, nameHandler] = useStringInput();
@@ -18,10 +18,15 @@ const join: NextPage = () => {
 
   const onClickJoin = async() => {
     if(joinCheck()){
-      const res = await joinApi({name,identity,password,phoneNumber})
+      const phoneNumberArray :string[] = [];
+      phoneNumberArray[0] = phoneNumber.slice(0,3);
+      phoneNumberArray[1] = phoneNumber.slice(3,7);
+      phoneNumberArray[2] = phoneNumber.slice(7,11);
+      const res = await joinApi({name,identity,password,phoneNumberArray})
       console.log(res)
       if(res.isSuccess){
-        alert("회원가입을 환영합니다! 🤗")
+        alert("회원가입을 환영합니다! 🤗");
+        Router.push("/member/login")
       }
       else{
         alert("알 수 없는 에러 발생")
