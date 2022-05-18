@@ -15,6 +15,13 @@ const Modal = ({ delay = 0.5, children }: DialogTypes) => {
   const dispatch = useDispatch();
   const [animation, setAnimation] = useState<any>(PopUp); // keyframe의 Type을 몰라서 일단 any로 해두었음
 
+  //열때는 다시 PopUp애니메이션으로 변경
+  useEffect(() => {
+    if (animation === PopDown) {
+      setAnimation(PopUp);
+    }
+  }, [modalIsOpen]);
+
   const closeModal = useCallback(() => {
     //Delay를 주고 닫는다
     setTimeout(() => {
@@ -24,18 +31,14 @@ const Modal = ({ delay = 0.5, children }: DialogTypes) => {
     setAnimation(PopDown);
   }, []);
 
-  useEffect(() => {
-    if (animation === PopDown) {
-      setAnimation(PopUp);
-    }
-  }, [modalIsOpen]);
-
   return (
     <>
       {modalIsOpen && (
-        <Background onClick={closeModal} animation={animation} open={modalIsOpen} delay={delay}>
+        <Background onClick={closeModal} open={modalIsOpen}>
           {/* Modal component클릭시 background 컴포넌트 클릭 방지 */}
-          <ModalWrapper onClick={(e) => e.stopPropagation()}>{children}</ModalWrapper>
+          <ModalWrapper animation={animation} delay={delay} onClick={(e) => e.stopPropagation()}>
+            {children}
+          </ModalWrapper>
         </Background>
       )}
     </>
@@ -44,9 +47,7 @@ const Modal = ({ delay = 0.5, children }: DialogTypes) => {
 // };
 
 interface BackgroundTypes {
-  animation: any;
   open: boolean;
-  delay: number;
 }
 
 const Background = styled.div<BackgroundTypes>`
@@ -60,15 +61,19 @@ const Background = styled.div<BackgroundTypes>`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  animation: ${(props) => props.animation} ${(props) => props.delay}s ease-in-out 0s 1 normal;
 `;
 
-const ModalWrapper = styled.div`
+interface ModalWrapperTypes {
+  animation: any;
+  delay: number;
+}
+
+const ModalWrapper = styled.div<ModalWrapperTypes>`
   z-index: 10000;
   position: fixed;
   background-color: white;
   box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.14), 0px 0px 12px 6px rgba(0, 0, 0, 0.1);
+  animation: ${(props) => props.animation} ${(props) => props.delay}s ease-in-out 0s 1 normal;
 `;
 
 //Modal이 켜질때 Animation
