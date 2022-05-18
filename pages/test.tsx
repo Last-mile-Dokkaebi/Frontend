@@ -18,9 +18,11 @@ const test: NextPage = () => {
     setInput(e.target.value);
   };
 
-  // changeEvent의 경우 e.target.value이므로 아래의 두개는 동일하게 작동
+  // changeEvent예시
   const [value1, onChangeValue1] = useInput<string>('value1');
-  const [value2, onChangeValue2] = useInput<string>('value2', ['target', 'value']);
+  const [value2, onChangeValue2] = useInput<string>('VALUE2', (e) => {
+    return e.target.value.toUpperCase();
+  });
 
   //만약 e자체로 바꾸고 싶으면 이렇게
   //근데 이 경우에는 e가 object이므로 제대로 동작 안함
