@@ -13,7 +13,7 @@ const useInput = <T>(initialState: T, func?: (e: any)=>T): [T, (e: any)=>void] =
     handler = useCallback((e: any) => {
       const targetValue = func(e)
       setValue(targetValue)
-    })
+    }, [])
   }
   else{ 
     //func가 주어져있지 않으면 단순 changeEvent라고 가정
