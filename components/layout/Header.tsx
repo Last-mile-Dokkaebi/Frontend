@@ -1,6 +1,7 @@
 /* 모든 페이지에 항상 노출될 헤더 컴포넌트. */
 import styled from 'styled-components';
 import Router from 'next/router';
+
 const Header = () => {
   const onClickLogo = () => {
     Router.push('/');

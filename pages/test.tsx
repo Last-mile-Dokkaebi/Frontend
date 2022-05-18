@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from 'stores/user';
-import { setDialog } from 'stores/system';
+import { setModal } from 'stores/system';
 import { RootState } from 'stores';
 import Button from 'components/common/Button';
 import { useEffect, useState } from 'react';
 import { AppLayout } from 'components/layout';
-import { Dialog } from 'components/common';
+import { Modal } from 'components/common';
 import { useInput } from 'hooks';
 
 const test: NextPage = () => {
@@ -34,15 +34,15 @@ const test: NextPage = () => {
     alert('로그인하기');
     dispatch(loginAction({ nickname: input }));
   };
-  const onClickDialog = () => {
-    dispatch(setDialog(true));
+  const onClickModal = () => {
+    dispatch(setModal(true));
   };
 
   return (
     <>
-      <Dialog delay={1}>
-        <div>Dialog 테스트</div>
-      </Dialog>
+      <Modal>
+        <div style={{ width: '250px', height: '250px' }}>Dialog 테스트</div>
+      </Modal>
       <AppLayout>
         <div>당신의 닉네임은 {nickname}</div>
         <div>
@@ -51,7 +51,7 @@ const test: NextPage = () => {
           </Button>
           <input value={input} onChange={onChangeInput} />
           <div>{process.env.NEXT_PUBLIC_BACKEND}</div>
-          <Button onClick={onClickDialog}>Dialog 테스트</Button>
+          <Button onClick={onClickModal}>Dialog 테스트</Button>
           <div>{value1}</div>
           <input value={value1} onChange={onChangeValue1} />
           <div>{value2}</div>
