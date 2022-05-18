@@ -18,17 +18,14 @@ const test: NextPage = () => {
     setInput(e.target.value);
   };
 
-  // changeEvent예시
-  const [value1, onChangeValue1] = useInput<string>('lower_value');
+  // useInput예시
+  const [value1, onChangeValue1] = useInput<string>('value');
   const [value2, onChangeValue2] = useInput<string>('UPPER_VALUE', (e) => {
     return e.target.value.toUpperCase();
   });
-
-  //만약 e자체로 바꾸고 싶으면 이렇게
-  //근데 이 경우에는 e가 object이므로 제대로 동작 안함
-  // const [value3, onChangeValue3] = useInput<string>('value3', (e) => {
-  //   return e
-  // });
+  const [value3, onChangeValue3] = useInput<string>('lower_value', (e) => {
+    return e.target.value.toLowerCase();
+  });
 
   const onClickLogin = () => {
     alert('로그인하기');
@@ -56,8 +53,8 @@ const test: NextPage = () => {
           <input value={value1} onChange={onChangeValue1} />
           <div>{value2}</div>
           <input value={value2} onChange={onChangeValue2} />
-          {/* <div>{value3}</div>
-          <input value={value3} onChange={onChangeValue3} /> */}
+          <div>{value3}</div>
+          <input value={value3} onChange={onChangeValue3} />
         </div>
       </AppLayout>
     </>
