@@ -17,7 +17,7 @@ const useInput = <T>(initialState: T, func?: (e: any)=>T): [T, (e: any)=>void] =
   }
   else{ 
     //func가 주어져있지 않으면 단순 changeEvent라고 가정
-    //changeEvent가 func를 주어줘서 적절하게 처리 하도록
+    //changeEvent가 아닐 경우 func를 주어줘서 적절하게 처리 하도록
     handler = useCallback((e: any) => {
       //Generic Type으로 type casting
       const targetValue = e.target.value as unknown as T
