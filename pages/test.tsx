@@ -7,7 +7,7 @@ import Button from 'components/common/Button';
 import { useEffect, useState } from 'react';
 import { AppLayout } from 'components/layout';
 import { Modal } from 'components/common';
-import { useInput } from 'hooks';
+import { useDebounce, useInput, useInterval } from 'hooks';
 
 const test: NextPage = () => {
   const dispatch = useDispatch();
@@ -26,6 +26,12 @@ const test: NextPage = () => {
   const [value3, onChangeValue3] = useInput<string>('lower_value', (e) => {
     return e.target.value.toLowerCase();
   });
+
+  // useInterval 예시
+  const [time, setTime] = useState<Date>(new Date());
+  useInterval(() => {
+    setTime(new Date());
+  }, 1000);
 
   const onClickLogin = () => {
     alert('로그인하기');
@@ -56,6 +62,7 @@ const test: NextPage = () => {
           <div>{value3}</div>
           <input value={value3} onChange={onChangeValue3} />
         </div>
+        <div>현재 시간은 {JSON.stringify(time)}</div>
       </AppLayout>
     </>
   );
