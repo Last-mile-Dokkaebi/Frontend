@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import AppLayout from 'components/layout/AppLayout'; // 메인화면 레이아웃 지정
+import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지정
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지 
 const Home: NextPage = () => {

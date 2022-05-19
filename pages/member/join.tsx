@@ -16,20 +16,18 @@ const join: NextPage = () => {
   const [phoneNumber, phoneNumberHandler] = useStringInput();
   const [errorMessage, setErrorMessage] = useState<string[]>([]); // 0: 이름에러, 1: 아이디 에러 2: 비밀번호에러 3: 전화번호 에러
 
-  const onClickJoin = async() => {
-    if(joinCheck()){
-      const phoneNumberArray :string[] = [];
-      phoneNumberArray[0] = phoneNumber.slice(0,3);
-      phoneNumberArray[1] = phoneNumber.slice(3,7);
-      phoneNumberArray[2] = phoneNumber.slice(7,11);
-      const res = await joinApi({name,identity,password,phoneNumberArray})
-      console.log(res)
-      if(res.isSuccess){
-        alert("회원가입을 환영합니다! 🤗");
-        Router.push("/member/login"); // 로그인 화면으로 이동.
-      }
-      else{
-        alert("알 수 없는 에러 발생")
+  const onClickJoin = async () => {
+    if (joinCheck()) {
+      const phoneNumberArray: string[] = [];
+      phoneNumberArray[0] = phoneNumber.slice(0, 3);
+      phoneNumberArray[1] = phoneNumber.slice(3, 7);
+      phoneNumberArray[2] = phoneNumber.slice(7, 11);
+      try {
+        await joinApi({ name, identity, password, phoneNumberArray });
+        alert('회원가입을 환영합니다! 🤗');
+        Router.push('/member/login');
+      } catch (err) {
+        alert(err);
       }
     }
   };
@@ -62,10 +60,7 @@ const join: NextPage = () => {
     }
     setErrorMessage(err); // 얘는 그저 출력용..
     return err.join('') === ''; // true시 가입 가능
-      
   };
-
-
 
   return (
     <MemberLayout>

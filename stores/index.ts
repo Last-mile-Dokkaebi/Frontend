@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage'
 import {createWrapper, HYDRATE} from 'next-redux-wrapper'
 
 import userReducer from 'stores/user'
+import systemReducer from 'stores/system'
 
 //Persist 옵션 정의
 const persistConfig={
@@ -35,7 +36,8 @@ const rootReducer = (state:any, action:any) => {
   }
   // reducer가 생성될때마다 여기에다가 추가 될 것
   return combineReducers({
-    user: userReducer
+    user: userReducer,
+    system: systemReducer,
   })(state, action)
 }
  
