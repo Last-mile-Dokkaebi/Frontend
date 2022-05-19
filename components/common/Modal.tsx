@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 interface ModalTypes {
   /**
    * 열고 닫는 delay를 s단위로 입력
+   * @default 0.5
    */
   delay?: number;
 

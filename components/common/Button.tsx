@@ -5,8 +5,10 @@ import styled from 'styled-components';
 interface ButtonTypes {
   /**
    * background-color를 지정
+   * @default "grey"
    */
   bgcolor?: string;
+
   children?: React.ReactNode;
   /**
    * Button을 클릭하였을 때의 Event 함수
