@@ -32,8 +32,8 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       const res = await loginApi(identity, password);
-      console.log(res);
       dispatch(loginAction({ nickname: identity }));
+      Router.push('/');
     }
   };
   return (

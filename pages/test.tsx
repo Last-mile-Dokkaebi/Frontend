@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAction } from 'stores/user';
+import { loginAction, logoutAction } from 'stores/user';
 import { setModal } from 'stores/system';
 import { RootState } from 'stores';
 import Button from 'components/common/Button';
@@ -41,6 +41,10 @@ const test: NextPage = () => {
     dispatch(setModal(true));
   };
 
+  const onClickLogout = () => {
+    dispatch(logoutAction());
+  };
+
   return (
     <>
       <Modal>
@@ -64,6 +68,7 @@ const test: NextPage = () => {
           <Modal></Modal>
         </div>
         <div>현재 시간은 {JSON.stringify(time)}</div>
+        <Button onClick={onClickLogout}>logoutAction</Button>
       </AppLayout>
     </>
   );
