@@ -4,12 +4,16 @@ import { RootState } from 'stores';
 import styled, { keyframes } from 'styled-components';
 import React, { useCallback, useEffect, useState } from 'react';
 
-interface DialogTypes {
-  delay?: number; //열고 닫는 delay를 몇초 줄 것인지 ex) 0.5
+interface ModalTypes {
+  /**
+   * 열고 닫는 delay를 s단위로 입력
+   */
+  delay?: number;
+
   children?: React.ReactNode;
 }
 
-const Modal = ({ delay = 0.5, children }: DialogTypes) => {
+const Modal = ({ delay = 0.5, children }: ModalTypes) => {
   //Modal을 끌 것인지 켤 것인지 설정
   const { modalIsOpen } = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();

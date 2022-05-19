@@ -3,8 +3,14 @@ import styled from 'styled-components';
 
 //Button에 사용될 타입 지정
 interface ButtonTypes {
+  /**
+   * background-color를 지정
+   */
   bgcolor?: string;
   children?: React.ReactNode;
+  /**
+   * Button을 클릭하였을 때의 Event 함수
+   */
   onClick?: () => void;
   [x: string]: any;
 }
