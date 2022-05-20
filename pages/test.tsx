@@ -65,7 +65,6 @@ const test: NextPage = () => {
           <input value={value2} onChange={onChangeValue2} />
           <div>{value3}</div>
           <input value={value3} onChange={onChangeValue3} />
-          <Modal></Modal>
         </div>
         <div>현재 시간은 {JSON.stringify(time)}</div>
         <Button onClick={onClickLogout}>logoutAction</Button>
