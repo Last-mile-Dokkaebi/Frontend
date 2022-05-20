@@ -18,7 +18,7 @@ const Modal = ({ delay = 0.5, children }: ModalTypes) => {
   //Modal을 끌 것인지 켤 것인지 설정
   const { modalIsOpen } = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
-  const [animation, setAnimation] = useState<any>(PopUp); // keyframe의 Type을 몰라서 일단 any로 해두었음
+  const [animation, setAnimation] = useState<ReturnType<typeof keyframes>>(PopUp); // keyframe의 Type을 몰라서 일단 any로 해두었음
 
   //열때는 다시 PopUp애니메이션으로 변경
   useEffect(() => {
@@ -62,14 +62,13 @@ const Background = styled.div<BackgroundTypes>`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.15);
-
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 interface ModalWrapperTypes {
-  animation: any;
+  animation: ReturnType<typeof keyframes>;
   delay: number;
 }
 
