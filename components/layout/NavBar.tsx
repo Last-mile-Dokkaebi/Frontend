@@ -6,6 +6,9 @@ const NavBar = () => {
   const onClickAlarm = () => {
     Router.push('/alarm');
   };
+  const onClickMypage = () => {
+    Router.push('/mypage');
+  };
   return (
     <NavWrapper>
       <MenuWrapper>
@@ -21,7 +24,7 @@ const NavBar = () => {
           <BsFileEarmarkBarGraph size={24} />
           <div>통계</div>
         </MenuButtonWrapper>
-        <MenuButtonWrapper>
+        <MenuButtonWrapper onClick={onClickMypage}>
           <BsFillPersonFill size={24} />
           <div>마이페이지</div>
         </MenuButtonWrapper>
