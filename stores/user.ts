@@ -20,6 +20,10 @@ const userSlice = createSlice({
     loginAction: (state:UserTypes, action: PayloadAction<{nickname: string}>) => {
       state.isLoggedin = true,
       state.nickname = action.payload.nickname
+    },
+    logoutAction: (state:UserTypes) => {
+      state.isLoggedin = false,
+      state.nickname = ""
     }
   }
 })
@@ -28,7 +32,7 @@ const userSlice = createSlice({
   createSlice에서 reducers로 만든 action들을 여기서 export
   추후 사용은 dispatch로 dispatch(loginAction({nickname : 입력값}))의 형식으로
 */
-export const {loginAction} = userSlice.actions;
+export const {loginAction, logoutAction} = userSlice.actions;
 
 //userSlice를 export할려면 이렇게 .reducer로
 export default userSlice.reducer;

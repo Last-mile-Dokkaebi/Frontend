@@ -6,7 +6,8 @@ import Router from 'next/router';
 import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
 import Button from 'components/common/Button';
-import useStringInput from 'hooks/useStringInput';
+// import useStringInput from 'hooks/useStringInput';
+import { useInput } from 'hooks';
 
 /* redux */
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,8 +19,8 @@ const login: NextPage = () => {
   const dispatch = useDispatch();
   const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
 
-  const [identity, identityHandler] = useStringInput(''); // 값을 넣지 않으면 "" 로 초기화
-  const [password, passwordHandler] = useStringInput('');
+  const [identity, identityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
+  const [password, passwordHandler] = useInput<string>('');
 
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -31,8 +32,8 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       const res = await loginApi(identity, password);
-      console.log(res);
       dispatch(loginAction({ nickname: identity }));
+      Router.push('/');
     }
   };
   return (
