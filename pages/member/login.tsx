@@ -31,9 +31,13 @@ const login: NextPage = () => {
     if (identity === '' || password === '') {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
-      const res = await loginApi(identity, password);
-      dispatch(loginAction({ nickname: identity }));
-      Router.push('/');
+      try {
+        const res = await loginApi(identity, password);
+        dispatch(loginAction({ nickname: identity }));
+        Router.push('/');
+      } catch (error) {
+        alert(error);
+      }
     }
   };
   return (

@@ -26,7 +26,17 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // 로그인 안된 상태로 private에 접근하면 로딩창부터 띄움
   if ((isLoading || !isLoggedin) && isPrivate) {
-    return <FullPageLoading />;
+    return (
+      <>
+        <Script
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
+          strategy="beforeInteractive"
+        />
+        <PersistGate persistor={persistor}>
+          <FullPageLoading />
+        </PersistGate>
+      </>
+    );
   } else {
     return (
       <>

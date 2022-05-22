@@ -2,25 +2,58 @@ import type { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { AppLayout } from 'components/layout';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, CustomOverlayMap, Polyline } from 'react-kakao-maps-sdk';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { GiKickScooter } from 'react-icons/gi';
-const ride: NextPage = () => {
+import { getScooterInfo } from 'pages/api/scooter';
+import { useInterval } from 'hooks';
+const ride: NextPage = ({ data }: any) => {
   const [position, setPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
-
-  const [battery, setBattery] = useState<number>(100);
+  const [paths, setPaths] = useState<Array<{ lat: number; lng: number }>>([]);
+  const [soc, setSoc] = useState<number>(0);
+  const [driveDist, setDriveDist] = useState<number>(0);
+  let count = 0;
   useEffect(() => {
     // api통신해서 불러오는 부분 작성 필요
-    console.log(process.env.NEXT_PUBLIC_KAKAOMAP)
-    setPosition({ lat: dummyData.lat, lng: dummyData.lng });
+    console.log(data);
+    const rounded = Math.round((data.driveDist + Number.EPSILON) * 100) / 100;
+    setSoc(data.soc);
+    setDriveDist(rounded);
+    setPosition(data.route[0]);
   }, []);
+
+  useInterval(() => {
+    if (count < 5) {
+      setPosition(data.route[count + 1]);
+      setPaths((prev) => [...prev, data.route[count]]);
+      count += 1;
+    }
+  }, 1000);
+  /* 지도상에 경로 그리기 */
 
   return (
     <AppLayout>
-      <MapWrapper></MapWrapper>
+      <MapWrapper>
+        <Map center={position} style={{ width: '100%', height: '100%' }} level={3}>
+          <MapMarker
+            position={position}
+            image={{
+              src: '/assets/img/marker2.png',
+              size: { width: 35, height: 40 },
+            }}
+          >
+            {/*<div style={{ color: '#000',padding:'8px',fontSize:'12px' }}>Hello World!</div>*/}
+          </MapMarker>
+          <Polyline
+            path={paths}
+            strokeWeight={3} // 선의 두께입니다
+            strokeColor={'#db4040'} // 선의 색깔입니다
+            strokeOpacity={1} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+            strokeStyle={'solid'} // 선의 스타일입니다
+          />
+        </Map>
+      </MapWrapper>
       <RideInfoWrapper>
-        <div className="title">주행중...🛴</div>
-
         <InfoWrapper>
           <div className="info">
             <div className="icon">
@@ -29,22 +62,22 @@ const ride: NextPage = () => {
 
             <div className="value-wrapper">
               <div>이용 시간</div>
-              <div className="value">1:21</div>
+              <div className="value">00:00</div>
             </div>
           </div>
           <div className="info">
             <div className="icon">
               <Battery>
                 <div
-                  className={`battery-level ${battery < 25 && battery >= 10 && 'warn'} ${battery < 10 && 'alert'}`}
-                  style={{ height: `${battery}%` }}
+                  className={`battery-level ${soc < 25 && soc >= 10 && 'warn'} ${soc < 10 && 'alert'}`}
+                  style={{ height: `${soc}%` }}
                 ></div>
               </Battery>
             </div>
 
             <div className="value-wrapper">
               <div>킥보드 배터리 잔량</div>
-              <div className="value">80%</div>
+              <div className="value">{soc}%</div>
             </div>
           </div>
           <div className="info">
@@ -53,7 +86,7 @@ const ride: NextPage = () => {
             </div>
             <div className="value-wrapper">
               <div>이동 거리</div>
-              <div className="value">2.6 km</div>
+              <div className="value">{driveDist} km</div>
             </div>
           </div>
         </InfoWrapper>
@@ -62,20 +95,42 @@ const ride: NextPage = () => {
   );
 };
 
-const dummyData: ScooterState = {
-  lat: 36.144765,
-  lng: 128.392134,
-  soc: 30,
-};
+// 해당 페이지로의 모든 요청 마다 호출되는 함수, SSR
+export async function getServerSideProps() {
+  // 서버로 API 요청
+  const res = await getScooterInfo();
+  const data = res.data;
+  // Page 컴포넌트로 data 전달
+  return { props: { data } };
+}
+
+const CustomInfoWindow = styled.div`
+  margin-top: 1rem;
+  padding: 4px;
+  border-radius: 4px;
+  border: none;
+  background-color: white;
+  font-size: 12px;
+  color: rgb(59, 59, 59);
+  box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px, rgb(9 30 66 / 31%) 0px 0px 1px;
+`;
 
 const MapWrapper = styled.div`
   width: 100%;
-  height: 73%;
+  height: 70%;
+  @media (max-height: 650px) {
+    height: 65%;
+  }
 `;
 
 const RideInfoWrapper = styled.div`
   width: 100%;
-  height: 27%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  @media (max-height: 650px) {
+    height: 35%;
+  }
   background-color: white;
   border: solid 1px #d6d6d6;
   border-radius: 4px;
@@ -107,6 +162,9 @@ const InfoWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    div:nth-child(1) {
+      font-size: 12px;
+    }
   }
   .value {
     font-weight: bold;
