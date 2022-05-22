@@ -10,7 +10,7 @@ const index: NextPage = () => {
   useEffect(() => {
     // api통신해서 불러오는 부분 작성 필요
     setPosition({ lat: dummyData.lat, lng: dummyData.lng });
-  });
+  }, []);
 
   return (
     <AppLayout>
