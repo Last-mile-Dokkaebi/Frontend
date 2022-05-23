@@ -20,13 +20,26 @@ interface joinTypes {
   phoneNumberArray: string[];
 }
 const joinApi = async ({ name, identity, password, phoneNumberArray }: joinTypes) => {
+  let res:{isSuccess:boolean,memberId:number|null} = {
+    isSuccess: false,
+    memberId: null,
+  };
   const body = {
     name,
     identity,
     password,
     phoneNumber:phoneNumberArray,
   };
-  await axios.post("/member/new", body);
+  try {
+    const rawResult = await axios.post(`/member/new`, body);
+    res.isSuccess = true;
+    res.memberId = rawResult.data
+    console.log(rawResult)
+  } catch (err) {
+    console.log(err)
+    res.isSuccess = false;
+  }
+  return res;
 };
 
 export { loginApi, joinApi };

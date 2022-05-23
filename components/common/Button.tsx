@@ -5,7 +5,7 @@ import styled from 'styled-components';
 interface ButtonTypes {
   /**
    * background-color를 지정
-   * @default "grey"
+   * @default "#eeeeee"
    */
   bgcolor?: string;
 
@@ -18,7 +18,7 @@ interface ButtonTypes {
 }
 
 // rest로 해서 너무 기본적인 props들은 그냥 처리되도록 변경
-const Button = ({ bgcolor = 'grey', children, onClick, ...rest }: ButtonTypes) => {
+const Button = ({ bgcolor = '#eeeeee', children, onClick, ...rest }: ButtonTypes) => {
   return (
     <CustomButton bgcolor={bgcolor} onClick={onClick} {...rest}>
       {children}

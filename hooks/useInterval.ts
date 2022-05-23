@@ -10,7 +10,6 @@ const useInterval = (callback: () => void, ms: number, deps?: React.DependencyLi
   useEffect(() => {
     callback();
     let intervalId = setInterval(callback, ms)
-
     return () => {clearInterval(intervalId)}
   }, deps ?? [])
 }

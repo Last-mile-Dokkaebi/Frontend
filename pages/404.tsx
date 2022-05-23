@@ -18,31 +18,6 @@ const Custom404: NextPage = () => {
             <Link href="/">홈으로 이동</Link>
           </Button>
         </ExplainWrapper>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </Custom404Wrapper>
     </AppLayout>
   );

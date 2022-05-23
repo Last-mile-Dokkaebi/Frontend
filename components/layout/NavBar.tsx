@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 import { BsClockHistory, BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
+import Router from 'next/router';
+
 const NavBar = () => {
+  const onClickAlarm = () => {
+    Router.push('/alarm');
+  };
+  const onClickMypage = () => {
+    Router.push('/mypage');
+  };
   return (
     <NavWrapper>
       <MenuWrapper>
@@ -8,7 +16,7 @@ const NavBar = () => {
           <BsClockHistory size={24} />
           <div>히스토리</div>
         </MenuButtonWrapper>
-        <MenuButtonWrapper>
+        <MenuButtonWrapper onClick={onClickAlarm}>
           <BsFillBellFill size={24} />
           <div>알람</div>
         </MenuButtonWrapper>
@@ -16,7 +24,7 @@ const NavBar = () => {
           <BsFileEarmarkBarGraph size={24} />
           <div>통계</div>
         </MenuButtonWrapper>
-        <MenuButtonWrapper>
+        <MenuButtonWrapper onClick={onClickMypage}>
           <BsFillPersonFill size={24} />
           <div>마이페이지</div>
         </MenuButtonWrapper>

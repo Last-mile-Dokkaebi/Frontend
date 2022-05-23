@@ -31,7 +31,7 @@ const Modal = ({ delay = 0.5, children }: ModalTypes) => {
     //Delay를 주고 닫는다
     setTimeout(() => {
       dispatch(setModal(false));
-    }, delay * 900);
+    }, delay * 100);
     //닫는 Animation으로 변경
     setAnimation(PopDown);
   }, []);
@@ -39,32 +39,38 @@ const Modal = ({ delay = 0.5, children }: ModalTypes) => {
   return (
     <>
       {modalIsOpen && (
-        <Background onClick={closeModal} open={modalIsOpen}>
+        <>
+          <Background onClick={closeModal} />
           {/* Modal component클릭시 background 컴포넌트 클릭 방지 */}
           <ModalWrapper animation={animation} delay={delay} onClick={(e) => e.stopPropagation()}>
             {children}
           </ModalWrapper>
-        </Background>
+        </>
       )}
     </>
   );
 };
 // };
 
-interface BackgroundTypes {
-  open: boolean;
-}
+// interface BackgroundTypes {
+//   open: boolean;
+// }
 
-const Background = styled.div<BackgroundTypes>`
-  visibility: ${(props) => (props.open ? 'visible' : 'hidden')}
-  z-index: 9999;
+const Background = styled.div`
+  z-index: 100;
   position: fixed;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
+<<<<<<< HEAD
+  background: rgba(0, 0, 0, 0.15); /* 밝기 조절*/
+=======
   background: rgba(0, 0, 0, 0.15);
   display: flex;
   justify-content: center;
   align-items: center;
+>>>>>>> d4d49284abf197624859c43c4e4a2554a82c73f5
 `;
 
 interface ModalWrapperTypes {
@@ -73,11 +79,17 @@ interface ModalWrapperTypes {
 }
 
 const ModalWrapper = styled.div<ModalWrapperTypes>`
-  z-index: 10000;
   position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
   background-color: white;
-  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.14), 0px 0px 12px 6px rgba(0, 0, 0, 0.1);
-  animation: ${(props) => props.animation} ${(props) => props.delay}s ease-in-out 0s 1 normal;
+  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    padding:1rem;
+  /*animation: ${(props) => props.animation} ${(props) => props.delay}s ease-in-out 0s 1 normal;*/
 `;
 
 //Modal이 켜질때 Animation

@@ -47,6 +47,10 @@ const test: NextPage = () => {
 
   return (
     <>
+      {/* <Dialog delay={1}>
+        <div>Dialog 테스트</div>
+      </Dialog> */}
+      
       <Modal>
         <div style={{ width: '250px', height: '250px' }}>Dialog 테스트</div>
       </Modal>
