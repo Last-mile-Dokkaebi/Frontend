@@ -98,7 +98,11 @@ const pathDummyData: Array<{ lat: number; lng: number }> = [
 
 const MapWrapper = styled.div`
   width: 100%;
-  height: 60%;
+  height: 50%;
+
+  @media (max-height: 680px) {
+    height: 45%;
+  }
 `;
 
 const HistoryTitleBox = styled.div`
