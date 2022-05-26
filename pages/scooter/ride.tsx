@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { AppLayout } from 'components/layout';
-import { Map, MapMarker, CustomOverlayMap, Polyline } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { GiKickScooter } from 'react-icons/gi';
 import { getScooterInfo } from 'pages/api/scooter';
@@ -104,16 +104,6 @@ export async function getServerSideProps() {
   return { props: { data } };
 }
 
-const CustomInfoWindow = styled.div`
-  margin-top: 1rem;
-  padding: 4px;
-  border-radius: 4px;
-  border: none;
-  background-color: white;
-  font-size: 12px;
-  color: rgb(59, 59, 59);
-  box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px, rgb(9 30 66 / 31%) 0px 0px 1px;
-`;
 
 const MapWrapper = styled.div`
   width: 100%;

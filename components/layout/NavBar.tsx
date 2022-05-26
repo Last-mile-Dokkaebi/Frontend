@@ -37,7 +37,7 @@ const NavWrapper = styled.nav`
   width: 500px;
   height: 60px;
   position: fixed;
-  bottom: 0;
+  bottom: -2px; 
   @media (max-width: 500px) {
     width: 100%;
   }

@@ -29,6 +29,70 @@ const alarm: NextPage = () => {
                 <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
             </div>
         </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        <AlarmCard>
+            <div className="icon"><FaBell size={24}/></div>
+            <div className="contents">
+                <div className="content-title">킥보드 배터리 주의</div>
+                <div className="content-body">킥보드 배터리가 10% 이하로 떨어졌습니다. 배터리를 충전하여 상태를 유지 해주세요.</div>
+            </div>
+        </AlarmCard>
+        
       </AppLayout>
     </>
   );

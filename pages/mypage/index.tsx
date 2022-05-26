@@ -7,11 +7,15 @@ import { RootState } from 'stores';
 import Button from 'components/common/Button';
 import { FaQuestionCircle, FaUserAlt,FaRegMap } from 'react-icons/fa';
 import { MdOutlineQuestionAnswer, MdInfoOutline } from 'react-icons/md';
+import Router from 'next/router';
 const mypage: NextPage = () => {
   const dispatch = useDispatch();
   const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
   const onClickLogout = () => {
     dispatch(logoutAction());
+  };
+  const onClickRentalHistory = () => {
+    Router.push("/mypage/rental")
   };
   return (
     <>
@@ -24,7 +28,7 @@ const mypage: NextPage = () => {
               <FaUserAlt />
               사용자 정보 수정
             </li>
-            <li>
+            <li onClick={onClickRentalHistory}>
               <FaRegMap />
               이용기록 조회
             </li>
