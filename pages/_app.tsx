@@ -1,6 +1,6 @@
 // 이곳에서 전역 스타일 관리. 일반 CRA에서의 index.js 와 같은 역할을 함.
 import 'styles/globals.css';
-import type { AppProps } from 'next/app';
+import type { AppContext, AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import wrapper, { persistor, RootState } from 'stores';
@@ -8,6 +8,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { FullPageLoading } from 'components/layout';
+import cookies from 'next-cookies';
+import { NextPageContext } from 'next';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
+import { setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isLoggedin } = useSelector((state: RootState) => state.user);
@@ -53,5 +57,24 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
   }
 }
+
+//cookie에서 token을 가져와서 axios의 header에 추가
+MyApp.getInitialProps = async (context: NextPageContext) => {
+  const { ctx, Component } = context;
+  let pageProps = {};
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  const allCookies = cookies(ctx);
+  const accessToken = allCookies[ACCESS_TOKEN];
+  if (accessToken !== undefined) {
+    const refreshToken = allCookies[REFRESH_TOKEN] || '';
+    setToken(accessToken, refreshToken);
+  }
+
+  return { pageProps };
+};
 
 export default wrapper.withRedux(MyApp);

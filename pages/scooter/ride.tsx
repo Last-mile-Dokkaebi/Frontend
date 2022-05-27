@@ -5,7 +5,7 @@ import { AppLayout } from 'components/layout';
 import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { GiKickScooter } from 'react-icons/gi';
-import { getScooterInfo } from 'pages/api/scooter';
+import { getScooterInfoApi } from 'pages/api/scooter';
 import { useInterval } from 'hooks';
 const ride: NextPage = ({ data }: any) => {
   const [position, setPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
@@ -15,7 +15,6 @@ const ride: NextPage = ({ data }: any) => {
   let count = 0;
   useEffect(() => {
     // api통신해서 불러오는 부분 작성 필요
-    console.log(data);
     const rounded = Math.round((data.driveDist + Number.EPSILON) * 100) / 100;
     setSoc(data.soc);
     setDriveDist(rounded);
@@ -98,12 +97,10 @@ const ride: NextPage = ({ data }: any) => {
 // 해당 페이지로의 모든 요청 마다 호출되는 함수, SSR
 export async function getServerSideProps() {
   // 서버로 API 요청
-  const res = await getScooterInfo();
-  const data = res.data;
+  const data = await getScooterInfoApi();
   // Page 컴포넌트로 data 전달
   return { props: { data } };
 }
-
 
 const MapWrapper = styled.div`
   width: 100%;

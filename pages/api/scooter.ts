@@ -2,26 +2,23 @@
 import axios from 'utils/customAxios';
 
 
+interface getScooterInfoReturnTypes{
+  driveDist: number;
+  route: Array<{lat:number, lng: number}>;
+  soc: number;
+  startTime: Date;
+}
 /* 킥보드(스쿠터)로 부터 주행 정보를 불러오는 함수 */
-const getScooterInfo = async ()=>{
-  let res:{isSuccess:boolean,data:any|null} = {
-    isSuccess: false,
-    data: null,
-  };
+const getScooterInfoApi = async (): Promise<getScooterInfoReturnTypes>=>{
   let config = {
     params: {
       scooterId:"0001",
       useCount:"1"
     },
   };
-  try {
-    const response = await axios.get("/scooter",config);
-    res.data = response.data;
-    res.data.route = res.data.route.map((item:{lat:number,lon:number})=>{return {lat:item.lat,lng:item.lon}})
-  } catch (err) {
-    res.isSuccess = false;
-  }
-  return res;
+  const res = await axios.get("/scooter",config);
+
+  return res.data
 }
 
-export {getScooterInfo}
+export {getScooterInfoApi}

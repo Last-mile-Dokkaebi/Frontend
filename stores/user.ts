@@ -1,9 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import cookies from 'next-cookies'
+import { ACCESS_TOKEN } from "utils/constant";
 
 // user 스토어 타입 정의
 interface UserTypes{
   isLoggedin: boolean; //false일 경우 로그인이 안 된 상태, true일 경우 로그인 된 상태
-  nickname: string; // user의 nickname, name으로 할지 nickname으로 할지 생각 해봐야됨
+  nickname: string; // user의 nickname
 }
 
 // user스토어의 초기값을 설정
@@ -24,7 +26,7 @@ const userSlice = createSlice({
     logoutAction: (state:UserTypes) => {
       state.isLoggedin = false,
       state.nickname = ""
-    }
+    },
   }
 })
 
@@ -32,7 +34,8 @@ const userSlice = createSlice({
   createSlice에서 reducers로 만든 action들을 여기서 export
   추후 사용은 dispatch로 dispatch(loginAction({nickname : 입력값}))의 형식으로
 */
-export const {loginAction, logoutAction} = userSlice.actions;
+
+export const {loginAction, logoutAction } = userSlice.actions;
 
 //userSlice를 export할려면 이렇게 .reducer로
 export default userSlice.reducer;
