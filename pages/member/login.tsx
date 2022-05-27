@@ -11,9 +11,10 @@ import { useInput } from 'hooks';
 
 /* redux */
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAction } from 'stores/user';
+import { loginAction, setAccessToken, setRefreshToken } from 'stores/user';
 import { RootState } from 'stores';
 import { loginApi } from 'pages/api/member'; // 로그인 api
+import { setToken } from 'utils/token';
 
 const login: NextPage = () => {
   const dispatch = useDispatch();
@@ -32,8 +33,9 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       try {
-        const res = await loginApi(identity, password);
+        const { accessToken, auth, refreshToken } = await loginApi(identity, password);
         dispatch(loginAction({ nickname: identity }));
+        setToken(accessToken, refreshToken);
         Router.push('/');
       } catch (error) {
         alert(error);

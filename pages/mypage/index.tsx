@@ -9,19 +9,24 @@ import { FaQuestionCircle, FaUserAlt,FaRegMap } from 'react-icons/fa';
 import { MdOutlineQuestionAnswer, MdInfoOutline } from 'react-icons/md'
 import {BsCreditCard2Back} from "react-icons/bs"
 import Router from 'next/router';
+import { deleteToken } from 'utils/token';
+
 const mypage: NextPage = () => {
   const dispatch = useDispatch();
   const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
   const onClickLogout = () => {
     dispatch(logoutAction());
+    deleteToken();
   };
   const onClickRentalHistory = () => {
-    Router.push("/mypage/rental")
+    Router.push('/mypage/rental');
   };
   return (
     <>
       <AppLayout>
-        <ContentBox><strong>{nickname}</strong>님, 안녕하세요 😄</ContentBox>
+        <ContentBox>
+          <strong>{nickname}</strong>님, 안녕하세요 😄
+        </ContentBox>
         <ContentBox>
           <div className="menu-title">관리</div>
           <ul className="menu-list">
@@ -88,6 +93,9 @@ const ContentBox = styled.div`
           border-radius:4px;
           
       }
+    }
+    &:hover {
+      cursor: pointer;
     }
   }
 `;
