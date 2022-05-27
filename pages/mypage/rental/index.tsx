@@ -3,18 +3,14 @@ import { AppLayout } from 'components/layout';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {MdKeyboardArrowRight} from "react-icons/md"
+import Title from 'components/common/Title';
 // 장기 렌탈 이용 내역 목록 조회 ( 장기 렌탈 회차별 목록 제공 )
 const RentalHistoryList: NextPage = () => {
   return (
     <>
       <AppLayout>
-        <HistoryTitleBox>
-          <div className="title">장기 대여 이용 기록</div>
-          <div className="subtitle">
-            장기 대여 이용 내역을 확인해보세요! <br />
-            내역을 클릭하면 해당 대여 기간 동안의 상세 탑승 내역을 확인할 수 있습니다!
-          </div>
-        </HistoryTitleBox>
+        <Title title={'장기 대여 이용 기록'} subtitle={'장기 대여 이용 내역을 확인해보세요! 내역을 클릭하면 해당 대여 기간 동안의 상세 탑승 내역을 확인할 수 있습니다!'} />
+
         <TotalWrapper>
           <div className="content">
             <div>총 대여 횟수</div>
@@ -59,20 +55,6 @@ const RentalHistoryList: NextPage = () => {
   );
 };
 
-const HistoryTitleBox = styled.div`
-  .title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 4px;
-    color: #1a3336;
-  }
-  .subtitle {
-    font-size: 13px;
-    color: grey;
-  }
-  margin: 0 0 1rem 0;
-  padding: 0.5rem;
-`;
 const Box = styled.div`
   background-color: white;
   border-radius: 4px;
