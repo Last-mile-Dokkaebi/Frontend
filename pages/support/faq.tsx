@@ -3,10 +3,8 @@ import { AppLayout } from 'components/layout';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-import Title from 'components/common/Title';
-import { useEffect } from 'react';
-useEffect;
-// 장기 렌탈 이용 내역 목록 조회 ( 장기 렌탈 회차별 목록 제공 )
+import {Title} from 'components/common';
+
 const faq: NextPage = () => {
 
   return (
@@ -44,7 +42,6 @@ const faq: NextPage = () => {
 const QuestionListWrapper = styled.div`
   background-color: white;
   border-radius: 4px;
-  padding: 1rem;
   margin-top: 1rem;
 `;
 const Question = styled.details`

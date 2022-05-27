@@ -3,7 +3,7 @@ import { AppLayout } from 'components/layout';
 import { useRouter } from 'next/router';
 import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import Title from 'components/common/Title';
+import {Title} from 'components/common';
 // 탑승 내역 상세 조회
 const RideDetail: NextPage = () => {
   const router = useRouter();

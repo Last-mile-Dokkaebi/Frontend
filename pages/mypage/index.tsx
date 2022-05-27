@@ -6,7 +6,8 @@ import { logoutAction } from 'stores/user';
 import { RootState } from 'stores';
 import Button from 'components/common/Button';
 import { FaQuestionCircle, FaUserAlt,FaRegMap } from 'react-icons/fa';
-import { MdOutlineQuestionAnswer, MdInfoOutline } from 'react-icons/md'
+import { MdOutlineQuestionAnswer } from 'react-icons/md'
+import {BiSupport} from "react-icons/bi"
 import {BsCreditCard2Back} from "react-icons/bs"
 import Router from 'next/router';
 import { deleteToken } from 'utils/token';
@@ -21,6 +22,12 @@ const mypage: NextPage = () => {
   const onClickRentalHistory = () => {
     Router.push('/mypage/rental');
   };
+  const onClickFAQ = () =>{
+    Router.push('/support/faq');
+  }
+  const onClickQNA = () =>{
+    Router.push('/support/qna/send');
+  }
   return (
     <>
       <AppLayout>
@@ -47,16 +54,16 @@ const mypage: NextPage = () => {
         <ContentBox>
           <div className="menu-title">지원</div>
           <ul className="menu-list">
-            <li>
-              <FaQuestionCircle />
+            <li onClick={onClickFAQ}>
+              <MdOutlineQuestionAnswer />
               자주 하는 질문
             </li>
             <li>
-              <MdInfoOutline />
+              <FaQuestionCircle />
               서비스 이용 안내
             </li>
-            <li>
-              <MdOutlineQuestionAnswer />
+            <li onClick={onClickQNA}>
+              <BiSupport/>
               고객 문의 게시판
             </li>
           </ul>

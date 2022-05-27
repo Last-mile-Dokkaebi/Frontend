@@ -3,7 +3,7 @@ import { AppLayout } from 'components/layout';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {MdKeyboardArrowRight} from "react-icons/md"
-import Title from 'components/common/Title';
+import {Title} from 'components/common';
 // 장기 렌탈 이용 내역 목록 조회 ( 장기 렌탈 회차별 목록 제공 )
 const RentalHistoryList: NextPage = () => {
   return (

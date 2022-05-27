@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
-import Button from 'components/common/Button';
+import {Button,CustomInput} from 'components/common';
 import { useInput } from 'hooks';
 import { joinApi } from 'pages/api/member'; // 로그인 api
 import Router from 'next/router';
@@ -138,14 +138,6 @@ const TOSWrapper = styled.div`
   border-radius: 12px;
   padding: 1rem;
   font-size: 14px;
-`;
-const CustomInput = styled.input`
-  width: 100%;
-  border: solid 1px #d6d6d6;
-  border-radius: 12px;
-  padding-left: 1rem;
-  height: 3rem;
-  margin: 0.5rem 0 0.5rem 0;
 `;
 const ErrorMessage = styled.div`
   color: #ff003e; /* 빨간색이긴 한데 ... */

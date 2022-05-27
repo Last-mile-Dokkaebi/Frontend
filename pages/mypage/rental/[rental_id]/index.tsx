@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import Title from 'components/common/Title';
+import {Title} from 'components/common';
 // 장기 렌탈 이용 기간 별 탑승 내역 목록 조회
 const RideHistoryList: NextPage = () => {
   const router = useRouter();
