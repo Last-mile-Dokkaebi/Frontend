@@ -1,15 +1,17 @@
 // Custom Axios에서 instance만든거 가져와서 사용
 import axios from 'utils/customAxios';
 
-interface LoginResponseObjectType {
-  isSuccess?: boolean;
+interface loginReturnTypes{
+  accessToken: string;
+  auth: string;
+  refreshToken: string;
 }
+
 /* 로그인을 위한 함수*/
-const loginApi = async (identity: string, password: string) => {
+const loginApi = async (identity: string, password: string): Promise<loginReturnTypes> => {
   const body = { identity, password };
   const res = await axios.post("/member/login", body)
-  return res
-
+  return res.data
 };
 
 /* 회원가입을 위한 함수*/
@@ -20,26 +22,13 @@ interface joinTypes {
   phoneNumberArray: string[];
 }
 const joinApi = async ({ name, identity, password, phoneNumberArray }: joinTypes) => {
-  let res:{isSuccess:boolean,memberId:number|null} = {
-    isSuccess: false,
-    memberId: null,
-  };
   const body = {
     name,
     identity,
     password,
     phoneNumber:phoneNumberArray,
   };
-  try {
-    const rawResult = await axios.post(`/member/new`, body);
-    res.isSuccess = true;
-    res.memberId = rawResult.data
-    console.log(rawResult)
-  } catch (err) {
-    console.log(err)
-    res.isSuccess = false;
-  }
-  return res;
+  await axios.post("/member/new", body);
 };
 
 export { loginApi, joinApi };

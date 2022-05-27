@@ -15,13 +15,6 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     //요청 성공 직전 호출
-     //대충 localstorage에서 access token헤더에 붙여줄 예정
-
-    // if (config.headers === undefined) {
-    //   config.headers = {};
-    // }
-    // const accessToken: string = localStorage.getItem(ACCESS_TOKEN) as string;
-    // config.headers.Authorization = 'bearer ' + accessToken;
     return config;
   },
   (error: AxiosError) => {
