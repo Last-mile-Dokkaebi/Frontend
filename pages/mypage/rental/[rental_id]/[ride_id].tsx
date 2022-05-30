@@ -3,6 +3,7 @@ import { AppLayout } from 'components/layout';
 import { useRouter } from 'next/router';
 import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
+import {Title} from 'components/common';
 // 탑승 내역 상세 조회
 const RideDetail: NextPage = () => {
   const router = useRouter();
@@ -10,13 +11,7 @@ const RideDetail: NextPage = () => {
   return (
     <>
       <AppLayout>
-        <HistoryTitleBox>
-          <div className="title">상세 주행 내역</div>
-          <div className="subtitle">
-            장기 대여 이용 내역을 확인해보세요! <br />
-            내역을 클릭하면 해당 대여 기간 동안의 상세 주행 내역을 확인할 수 있습니다!
-          </div>
-        </HistoryTitleBox>
+        <Title title={'상세 주행 내역'} subtitle={'상세 주행 내역 입니다. 주행 정보 및 이동 경로를 확인하실 수 있습니다'}/>
         <RideInformationBox>
           <div className="info-row">
             <div className="info-title">주행 ID</div>

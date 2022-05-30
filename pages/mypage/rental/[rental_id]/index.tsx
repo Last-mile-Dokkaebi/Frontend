@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import {Title} from 'components/common';
 // 장기 렌탈 이용 기간 별 탑승 내역 목록 조회
 const RideHistoryList: NextPage = () => {
   const router = useRouter();
@@ -11,13 +12,8 @@ const RideHistoryList: NextPage = () => {
   return (
     <>
       <AppLayout>
-        <HistoryTitleBox>
-          <div className="title">대여 별 상세 탑승 기록</div>
-          <div className="subtitle">
-            대여 기간 동안의 상세 탑승 내역을 확인하세요! <br />
-            내역을 클릭하면 상세 탑승 내역 (경로, 거리, 시간 등)을 확인 하실 수 있습니다!
-          </div>
-        </HistoryTitleBox>
+        <Title title={'대여 별 상세 탑승 기록'} subtitle={'대여 기간 동안의 상세 탑승 내역을 확인하세요! 내역을 클릭하면 상세 탑승 내역 (경로, 거리, 시간 등)을 확인 하실 수 있습니다!'}/>
+          
         <TotalWrapper>
           <div className="content">
             <div>총 탑승 횟수</div>

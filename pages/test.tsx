@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { AppLayout } from 'components/layout';
 import { Modal } from 'components/common';
 import { useDebounce, useInput, useInterval } from 'hooks';
+import { RiInputCursorMove } from 'react-icons/ri';
 
 const test: NextPage = () => {
   const dispatch = useDispatch();
@@ -50,9 +51,9 @@ const test: NextPage = () => {
       {/* <Dialog delay={1}>
         <div>Dialog 테스트</div>
       </Dialog> */}
-      
-      <Modal>
-        <div style={{ width: '250px', height: '250px' }}>Dialog 테스트</div>
+
+      <Modal iconUrl={'/assets/img/information-icon.png'} title={'모달 제목은 여기에'} subtitle={'테스트 모달 안내입니다. 아이콘은 있으면 띄우고 없으면 안띄우고..'}>
+        <div>여기는 아무 내용 아무 컴포넌트 막 들어가도 됩니다..</div>
       </Modal>
       <AppLayout>
         <div>당신의 닉네임은 {nickname}</div>
@@ -78,3 +79,4 @@ const test: NextPage = () => {
 };
 
 export default test;
+

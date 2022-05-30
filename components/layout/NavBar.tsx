@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BsClockHistory, BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
 import Router from 'next/router';
-
+import { GiKickScooter } from 'react-icons/gi';
 const NavBar = () => {
   const onClickAlarm = () => {
     Router.push('/alarm');
@@ -9,12 +9,15 @@ const NavBar = () => {
   const onClickMypage = () => {
     Router.push('/mypage');
   };
+  const onClickScooter = () => {
+    Router.push('/scooter');
+  }
   return (
     <NavWrapper>
       <MenuWrapper>
-        <MenuButtonWrapper>
-          <BsClockHistory size={24} />
-          <div>히스토리</div>
+        <MenuButtonWrapper onClick={onClickScooter}>
+          <GiKickScooter size={24} />
+          <div>대여 및 주행</div>
         </MenuButtonWrapper>
         <MenuButtonWrapper onClick={onClickAlarm}>
           <BsFillBellFill size={24} />
