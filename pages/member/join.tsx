@@ -9,21 +9,26 @@ import { joinApi } from 'pages/api/member'; // 로그인 api
 import Router from 'next/router';
 
 const join: NextPage = () => {
+  /* 필수 입력 */
   const [name, nameHandler] = useInput<string>('');
   const [identity, identityHandler] = useInput<string>('');
   const [password, passwordHandler] = useInput<string>('');
   const [passwordConfirm, passwordConfirmHandler] = useInput<string>('');
-  const [phoneNumber, phoneNumberHandler] = useInput<string>('');
+  const [phone, phoneHandler] = useInput<string>('');
+
+  /* 선택 입력 */
+  const [birth,birthHandler]=useInput<string | null>(null)
+  const [gender,genderHandler]=useInput<string| null>(null);
+  const [email,emailHandler]=useInput<string| null>(null);
+  const [city,cityHandler]=useInput<string| null>(null);
+  const [street,streetHandler]=useInput<string| null>(null);
+
   const [errorMessage, setErrorMessage] = useState<string[]>([]); // 0: 이름에러, 1: 아이디 에러 2: 비밀번호에러 3: 전화번호 에러
 
   const onClickJoin = async () => {
     if (joinCheck()) {
-      const phoneNumberArray: string[] = [];
-      phoneNumberArray[0] = phoneNumber.slice(0, 3);
-      phoneNumberArray[1] = phoneNumber.slice(3, 7);
-      phoneNumberArray[2] = phoneNumber.slice(7, 11);
       try {
-        await joinApi({ name, identity, password, phoneNumberArray });
+        await joinApi({ name, identity, password, phone,birth,gender,email,city,street });
         alert('회원가입을 환영합니다! 🤗');
         Router.push('/member/login');
       } catch (err) {
@@ -51,11 +56,11 @@ const join: NextPage = () => {
       err[2] += '비밀번호와 비밀번호 확인이 일치하지 않습니다. ';
     }
 
-    if (phoneNumber === '') {
+    if (phone === '') {
       err[3] += '휴대폰 번호를 입력해주세요';
-    } else if (!!Number(phoneNumber) === false) {
+    } else if (!!Number(phone) === false) {
       err[3] += '휴대폰번호 양식이 일치하지 않습니다. ';
-    } else if (phoneNumber.length !== 11) {
+    } else if (phone.length !== 11) {
       err[3] += '휴대폰번호 양식이 일치하지 않습니다. ';
     }
     setErrorMessage(err); // 얘는 그저 출력용..
@@ -72,7 +77,7 @@ const join: NextPage = () => {
         회원가입시 <strong>약관에 동의</strong>한 것으로 간주합니다.
       </Info>
       <FormWrapper>
-        <FormTitle>회원정보 입력</FormTitle>
+        <FormTitle>필수 회원정보 입력</FormTitle>
         <JoinFormWrapper>
           <CustomInput type="text" onChange={nameHandler} placeholder="이름" />
           <ErrorMessage>{errorMessage[0]}</ErrorMessage>
@@ -84,11 +89,25 @@ const join: NextPage = () => {
           <CustomInput
             type="text"
             maxLength={11}
-            onChange={phoneNumberHandler}
+            onChange={phoneHandler}
             placeholder="휴대폰 번호 '-' 없이 입력 ( 01012345678 )"
           />
           <ErrorMessage>{errorMessage[3]}</ErrorMessage>
           {/* 얘는 가공해서 쓸거임. */}
+        </JoinFormWrapper>
+      </FormWrapper>
+      <FormWrapper>
+        <FormTitle>선택 회원정보 입력</FormTitle>
+        <JoinFormWrapper>
+          <CustomInput type="date" onChange={birthHandler} placeholder="생일" />
+          <CustomInput type="text" onChange={genderHandler} placeholder="성별 (MALE, FEMALE)" />
+          <CustomInput type="text" onChange={emailHandler} placeholder="이메일 (example@aaa.com)" />
+          <CustomInput type="text" onChange={cityHandler} placeholder="거주 도시" />
+          <CustomInput
+            type="text"
+            onChange={streetHandler}
+            placeholder="상세 주소"
+          />
         </JoinFormWrapper>
       </FormWrapper>
       <FormWrapper>

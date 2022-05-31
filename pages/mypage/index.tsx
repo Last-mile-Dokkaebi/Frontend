@@ -11,14 +11,17 @@ import {BiSupport} from "react-icons/bi"
 import {BsCreditCard2Back} from "react-icons/bs"
 import Router from 'next/router';
 import { deleteToken } from 'utils/token';
-
 const mypage: NextPage = () => {
   const dispatch = useDispatch();
-  const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
+  const { identity } = useSelector((state: RootState) => state.user);
+  
   const onClickLogout = () => {
     dispatch(logoutAction());
     deleteToken();
   };
+  const onClickEdit = ()=>{
+    Router.push('/mypage/edit');
+  }
   const onClickRentalHistory = () => {
     Router.push('/mypage/rental');
   };
@@ -32,14 +35,14 @@ const mypage: NextPage = () => {
     <>
       <AppLayout>
         <ContentBox>
-          <strong>{nickname}</strong>님, 안녕하세요 😄
+          <strong>{identity}</strong>님, 안녕하세요 😄
         </ContentBox>
         <ContentBox>
           <div className="menu-title">관리</div>
           <ul className="menu-list">
-            <li>
+            <li onClick={onClickEdit}>
               <FaUserAlt />
-              사용자 정보 수정
+              사용자 정보 관리
             </li>
             <li >
               <BsCreditCard2Back />

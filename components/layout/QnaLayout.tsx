@@ -16,7 +16,7 @@ const QnaLayout = (props: { children: React.ReactNode }) => {
           <CustomLinkButton active={router.pathname === '/support/qna/send'}>1:1 문의 보내기</CustomLinkButton>
         </Link>
         <Link href={'/support/qna/list'}>
-          <CustomLinkButton active={router.pathname === '/support/qna/list'}>문의내역</CustomLinkButton>
+          <CustomLinkButton active={router.pathname === '/support/qna/list' || router.pathname === '/support/qna/detail'}>문의내역</CustomLinkButton>
         </Link>
       </QnaMenu>
       {props.children} {/* 라우터 별 화면 표시 */}

@@ -9,3 +9,27 @@ interface ScooterState{
   lng: number;  //Scooter의 Longitude
   soc: number;  //Scooter의 SOC
 }
+
+interface userInfo{
+  birth:string|null; // 생일
+  city:string|null; // 거주 도시
+  email:string|null; // 이메일
+  gender:string|null; // 성별 MALE , FEMALE
+  identity:string; // id
+  name:string; // 이름
+  password:string; // 비밀번호
+  phone:string; // 휴대전화번호
+  street:string|null; // 거주 지역
+}
+
+interface qna{
+  adminId:string | null;
+  comment:string | null;
+  content:string;
+  qnaId:number;
+  questionerId:string;
+  regiDate:string;
+  replyDate:string|null;
+  status:string;
+  title:string;
+}

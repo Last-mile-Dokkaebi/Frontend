@@ -6,7 +6,6 @@ import Router from 'next/router';
 import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
 import Button from 'components/common/Button';
-// import useStringInput from 'hooks/useStringInput';
 import { useInput } from 'hooks';
 
 /* redux */
@@ -18,10 +17,10 @@ import { setToken } from 'utils/token';
 
 const login: NextPage = () => {
   const dispatch = useDispatch();
-  const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
+  const { isLoggedin, identity } = useSelector((state: RootState) => state.user);
 
-  const [identity, identityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
-  const [password, passwordHandler] = useInput<string>('');
+  const [inputIdentity, inputIdentityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
+  const [inputPassword, inputPasswordHandler] = useInput<string>('');
 
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -29,16 +28,16 @@ const login: NextPage = () => {
     Router.push('/member/join');
   };
   const onClickLogin = async () => {
-    if (identity === '' || password === '') {
+    if (inputIdentity === '' || inputPassword === '') {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       try {
-        const { accessToken, auth, refreshToken } = await loginApi(identity, password);
-        dispatch(loginAction({ nickname: identity }));
+        const { accessToken, refreshToken } = await loginApi(inputIdentity, inputPassword);
+        dispatch(loginAction({ identity: inputIdentity }));
         setToken(accessToken, refreshToken);
         Router.push('/');
-      } catch (error) {
-        alert(error);
+      } catch (error: any) { // 타입을 모르겠습니다.. 
+        setErrorMessage(error.response.data.description); // 벡엔드에서 주는 에러 메세지를 바로 출력
       }
     }
   };
@@ -48,8 +47,8 @@ const login: NextPage = () => {
         <Image src={'/assets/img/도깨비메인.PNG'} />
       </ImageWrapper>
       <LoginFormWrapper>
-        <CustomInput type="text" placeholder="아이디" onChange={identityHandler} />
-        <CustomInput type="password" placeholder="비밀번호" onChange={passwordHandler} />
+        <CustomInput type="text" placeholder="아이디" onChange={inputIdentityHandler} />
+        <CustomInput type="password" placeholder="비밀번호" onChange={inputPasswordHandler} />
         <ErrorMessage>{errorMessage}</ErrorMessage>
         <Button onClick={onClickLogin} width={'100%'} height={'3rem'} bgcolor={'#77b8c0'} color={'white'}>
           로그인

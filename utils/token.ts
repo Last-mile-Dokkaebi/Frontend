@@ -1,6 +1,7 @@
 import cookie from 'react-cookies'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from './constant'
 import axios from 'utils/customAxios'
+import cookies from 'next-cookies'
 
 /*
   cookie를 이용해서 token들 관리
@@ -14,8 +15,8 @@ const HTTP_ONLY = process.env.NODE_ENV === "development"
 
 // accessToken, refreshToken을 받아 cookie에 저장
 const setToken = (accessToken: string, refreshToken: string) => {
-  axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken
-
+  axios.defaults.headers.common["access_token"] =  accessToken;
+  axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
   const expires = new Date()
   expires.setDate(Date.now() + 1000 * 60 * 60 *24 )
 
@@ -63,5 +64,6 @@ const deleteToken = () => {
     }
   )
 }
+
 
 export {setToken, deleteToken}

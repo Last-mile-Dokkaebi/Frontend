@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { QnaLayout } from 'components/layout';
+import { AppLayout } from 'components/layout';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,49 +14,17 @@ const list: NextPage = () => {
   }, []);
 
   const dataFetch = async () => {
-    const data = await qnaListApi(identity);
+    const data = await qnaListApi(identity,true);
     setQnaList(data);
     console.log(data);
   };
 
-  const onClickQnaDetail = (qna:qna) => {
-    Router.push({
-      pathname: '/support/qna/detail',
-      query: { ...qna },
-    },`/support/qna/detail`);
-  };
 
   return (
     <>
-      <QnaLayout>
-        <QnaTableWrapper>
-          <QnaTable>
-            <colgroup>
-              <col width="25%" />
-              <col width="45%" />
-              <col width="35%" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>처리 현황</th>
-                <th>제목</th>
-                <th>등록일자</th>
-              </tr>
-            </thead>
-            <tbody>
-              {qnaList.map((qna: qna, index: number) => {
-                return (
-                  <tr key={index} onClick={()=>{onClickQnaDetail(qna)}}>
-                    <td className="wait">등록됨</td>
-                    <td>{qna.title}</td>
-                    <td>{qna.regiDate.substring(2, 10)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </QnaTable>
-        </QnaTableWrapper>
-      </QnaLayout>
+      <AppLayout>
+        
+      </AppLayout>
     </>
   );
 };

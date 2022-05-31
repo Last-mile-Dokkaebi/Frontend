@@ -12,7 +12,7 @@ import { RiInputCursorMove } from 'react-icons/ri';
 
 const test: NextPage = () => {
   const dispatch = useDispatch();
-  const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
+  const { isLoggedin, identity } = useSelector((state: RootState) => state.user);
 
   const [input, setInput] = useState<string>('');
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +36,7 @@ const test: NextPage = () => {
 
   const onClickLogin = () => {
     alert('로그인하기');
-    dispatch(loginAction({ nickname: input }));
+    dispatch(loginAction({ identity: input }));
   };
   const onClickModal = () => {
     dispatch(setModal(true));
@@ -56,7 +56,7 @@ const test: NextPage = () => {
         <div>여기는 아무 내용 아무 컴포넌트 막 들어가도 됩니다..</div>
       </Modal>
       <AppLayout>
-        <div>당신의 닉네임은 {nickname}</div>
+        <div>당신의 닉네임은 {identity}</div>
         <div>
           <Button onClick={onClickLogin} color="red">
             로그인
