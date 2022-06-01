@@ -19,42 +19,54 @@ const list: NextPage = () => {
     console.log(data);
   };
 
-  const onClickQnaDetail = (qna:qna) => {
-    Router.push({
-      pathname: '/support/qna/detail',
-      query: { ...qna },
-    },`/support/qna/detail`);
+  const onClickQnaDetail = (qna: qna) => {
+    Router.push(
+      {
+        pathname: '/support/qna/detail',
+        query: { ...qna },
+      },
+      `/support/qna/detail`,
+    );
   };
 
   return (
     <>
       <QnaLayout>
         <QnaTableWrapper>
-          <QnaTable>
-            <colgroup>
-              <col width="25%" />
-              <col width="45%" />
-              <col width="35%" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>처리 현황</th>
-                <th>제목</th>
-                <th>등록일자</th>
-              </tr>
-            </thead>
-            <tbody>
-              {qnaList.map((qna: qna, index: number) => {
-                return (
-                  <tr key={index} onClick={()=>{onClickQnaDetail(qna)}}>
-                    <td className="wait">등록됨</td>
-                    <td>{qna.title}</td>
-                    <td>{qna.regiDate.substring(2, 10)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </QnaTable>
+          {qnaList.length === 0 ? (
+            <div className="no-data">문의 내역이 없습니다</div>
+          ) : (
+            <QnaTable>
+              <colgroup>
+                <col width="25%" />
+                <col width="45%" />
+                <col width="35%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>처리 현황</th>
+                  <th>제목</th>
+                  <th>등록일자</th>
+                </tr>
+              </thead>
+              <tbody>
+                {qnaList.map((qna: qna, index: number) => {
+                  return (
+                    <tr
+                      key={index}
+                      onClick={() => {
+                        onClickQnaDetail(qna);
+                      }}
+                    >
+                      <td className="wait">등록됨</td>
+                      <td>{qna.title}</td>
+                      <td>{qna.regiDate.substring(2, 10)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </QnaTable>
+          )}
         </QnaTableWrapper>
       </QnaLayout>
     </>
@@ -66,6 +78,10 @@ const QnaTableWrapper = styled.div`
   border-radius: 4px;
   margin-top: 1rem;
   padding: 1rem;
+  .no-data{
+    padding:3rem;
+    text-align:center;
+  }
 `;
 const QnaTable = styled.table`
   width: 100%;

@@ -35,6 +35,7 @@ const send: NextPage = () => {
         <FormWrapper>
           <CustomInput type="text" placeholder="제목" onChange={titleHandler} />
           <CustomTextarea placeholder="본문" onChange={contentHandler}/>
+          <CharacterCount>({content.length}/255)</CharacterCount>
         </FormWrapper>
         <Button onClick={onClickSend}>보내기</Button>
       </QnaLayout>
@@ -56,6 +57,10 @@ const CustomTextarea = styled.textarea`
     margin: 0.5rem 0 0.5rem 0;
     padding:1rem;
     border-radius:12px;
+    resize:none;
 `
-
+const CharacterCount = styled.div` 
+  text-align:right;
+  font-size:12px;
+`
 export default send;

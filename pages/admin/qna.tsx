@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { AppLayout } from 'components/layout';
+import { AdminLayout } from 'components/layout';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,18 +14,15 @@ const list: NextPage = () => {
   }, []);
 
   const dataFetch = async () => {
-    const data = await qnaListApi(identity,true);
+    const data = await qnaListApi(identity, true);
     setQnaList(data);
     console.log(data);
   };
 
-
   return (
-    <>
-      <AppLayout>
-        
-      </AppLayout>
-    </>
+    <AdminLayout>
+      <div>zzz</div>
+    </AdminLayout>
   );
 };
 
