@@ -1,9 +1,9 @@
 /* 일반회원 회원가입 */
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
-import {Button,CustomInput} from 'components/common';
+import { Button, CustomInput } from 'components/common';
 import { useInput } from 'hooks';
 import { joinApi } from 'pages/api/member'; // 로그인 api
 import Router from 'next/router';
@@ -17,18 +17,22 @@ const join: NextPage = () => {
   const [phone, phoneHandler] = useInput<string>('');
 
   /* 선택 입력 */
-  const [birth,birthHandler]=useInput<string | null>(null)
-  const [gender,genderHandler]=useInput<string| null>(null);
-  const [email,emailHandler]=useInput<string| null>(null);
-  const [city,cityHandler]=useInput<string| null>(null);
-  const [street,streetHandler]=useInput<string| null>(null);
+  const [birth, birthHandler] = useInput<string | null>(null);
+  const [gender, genderHandler] = useInput<string | null>(null);
+  const [email, emailHandler] = useInput<string | null>(null);
+  const [city, cityHandler] = useInput<string | null>(null);
+  const [street, streetHandler] = useInput<string | null>(null);
+
+  const [auth, authHandler] = useInput<string>("USER");
+  const [adminMode, setAdminMode] = useState<boolean>(false); // adminMode가 true일 경우 관리자/유저 권한 여부를 선택할 수 있는 입력창이 뜸.
+  const [adminCount, setAdminCount] = useState<number>(0); // 도깨비 로고를 10번 연달아 클릭하면 adminMode가 활성화 됨
 
   const [errorMessage, setErrorMessage] = useState<string[]>([]); // 0: 이름에러, 1: 아이디 에러 2: 비밀번호에러 3: 전화번호 에러
 
   const onClickJoin = async () => {
     if (joinCheck()) {
       try {
-        await joinApi({ name, identity, password, phone,birth,gender,email,city,street });
+        await joinApi({ name, identity, password, phone, birth, gender, email, city, street,auth });
         alert('회원가입을 환영합니다! 🤗');
         Router.push('/member/login');
       } catch (err) {
@@ -67,9 +71,25 @@ const join: NextPage = () => {
     return err.join('') === ''; // true시 가입 가능
   };
 
+  useEffect(() => {
+    if (adminCount === 10) {
+      if (prompt('비밀번호를 입력하세요') === process.env.NEXT_PUBLIC_ADMIN_JOIN_PASSWORD) {
+        alert('관리자 회원가입이 활성화 되었습니다.');
+        setAdminMode(true);
+      } else {
+        alert('비밀번호가 틀렸습니다. 카운트가 초기화됩니다.');
+        setAdminCount(0); // 카운트 초기화
+      }
+    }
+  }, [adminCount]);
+
   return (
     <MemberLayout>
-      <ImageWrapper>
+      <ImageWrapper
+        onClick={() => {
+          setAdminCount(adminCount + 1);
+        }}
+      >
         <Image src={'/assets/img/도깨비메인.PNG'} />
       </ImageWrapper>
       <Info>
@@ -103,12 +123,23 @@ const join: NextPage = () => {
           <CustomInput type="text" onChange={genderHandler} placeholder="성별 (MALE, FEMALE)" />
           <CustomInput type="text" onChange={emailHandler} placeholder="이메일 (example@aaa.com)" />
           <CustomInput type="text" onChange={cityHandler} placeholder="거주 도시" />
-          <CustomInput
-            type="text"
-            onChange={streetHandler}
-            placeholder="상세 주소"
-          />
+          <CustomInput type="text" onChange={streetHandler} placeholder="상세 주소" />
         </JoinFormWrapper>
+        {adminMode && (
+          <div>
+            <input type="radio" id="user" name="auth" value="USER" onChange={authHandler} checked={auth === 'USER'} />
+            <label htmlFor="user">사용자</label>
+            <input
+              type="radio"
+              id="admin"
+              name="auth"
+              value="ADMIN"
+              onChange={authHandler}
+              checked={auth === 'ADMIN'}
+            />
+            <label htmlFor="admin">관리자</label>
+          </div>
+        )}
       </FormWrapper>
       <FormWrapper>
         <FormTitle>약관동의</FormTitle>

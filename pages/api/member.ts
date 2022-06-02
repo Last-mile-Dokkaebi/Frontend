@@ -16,7 +16,7 @@ const loginApi = async (identity: string, password: string): Promise<loginReturn
 
 /* 회원가입을 위한 함수*/
 
-const joinApi = async ({ name, identity, password, phone,birth,gender,email,city,street }: userInfo) => {
+const joinApi = async ({ name, identity, password, phone,birth,gender,email,city,street,auth }: userInfo) => {
   const body = {
     name,
     identity,
@@ -26,7 +26,8 @@ const joinApi = async ({ name, identity, password, phone,birth,gender,email,city
     gender,
     email,
     city,
-    street
+    street,
+    auth
   };
   console.log(body)
   await axios.post("/member/new", body);

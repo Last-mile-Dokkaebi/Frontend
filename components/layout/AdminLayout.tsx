@@ -5,24 +5,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
+import Router from 'next/router';
 const AppLayout = (props: { children: React.ReactNode }) => {
+
+  const onClickQnA = () => {
+    Router.push('/admin/qna');
+  };
+  const onClickMain = () => {
+    Router.push('/admin');
+  };
   return (
     <AdminWrapper>
       <AdminHeader>
         <AdminHeaderContents>
-          <div className="logo">
+          <div className="logo" onClick={onClickMain}>
             <MdOutlineAdminPanelSettings />
-            <div>도깨비 관리자</div>
+            <div>도깨비 관리자 admin님</div>
           </div>
           <AdminNav>
             <ul>
               <li>사용자 관리</li>
               <li>데이터 통계</li>
-              <li>질의응답 관리</li>
+              <li onClick={onClickQnA}>질의응답 관리</li>
             </ul>
           </AdminNav>
         </AdminHeaderContents>
       </AdminHeader>
+      <AdminBody>{props.children}</AdminBody>
     </AdminWrapper>
   );
 };
@@ -63,9 +72,13 @@ const AdminNav = styled.nav`
         transition: 0.2s;
         color: rgb(59, 59, 59);
         cursor: pointer;
-        font-weight:bold;
+        font-weight: bold;
       }
     }
   }
+`;
+const AdminBody = styled.div`
+  width: 90%;
+  margin: 2rem auto;
 `;
 export default AppLayout;

@@ -33,7 +33,7 @@ const login: NextPage = () => {
     } else {
       try {
         const { accessToken, refreshToken } = await loginApi(inputIdentity, inputPassword);
-        dispatch(loginAction({ identity: inputIdentity }));
+        dispatch(loginAction({ identity: inputIdentity}));
         setToken(accessToken, refreshToken);
         Router.push('/');
       } catch (error: any) { // 타입을 모르겠습니다.. 

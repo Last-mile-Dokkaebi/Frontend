@@ -11,7 +11,7 @@ interface UserTypes{
 // user스토어의 초기값을 설정
 const initialState:UserTypes = {
   isLoggedin: false,
-  identity: "",
+  identity: ""
 }
 
 // user스토어 동작부 설계
@@ -19,7 +19,7 @@ const userSlice = createSlice({
   name: 'user', //name으로 지정한 부분이 추후 useSelector에서의 이름이 됨 ex) 이경우 useSelector(state=>state.user)
   initialState,
   reducers:{
-    loginAction: (state:UserTypes, action: PayloadAction<{identity: string}>) => {
+    loginAction: (state:UserTypes, action: PayloadAction<{identity: string,auth:string}>) => {
       state.isLoggedin = true,
       state.identity = action.payload.identity
     },

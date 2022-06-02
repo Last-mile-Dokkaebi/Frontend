@@ -20,6 +20,7 @@ interface userInfo{
   password:string; // 비밀번호
   phone:string; // 휴대전화번호
   street:string|null; // 거주 지역
+  auth:string|null; // 관리자 여부
 }
 
 interface qna{

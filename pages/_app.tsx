@@ -29,6 +29,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [isLoading, isPrivate, isLoggedin]);
 
   // 로그인 안된 상태로 private에 접근하면 로딩창부터 띄움
+  /* 
+    사용자는 관리자의 화면에 접근할 수 없음. 접근 권한이 없다는 modal을 띄울 예정
+    관리자는 사용자의 화면에 접근할 수 없음. 접근 권한이 없다는 modal을 띄울 예정
+    redux persist에 auth정보를 저장하고 auth정보와 isLoggedin 둘 중 하나라도 없으면 로그인 창으로 redirect
+    
+  */
   if ((isLoading || !isLoggedin) && isPrivate) {
     return (
       <>
@@ -59,6 +65,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 //cookie에서 token을 가져와서 axios의 header에 추가
+// 이 과정에서 cookie에 token이 존재하지 않다면 "" 값이 헤더에 저장되지 않도록 예외처리 해두었음 utils/token.ts 
 MyApp.getInitialProps = async (context: NextPageContext) => {
   const { ctx, Component } = context;
   let pageProps = {};
