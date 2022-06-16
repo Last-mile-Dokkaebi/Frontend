@@ -13,10 +13,11 @@ interface ModalTypes {
   iconUrl?: string;
   title?: string;
   subtitle?: string;
+  confirmAction?:()=>void;
   children?: React.ReactNode;
 }
 
-const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes) => {
+const Modal = ({ delay = 0.15, iconUrl, title, subtitle,confirmAction, children }: ModalTypes) => {
   //Modal을 끌 것인지 켤 것인지 설정
   const { modalIsOpen } = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes)
               </div>
               <div className="modal-body-wrapper">{children}</div>
               <div className="modal-action-wrapper">
-                <button className="modal-action-btn">확인</button>
+                <button className="modal-action-btn" onClick={confirmAction}>확인</button>
               </div>
             </ModalWrapper>
           </Background>

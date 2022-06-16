@@ -6,12 +6,14 @@ import { ACCESS_TOKEN } from "utils/constant";
 interface UserTypes{
   isLoggedin: boolean; //false일 경우 로그인이 안 된 상태, true일 경우 로그인 된 상태
   identity: string; // user의 identity
+  auth:string; // user의 auth
 }
 
 // user스토어의 초기값을 설정
 const initialState:UserTypes = {
   isLoggedin: false,
-  identity: ""
+  identity: "",
+  auth:"",
 }
 
 // user스토어 동작부 설계
@@ -21,11 +23,13 @@ const userSlice = createSlice({
   reducers:{
     loginAction: (state:UserTypes, action: PayloadAction<{identity: string,auth:string}>) => {
       state.isLoggedin = true,
-      state.identity = action.payload.identity
+      state.identity = action.payload.identity,
+      state.auth = action.payload.auth
     },
     logoutAction: (state:UserTypes) => {
       state.isLoggedin = false,
-      state.identity = ""
+      state.identity = "",
+      state.auth = ""
     },
   }
 })

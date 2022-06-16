@@ -32,8 +32,8 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       try {
-        const { accessToken, refreshToken } = await loginApi(inputIdentity, inputPassword);
-        dispatch(loginAction({ identity: inputIdentity}));
+        const { accessToken, refreshToken,auth } = await loginApi(inputIdentity, inputPassword);
+        dispatch(loginAction({ identity: inputIdentity,auth }));
         setToken(accessToken, refreshToken);
         Router.push('/');
       } catch (error: any) { // 타입을 모르겠습니다.. 

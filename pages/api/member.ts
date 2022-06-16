@@ -11,6 +11,7 @@ interface loginReturnTypes{
 const loginApi = async (identity: string, password: string): Promise<loginReturnTypes> => {
   const body = { identity, password };
   const res = await axios.post("/member/login", body)
+  console.log(res)
   return res.data
 };
 

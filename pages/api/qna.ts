@@ -12,17 +12,21 @@ const qnaRegistrationApi = async ({ identity, title, content }: qnaPropsType) =>
     title,
     content,
   };
-  await axios.post('/help/qna/', body);
+  await axios.post('/help/qna/registry', body);
 };
 
 /* QNA 목록 조회를 위한 함수 */
 const qnaListApi = async (identity: string, admin?: boolean): Promise<Array<qna>> => {
   if (admin) {
-      console.log(admin)
-    const res = await axios.put(`/help/qna/`);
+    const res = await axios.get(`/help/qna/`);
     return res.data;
   } else {
-    const res = await axios.get(`/help/qna/${identity}`);
+    let config = {
+      params: {
+        identity,
+      },
+    };
+    const res = await axios.get('/help/qna', config);
     return res.data;
   }
 };

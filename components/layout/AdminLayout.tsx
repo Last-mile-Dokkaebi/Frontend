@@ -6,13 +6,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import Router from 'next/router';
+import { logoutAction } from 'stores/user';
+import { useDispatch } from 'react-redux';
 const AppLayout = (props: { children: React.ReactNode }) => {
-
+  const dispatch = useDispatch();
   const onClickQnA = () => {
     Router.push('/admin/qna');
   };
   const onClickMain = () => {
     Router.push('/admin');
+  };
+
+  const onClickLogout = () => {
+    dispatch(logoutAction());
   };
   return (
     <AdminWrapper>
@@ -27,6 +33,7 @@ const AppLayout = (props: { children: React.ReactNode }) => {
               <li>사용자 관리</li>
               <li>데이터 통계</li>
               <li onClick={onClickQnA}>질의응답 관리</li>
+              <li onClick={onClickLogout}>로그아웃</li>
             </ul>
           </AdminNav>
         </AdminHeaderContents>

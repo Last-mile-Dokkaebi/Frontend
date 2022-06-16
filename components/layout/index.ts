@@ -4,6 +4,7 @@ export {default as Header} from './AppLayout'
 export {default as MemberLayout} from './AppLayout'
 export {default as NavBar} from './AppLayout'
 export {default as FullPageLoading} from '../layout/FullPageLoading'
+export {default as FullPageModal} from "./FullPageModal"
 export {default as QnaLayout} from "../layout/QnaLayout"
 export {default as AdminLayout} from "../layout/AdminLayout"
 /*
