@@ -1,6 +1,6 @@
 /* 일반회원 회원가입 */
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 import MemberLayout from 'components/layout/MemberLayout';
@@ -17,7 +17,7 @@ import { setToken } from 'utils/token';
 
 const login: NextPage = () => {
   const dispatch = useDispatch();
-  const { isLoggedin, identity } = useSelector((state: RootState) => state.user);
+  const { auth } = useSelector((state: RootState) => state.user);
 
   const [inputIdentity, inputIdentityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
   const [inputPassword, inputPasswordHandler] = useInput<string>('');
@@ -35,12 +35,17 @@ const login: NextPage = () => {
         const { accessToken, refreshToken,auth } = await loginApi(inputIdentity, inputPassword);
         dispatch(loginAction({ identity: inputIdentity,auth }));
         setToken(accessToken, refreshToken);
-        Router.push('/');
       } catch (error: any) { // 타입을 모르겠습니다.. 
         setErrorMessage(error.response.data.description); // 벡엔드에서 주는 에러 메세지를 바로 출력
       }
     }
   };
+  useEffect(()=>{
+    if(auth!==""){
+      if(auth==="ADMIN") Router.push('/admin');
+      else if(auth==="USER") Router.push('/');
+    }
+  },[auth])
   return (
     <MemberLayout>
       <ImageWrapper>

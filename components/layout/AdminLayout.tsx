@@ -7,9 +7,11 @@ import styled from 'styled-components';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import Router from 'next/router';
 import { logoutAction } from 'stores/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector} from 'react-redux';
+import { RootState } from 'stores';
 const AppLayout = (props: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
+  const { identity } = useSelector((state: RootState) => state.user);
   const onClickQnA = () => {
     Router.push('/admin/qna');
   };
@@ -26,7 +28,7 @@ const AppLayout = (props: { children: React.ReactNode }) => {
         <AdminHeaderContents>
           <div className="logo" onClick={onClickMain}>
             <MdOutlineAdminPanelSettings />
-            <div>도깨비 관리자 admin님</div>
+            <div>도깨비 관리자 {identity}님</div>
           </div>
           <AdminNav>
             <ul>
