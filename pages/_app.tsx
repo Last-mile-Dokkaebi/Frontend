@@ -3,9 +3,10 @@ import 'styles/globals.css';
 import type { AppContext, AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
-import wrapper, { persistor, RootState } from 'stores';
+import wrapper, { store, persistor, RootState } from 'stores';
 import { PersistGate } from 'redux-persist/integration/react';
 import { useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
 import { FullPageLoading } from 'components/layout';
 import cookies from 'next-cookies';
@@ -37,9 +38,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
         />
-        <PersistGate persistor={persistor}>
-          <FullPageLoading />
-        </PersistGate>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <FullPageLoading />
+          </PersistGate>
+        </Provider>
       </>
     );
   } else {
@@ -51,9 +54,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
         />
-        <PersistGate persistor={persistor}>
-          <Component {...pageProps} />
-        </PersistGate>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <Component {...pageProps} />
+          </PersistGate>
+        </Provider>
       </>
     );
   }

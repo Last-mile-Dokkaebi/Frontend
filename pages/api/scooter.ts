@@ -58,9 +58,14 @@ const rentalScooterApi = async({start, end}: getRentalPriceInput): Promise<numbe
 }
 
 /* 대여한 스쿠터를 켜기위한 API */
-const scooterOnApi = async() => {
+const startRidingApi = async() => {
+  // await axios.post()
+  return true;
+}
+/* 대여한 스쿠터를 끄기위한 API */
+const endRidingApi = async() => {
   // await axios.post()
   return true;
 }
 
-export {getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, scooterOnApi}
+export {getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, startRidingApi, endRidingApi}

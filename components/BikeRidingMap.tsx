@@ -2,23 +2,30 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { Button } from 'components/common';
 import React from 'react';
-import { startRidingApi } from 'pages/api/scooter';
+import { endRidingApi } from 'pages/api/scooter';
+import { DateToString, TimeToString } from 'utils/processing';
+import { useRouter } from 'next/router';
 
 interface BikeStateMapTypes {
-  lat: number;
-  lng: number;
-  soc: number;
-  endDate: string;
-  endTime: string;
   setIsRiding: (state: boolean) => void;
 }
 
-const BikeStateMap = ({ lat, lng, soc, endDate, endTime, setIsRiding }: BikeStateMapTypes) => {
-  const onClickStartRiding = () => {
+const BikeRidingMap = ({ setIsRiding }: BikeStateMapTypes) => {
+  const router = useRouter();
+  /* 테스트용 더미 데이터*/
+  const lat = 36.144765;
+  const lng = 128.392134;
+  const soc = 40;
+  const endDate = DateToString(new Date());
+  const endTime = TimeToString(new Date());
+  /*---------------------*/
+
+  const onClickEndRiding = () => {
     try {
       //API호출 부 필요
-      // async startRidingApi()
-      setIsRiding(true); //주행중이라고 바꿈
+      // async endRidingApi()
+      setIsRiding(false); //주행중이 아니라고 바꿈
+      router.push('/'); //새로고침
     } catch (err) {
       alert(err);
     }
@@ -38,13 +45,13 @@ const BikeStateMap = ({ lat, lng, soc, endDate, endTime, setIsRiding }: BikeStat
         <strong>
           {endDate} {endTime}
         </strong>
-        에 주행을 종료하였습니다
+        에 주행을 시작하였습니다
       </div>
       <div>
         배터리는 <strong>{soc}%</strong>남았습니다
       </div>
       <div>
-        <Button onClick={onClickStartRiding}>주행시작</Button>
+        <Button onClick={onClickEndRiding}>주행종료</Button>
       </div>
     </Wrapper>
   );
@@ -60,4 +67,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default BikeStateMap;
+export default BikeRidingMap;
