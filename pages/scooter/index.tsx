@@ -31,15 +31,6 @@ const index: NextPage = () => {
               }}
             />
           ))}
-          {/* <MapMarker
-            position={position}
-            image={{
-              src: '/assets/img/marker2.png',
-              size: { width: 35, height: 40 },
-            }}
-          >
-            <div style={{ color: '#000' }}>Hello World!</div>
-          </MapMarker> */}
         </Map>
       </MapWrapper>
       <Button onClick={rideStart}>탑승 시작</Button>
