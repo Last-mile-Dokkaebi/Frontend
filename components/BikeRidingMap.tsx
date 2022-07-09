@@ -25,6 +25,7 @@ const BikeRidingMap = ({ setIsRiding }: BikeStateMapTypes) => {
       //API호출 부 필요
       // async endRidingApi()
       setIsRiding(false); //주행중이 아니라고 바꿈
+      alert('주행을 종료합니다');
       router.push('/'); //새로고침
     } catch (err) {
       alert(err);
@@ -32,7 +33,7 @@ const BikeRidingMap = ({ setIsRiding }: BikeStateMapTypes) => {
   };
   return (
     <Wrapper>
-      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 5rem)' }} level={5}>
+      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 6rem)' }} level={5}>
         <MapMarker
           position={{ lat, lng }}
           image={{

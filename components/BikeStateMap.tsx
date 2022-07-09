@@ -19,13 +19,14 @@ const BikeStateMap = ({ lat, lng, soc, endDate, endTime, setIsRiding }: BikeStat
       //API호출 부 필요
       // async startRidingApi()
       setIsRiding(true); //주행중이라고 바꿈
+      alert('주행을 시작합니다');
     } catch (err) {
       alert(err);
     }
   };
   return (
     <Wrapper>
-      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 5rem)' }} level={5}>
+      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 6rem)' }} level={5}>
         <MapMarker
           position={{ lat, lng }}
           image={{
