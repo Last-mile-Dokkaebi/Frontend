@@ -25,4 +25,49 @@ a {
 }
 
 
+details {
+  margin: 0 auto ;
+  margin-bottom: .5rem;
+  box-shadow: 0 .1rem 1rem -.5rem rgba(0,0,0,.4);
+  border-radius: 5px;
+  overflow: hidden;
+}
 
+summary {
+  padding: 0.5rem;
+  display: block;
+  background:  #77b8c0;
+  padding-left: 2.2rem;
+  position: relative;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  transition: color ease 0.1s;
+}
+
+summary:before {
+  content: '';
+  border-width: .4rem;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+  position: absolute;
+  top: 0.75rem;
+  left: 1rem;
+  transform: rotate(0);
+  transform-origin: .2rem 50%;
+  transition: .25s transform ease;
+  transition: border-color ease 0.1s;
+}
+
+details[open] > summary:before {
+  transform: rotate(90deg);
+  border-color: transparent transparent transparent white;
+}
+details[open] > summary{
+  color: white;
+}
+
+
+details summary::-webkit-details-marker {
+  display:none;
+}

@@ -6,7 +6,6 @@ import Router from 'next/router';
 import MemberLayout from 'components/layout/MemberLayout';
 import styled from 'styled-components';
 import Button from 'components/common/Button';
-// import useStringInput from 'hooks/useStringInput';
 import { useInput } from 'hooks';
 
 /* redux */
