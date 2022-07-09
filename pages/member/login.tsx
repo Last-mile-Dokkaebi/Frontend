@@ -10,15 +10,13 @@ import Button from 'components/common/Button';
 import { useInput } from 'hooks';
 
 /* redux */
-import { useSelector, useDispatch } from 'react-redux';
-import { loginAction, setAccessToken, setRefreshToken } from 'stores/user';
-import { RootState } from 'stores';
+import { useDispatch } from 'react-redux';
+import { loginAction } from 'stores/user';
 import { loginApi } from 'pages/api/member'; // 로그인 api
 import { setToken } from 'utils/token';
 
 const login: NextPage = () => {
   const dispatch = useDispatch();
-  const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
 
   const [identity, identityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
   const [password, passwordHandler] = useInput<string>('');
@@ -33,8 +31,9 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       try {
-        const { accessToken, auth, refreshToken } = await loginApi(identity, password);
-        dispatch(loginAction({ nickname: identity }));
+        const res = await loginApi(identity, password);
+        const { accessToken, refreshToken, auth } = res;
+        dispatch(loginAction({ identity, auth, bikeNumber: '' })); //일단 임시로 bikeNumber는 ''인걸로
         setToken(accessToken, refreshToken);
         Router.push('/');
       } catch (error) {

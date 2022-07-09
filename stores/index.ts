@@ -14,6 +14,7 @@ import {createWrapper, HYDRATE} from 'next-redux-wrapper'
 
 import userReducer from 'stores/user'
 import systemReducer from 'stores/system'
+import bikeReducer from 'stores/bike'
 
 //Persist 옵션 정의
 const persistConfig={
@@ -38,6 +39,7 @@ const rootReducer = (state:any, action:any) => {
   return combineReducers({
     user: userReducer,
     system: systemReducer,
+    bike: bikeReducer,
   })(state, action)
 }
  

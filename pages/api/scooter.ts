@@ -20,5 +20,18 @@ const getScooterInfoApi = async (): Promise<getScooterInfoReturnTypes>=>{
 
   return res.data
 }
+/* */
+interface getScooterLocationTypes{
+  lat: number;
+  lng: number;
+  soc: number;
+  endDate: Date;
+}
+const getScooterLocationApi = async(): Promise<getScooterLocationTypes> => {
+  const res = await axios.get("/scooter/location")
 
-export {getScooterInfoApi}
+  return res.data
+}
+
+
+export {getScooterInfoApi, getScooterLocationApi}

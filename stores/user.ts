@@ -1,17 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
-import cookies from 'next-cookies'
-import { ACCESS_TOKEN } from "utils/constant";
 
 // user 스토어 타입 정의
 interface UserTypes{
-  isLoggedin: boolean; //false일 경우 로그인이 안 된 상태, true일 경우 로그인 된 상태
-  nickname: string; // user의 nickname
+  isLoggedin: boolean;              //false일 경우 로그인이 안 된 상태, true일 경우 로그인 된 상태
+  identity: string;                 // user의 identity
+  auth: string | 'USER' | 'ADMIN';  //로그인 사람의 접근권한
+  bikeNumber: string;               //빌린 바이크 번호, 없으면 ""으로 초기화
 }
 
 // user스토어의 초기값을 설정
 const initialState:UserTypes = {
   isLoggedin: false,
-  nickname: "",
+  identity: "",
+  auth: 'USER',                     //일단 초기값은 USER인걸로
+  bikeNumber: '',
 }
 
 // user스토어 동작부 설계
@@ -19,13 +21,20 @@ const userSlice = createSlice({
   name: 'user', //name으로 지정한 부분이 추후 useSelector에서의 이름이 됨 ex) 이경우 useSelector(state=>state.user)
   initialState,
   reducers:{
-    loginAction: (state:UserTypes, action: PayloadAction<{nickname: string}>) => {
-      state.isLoggedin = true,
-      state.nickname = action.payload.nickname
+    loginAction: (state:UserTypes, action: PayloadAction<{identity: string, 
+                                                          auth: string | 'USER'|'ADMIN', 
+                                                          bikeNumber: string}>) => {
+      const {identity, auth, bikeNumber} = action.payload;
+      state.isLoggedin = true;
+      state.identity = identity;
+      state.auth = auth;
+      state.bikeNumber = bikeNumber;
     },
     logoutAction: (state:UserTypes) => {
-      state.isLoggedin = false,
-      state.nickname = ""
+      state.isLoggedin = false;
+      state.identity = "";
+      state.auth = 'USER';
+      state.bikeNumber = '';
     },
   }
 })

@@ -12,6 +12,7 @@ import cookies from 'next-cookies';
 import { NextPageContext } from 'next';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import { setToken } from 'utils/token';
+import axios from 'utils/customAxios';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isLoggedin } = useSelector((state: RootState) => state.user);
@@ -73,6 +74,7 @@ MyApp.getInitialProps = async (context: NextPageContext) => {
     const refreshToken = allCookies[REFRESH_TOKEN] || '';
     setToken(accessToken, refreshToken);
   }
+  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   return { pageProps };
 };
