@@ -1,6 +1,6 @@
 // Custom Axios에서 instance만든거 가져와서 사용
 import axios from 'utils/customAxios';
-
+import {DateToString} from 'utils/processing'
 
 interface getScooterInfoReturnTypes{
   driveDist: number;
@@ -39,16 +39,8 @@ interface getRentalPriceInput{
   end: Date;
 }
 const getRentalPriceApi = async({start, end}: getRentalPriceInput): Promise<number> => {
-  const startYear  = start.getFullYear();
-  const startMonth = start.getMonth();
-  const startDay   = start.getDate();
-
-  const endYear  = end.getFullYear();
-  const endMonth = end.getMonth();
-  const endDay   = end.getDate();
-
-  const startDate  = `${startYear}-${startMonth.toString().padStart(2, '0')}-${startDay.toString().padStart(2, '0')}`
-  const endDate  = `${endYear}-${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`
+  const startDate = DateToString(start);
+  const endDate = DateToString(end);
 
   const res = await axios.post('/rental/price', {startDate, endDate})
 
@@ -57,21 +49,18 @@ const getRentalPriceApi = async({start, end}: getRentalPriceInput): Promise<numb
 
 /* 스쿠터를 빌리기 위한 API */
 const rentalScooterApi = async({start, end}: getRentalPriceInput): Promise<number> => {
-  const startYear  = start.getFullYear();
-  const startMonth = start.getMonth();
-  const startDay   = start.getDate();
-
-  const endYear  = end.getFullYear();
-  const endMonth = end.getMonth();
-  const endDay   = end.getDate();
-
-  const startDate  = `${startYear}-${startMonth.toString().padStart(2, '0')}-${startDay.toString().padStart(2, '0')}`
-  const endDate  = `${endYear}-${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`
+  const startDate = DateToString(start);
+  const endDate = DateToString(end);
 
   const res = await axios.post('/rental/price', {startDate, endDate})
 
   return res.data
 }
 
+/* 대여한 스쿠터를 켜기위한 API */
+const scooterOnApi = async() => {
+  // await axios.post()
+  return true;
+}
 
-export {getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi}
+export {getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, scooterOnApi}
