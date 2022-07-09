@@ -21,8 +21,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout>
-        {!isRentaled && <Rental />}
-        {isRentaled && <div>빌린 바이크 있음</div>}
+        {!isRentaled && <Rental />} {/* 빌린 상태가 아니면 */}
+        {isRentaled && <div>빌린 바이크 있음</div>} {/* 빌린 상태이면서 주행중이 아니면 */}
       </AppLayout>
     </div>
   );
