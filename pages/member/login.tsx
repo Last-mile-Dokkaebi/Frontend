@@ -14,6 +14,8 @@ import { loginAction } from 'stores/user';
 import { loginApi } from 'pages/api/member'; // 로그인 api
 import { setToken } from 'utils/token';
 
+import axios from 'utils/customAxios';
+
 const login: NextPage = () => {
   const dispatch = useDispatch();
 
@@ -30,6 +32,7 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       try {
+        console.log(axios.defaults.headers.common);
         const res = await loginApi(identity, password);
         const { accessToken, refreshToken, auth } = res;
         dispatch(loginAction({ identity, auth, bikeNumber: '' })); //일단 임시로 bikeNumber는 ''인걸로

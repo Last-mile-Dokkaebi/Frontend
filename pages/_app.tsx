@@ -16,7 +16,7 @@ import { setToken } from 'utils/token';
 import axios from 'utils/customAxios';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { isLoggedin } = useSelector((state: RootState) => state.user);
+  const { isLoggedin, auth } = useSelector((state: RootState) => state.user);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -24,14 +24,36 @@ function MyApp({ Component, pageProps }: AppProps) {
   //현재 `/member`페이지를 제외하고 모두 private으로 설정
   const isPrivate = !router.pathname.startsWith('/member');
 
+  //현재 `/admin`페이지를 AdminOnly로 지정
+  const isAdminOnly = router.pathname.startsWith('/admin');
+  const isAdmin = auth === 'ADMIN';
+
   useEffect(() => {
+    if (!isLoading && isAdminOnly && !isAdmin) router.push('/'); //관리자가 아닌 사람이 관리페이지에 접속할려는 경우
+    if (!isLoading && !isAdminOnly && isAdmin) router.push('/admin'); //관리자가 일반페이지에 접속할려는 경우
     if (!isLoading && isPrivate && !isLoggedin) router.push('/member'); //로그인이 안된 상태로 private 페이지
     if (!isLoading && !isPrivate && isLoggedin) router.push('/'); //로그인이 된 상태로 public페이지
     setIsLoading(false);
-  }, [isLoading, isPrivate, isLoggedin]);
+  }, [isLoading, isPrivate, isLoggedin, isAdminOnly, isAdmin]);
+
+  // useEffect(() => {
+  //   if (isAdminOnly && !isAdmin) router.replace('/');
+  //   if (!isLoading && isPrivate && !isLoggedin) router.push('/member'); //로그인이 안된 상태로 private 페이지
+  //   if (!isLoading && !isPrivate && isLoggedin) router.push('/'); //로그인이 된 상태로 public페이지
+  //   setIsLoading(false);
+  // }, []);
 
   // 로그인 안된 상태로 private에 접근하면 로딩창부터 띄움
-  if ((isLoading || !isLoggedin) && isPrivate) {
+  const notLoginAndPrivate = (isLoading || !isLoggedin) && isPrivate;
+  // 로그인 된 상태로 public에 접근하면 로딩창부터 띄우기
+  const loggedinAndPublic = (isLoading || isLoggedin) && !isPrivate;
+  // 관리자용 페이지를 관리자가 아닌 사람이 접근 할려고 하면
+  const notAdminAndAdminOnly = (isLoading || !isAdmin) && isAdminOnly;
+  // 일반 페이지를 관리자가 접근할려고 하면
+  const isAdminAndPrivate = (isLoading || isAdmin) && !isAdminOnly;
+
+  //로딩창부터 띄워서 화면접근 막기
+  if (notLoginAndPrivate || loggedinAndPublic || notAdminAndAdminOnly || isAdminAndPrivate) {
     return (
       <>
         <Script
@@ -75,11 +97,11 @@ MyApp.getInitialProps = async (context: NextPageContext) => {
 
   const allCookies = cookies(ctx);
   const accessToken = allCookies[ACCESS_TOKEN];
-  if (accessToken !== undefined) {
+  if (accessToken !== undefined && accessToken !== '') {
     const refreshToken = allCookies[REFRESH_TOKEN] || '';
     setToken(accessToken, refreshToken);
+    axios.defaults.headers.common.access_token = `${accessToken}`;
   }
-  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   return { pageProps };
 };

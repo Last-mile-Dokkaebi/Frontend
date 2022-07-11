@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import axios from 'utils/customAxios'
 
 // user 스토어 타입 정의
 interface UserTypes{
@@ -35,6 +36,8 @@ const userSlice = createSlice({
       state.identity = "";
       state.auth = 'USER';
       state.bikeNumber = '';
+      delete axios.defaults.headers.common["access_token"]; //로그아웃하면 accessToken삭제
+      console.log(axios.defaults.headers.common)
     },
   }
 })

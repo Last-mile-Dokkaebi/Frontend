@@ -1,8 +1,9 @@
 import AppLayout from './AppLayout';
-import styled,{css} from 'styled-components';
-import {Title} from 'components/common';
+import styled, { css } from 'styled-components';
+import { Title } from 'components/common';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
 const QnaLayout = (props: { children: React.ReactNode }) => {
   const router = useRouter();
   return (
@@ -48,24 +49,22 @@ const CustomLinkButton = styled.a<ButtonProps>`
   flex-direction: column;
   align-items: center;
   font-size: 14px;
-  ${(props) => 
+  ${(props) =>
     props.active
       ? css`
-        color:rgb(59, 59, 59);
-        background-color:white;
-      `
+          color: rgb(59, 59, 59);
+          background-color: white;
+        `
       : css`
-        background-color: #77b8c0;
-        color:white;
-      `
-  }
+          background-color: #77b8c0;
+          color: white;
+        `}
   &:hover {
     background-color: rgba(255, 255, 255, 0.5);
     transition: 0.2s;
     color: rgb(59, 59, 59);
-    cursor:pointer;
+    cursor: pointer;
   }
-
 `;
 
 export default QnaLayout;

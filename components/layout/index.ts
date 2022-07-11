@@ -1,4 +1,5 @@
 //각 module을 index.ts를 통해 다시 내보기
+export {default as AdminLayout} from './AdminLayout'
 export {default as AppLayout} from './AppLayout'
 export {default as Header} from './AppLayout'
 export {default as MemberLayout} from './AppLayout'

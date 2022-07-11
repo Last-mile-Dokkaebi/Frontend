@@ -2,6 +2,21 @@
 import axios from 'utils/customAxios';
 import {DateToString} from 'utils/processing'
 
+/* 멤버의 상태를 확인하기 위한 함수 */
+interface memberScooterStatusOutputTypes{
+  status: 'NONE' | 'RENTAL' | 'DRIVE' | 'notRiding',
+  startDate: string;
+  endDate: string;
+}
+const memberScooterStatusApi = async(): Promise<memberScooterStatusOutputTypes> => {
+  const res = await axios.get("/scooter/state");
+
+
+  console.log(`${JSON.stringify(res.data)}`)
+
+  return res.data;
+}
+
 interface getScooterInfoReturnTypes{
   driveDist: number;
   route: Array<{lat:number, lng: number}>;
@@ -68,4 +83,6 @@ const endRidingApi = async() => {
   return true;
 }
 
-export {getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, startRidingApi, endRidingApi}
+
+
+export {memberScooterStatusApi,getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, startRidingApi, endRidingApi}
