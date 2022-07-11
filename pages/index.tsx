@@ -20,7 +20,6 @@ interface HomeTypes {
 
 const Home: NextPage<HomeTypes> = ({ riding, lat, lng, soc, endDate, endTime }) => {
   const [isRiding, setIsRiding] = useState<boolean>(riding);
-  const { bikeNumber } = useSelector((state: RootState) => state.user);
   // const isRentaled = bikeNumber === '' ? false : true; //빌린 바이크가 있는지
   const isRentaled = true; //임시 확인용
 

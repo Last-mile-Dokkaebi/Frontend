@@ -11,14 +11,14 @@ const NavBar = () => {
   };
   const onClickScooter = () => {
     Router.push('/scooter');
-  }
+  };
   return (
     <NavWrapper>
       <MenuWrapper>
-        <MenuButtonWrapper onClick={onClickScooter}>
+        {/* <MenuButtonWrapper onClick={onClickScooter}>
           <GiKickScooter size={24} />
           <div>대여 및 주행</div>
-        </MenuButtonWrapper>
+        </MenuButtonWrapper> */}
         <MenuButtonWrapper onClick={onClickAlarm}>
           <BsFillBellFill size={24} />
           <div>알람</div>
@@ -40,12 +40,12 @@ const NavWrapper = styled.nav`
   width: 500px;
   height: 60px;
   position: fixed;
-  bottom: -2px; 
+  bottom: -2px;
   @media (max-width: 500px) {
     width: 100%;
   }
-  @media (max-width:320px){
-    font-size:12px;
+  @media (max-width: 320px) {
+    font-size: 12px;
   }
 `;
 const MenuWrapper = styled.ul`

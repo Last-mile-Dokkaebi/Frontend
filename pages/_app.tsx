@@ -38,11 +38,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
         />
-        <Provider store={store}>
-          <PersistGate persistor={persistor}>
-            <FullPageLoading />
-          </PersistGate>
-        </Provider>
+        {/* <Provider store={store}> */}
+        <PersistGate persistor={persistor}>
+          <FullPageLoading />
+        </PersistGate>
+        {/* </Provider> */}
       </>
     );
   } else {
@@ -54,11 +54,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
         />
-        <Provider store={store}>
-          <PersistGate persistor={persistor}>
-            <Component {...pageProps} />
-          </PersistGate>
-        </Provider>
+        {/* <Provider store={store}> */}
+        <PersistGate persistor={persistor}>
+          <Component {...pageProps} />
+        </PersistGate>
+        {/* </Provider> */}
       </>
     );
   }
