@@ -8,7 +8,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from 'components/layout/Header';
-import NavBar from 'components/layout/NavBar';
+import AdminNavBar from 'components/layout/AdminNavBar';
 
 const AppLayout = (props: { children: React.ReactNode }) => {
   return (
@@ -18,7 +18,7 @@ const AppLayout = (props: { children: React.ReactNode }) => {
         <Body>
           {props.children} {/* 라우터 별 화면 표시 */}
         </Body>
-        <NavBar />
+        <AdminNavBar />
       </FixedWidth>
     </Centering>
   );
