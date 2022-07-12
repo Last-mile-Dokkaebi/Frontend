@@ -37,7 +37,6 @@ const userSlice = createSlice({
       state.auth = 'USER';
       state.bikeNumber = '';
       delete axios.defaults.headers.common["access_token"]; //로그아웃하면 accessToken삭제
-      console.log(axios.defaults.headers.common)
     },
   }
 })

@@ -8,8 +8,9 @@ import { Rental, BikeStateMap, BikeRidingMap, Rentaling } from 'components';
 import { DateToString, TimeToString } from 'utils/processing';
 import { useState } from 'react';
 import cookies from 'next-cookies';
-import { memberScooterStatusApi } from './api/scooter';
+import { memberScooterStatusApi, testApi } from './api/scooter';
 import { ACCESS_TOKEN } from 'utils/constant';
+import { Button } from 'components/common';
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
 
 interface HomeTypes {
@@ -27,6 +28,10 @@ const Home: NextPage<HomeTypes> = ({ isRentaled, riding, lat, lng, soc, startDat
   // const isRentaled = bikeNumber === '' ? false : true; //빌린 바이크가 있는지
 
   const endTime = DateToString(new Date());
+
+  const onClickTest = async () => {
+    await testApi();
+  };
 
   return (
     <div>
@@ -46,6 +51,7 @@ const Home: NextPage<HomeTypes> = ({ isRentaled, riding, lat, lng, soc, startDat
         )}{' '}
         {/* 빌린 상태이면서 주행중이면 */}
         {isRentaled && isRiding && <BikeRidingMap setIsRiding={setIsRiding} />}
+        <Button onClick={onClickTest}>테스트용</Button>
       </AppLayout>
     </div>
   );

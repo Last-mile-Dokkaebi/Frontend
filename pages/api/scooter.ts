@@ -83,6 +83,27 @@ const endRidingApi = async() => {
   return true;
 }
 
+/* TEST용 */
+const testApi = async() => {
+  // const res = await axios.get("http://lwc421.iptime.org:5000/")
+  // console.log(res)
+  const voltage = new Array(32).fill(0).map((value, index)=>index*0.01)
+  const current = new Array(32).fill(0).map((value, index)=>index)
+  const temperature = new Array(32).fill(0).map((value, index)=>index)
+  console.log(voltage)
 
+  const res = await axios.post("http://lwc421.iptime.org:5000/remainTime", {voltage, current, temperature})
+  console.log(res.data)
+  return res.data
+}
 
-export {memberScooterStatusApi,getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, startRidingApi, endRidingApi}
+export {
+  memberScooterStatusApi,
+  getScooterInfoApi, 
+  getScooterLocationApi, 
+  getRentalPriceApi, 
+  rentalScooterApi, 
+  startRidingApi, 
+  endRidingApi, 
+  testApi
+}
