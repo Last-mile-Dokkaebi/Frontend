@@ -10,17 +10,13 @@ interface ButtonTypes {
   bgcolor?: string;
 
   children?: React.ReactNode;
-  /**
-   * Button을 클릭하였을 때의 Event 함수
-   */
-  onClick?: () => void;
   [x: string]: any;
 }
 
 // rest로 해서 너무 기본적인 props들은 그냥 처리되도록 변경
-const Button = ({ bgcolor = '#eeeeee', children, onClick, ...rest }: ButtonTypes) => {
+const Button = ({ bgcolor = '#eeeeee', children, ...rest }: ButtonTypes) => {
   return (
-    <CustomButton bgcolor={bgcolor} onClick={onClick} {...rest}>
+    <CustomButton bgcolor={bgcolor} {...rest}>
       {children}
     </CustomButton>
   );

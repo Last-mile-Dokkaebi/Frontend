@@ -11,9 +11,6 @@ interface memberScooterStatusOutputTypes{
 const memberScooterStatusApi = async(): Promise<memberScooterStatusOutputTypes> => {
   const res = await axios.get("/scooter/state");
 
-
-  console.log(`${JSON.stringify(res.data)}`)
-
   return res.data;
 }
 
@@ -67,7 +64,7 @@ const rentalScooterApi = async({start, end}: getRentalPriceInput): Promise<numbe
   const startDate = DateToString(start);
   const endDate = DateToString(end);
 
-  const res = await axios.post('/rental/price', {startDate, endDate})
+  const res = await axios.post('/rental/new', {startDate, endDate, price:0})
 
   return res.data
 }
@@ -88,12 +85,13 @@ const testApi = async() => {
   // const res = await axios.get("http://lwc421.iptime.org:5000/")
   // console.log(res)
   const voltage = new Array(32).fill(0).map((value, index)=>index*0.01)
-  const current = new Array(32).fill(0).map((value, index)=>index)
-  const temperature = new Array(32).fill(0).map((value, index)=>index)
-  console.log(voltage)
+  const current = new Array(32).fill(0).map((value, index)=>index*0.01)
+  const temperature = new Array(32).fill(0).map((value, index)=>index*0.01)
 
-  const res = await axios.post("http://lwc421.iptime.org:5000/remainTime", {voltage, current, temperature})
-  console.log(res.data)
+  const res = await axios.post("http://202.31.200.185:9000/remainTime", {voltage, current, temperature})
+
+  console.log(res)
+
   return res.data
 }
 

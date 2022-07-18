@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import Header from 'components/layout/Header';
 import AdminNavBar from 'components/layout/AdminNavBar';
 
-const AppLayout = (props: { children: React.ReactNode }) => {
+const AppLayout = (props: { children?: React.ReactNode }) => {
   return (
     <Centering>
       <FixedWidth>

@@ -5,8 +5,9 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import wrapper, { store, persistor, RootState } from 'stores';
 import { PersistGate } from 'redux-persist/integration/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
+import { endLoadingAction, startLoadingAction } from 'stores/system';
 import { useRouter } from 'next/router';
 import { FullPageLoading } from 'components/layout';
 import cookies from 'next-cookies';
@@ -16,8 +17,9 @@ import { setToken } from 'utils/token';
 import axios from 'utils/customAxios';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { isLoggedin, auth } = useSelector((state: RootState) => state.user);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isLoggedin, auth, accessToken, refreshToken } = useSelector((state: RootState) => state.user);
+  const { isLoading } = useSelector((state: RootState) => state.system);
+  const dispatch = useDispatch();
   const router = useRouter();
 
   //접근권한 참고 페이지 : https://theodorusclarence.com/blog/nextjs-redirect-no-flashing
@@ -29,19 +31,22 @@ function MyApp({ Component, pageProps }: AppProps) {
   const isAdmin = auth === 'ADMIN';
 
   useEffect(() => {
+    dispatch(startLoadingAction());
     if (!isLoading && isAdminOnly && !isAdmin) router.push('/'); //관리자가 아닌 사람이 관리페이지에 접속할려는 경우
     if (!isLoading && !isAdminOnly && isAdmin) router.push('/admin'); //관리자가 일반페이지에 접속할려는 경우
     if (!isLoading && isPrivate && !isLoggedin) router.push('/member'); //로그인이 안된 상태로 private 페이지
     if (!isLoading && !isPrivate && isLoggedin) router.push('/'); //로그인이 된 상태로 public페이지
-    setIsLoading(false);
+    dispatch(endLoadingAction());
   }, [isLoading, isPrivate, isLoggedin, isAdminOnly, isAdmin]);
 
-  // useEffect(() => {
-  //   if (isAdminOnly && !isAdmin) router.replace('/');
-  //   if (!isLoading && isPrivate && !isLoggedin) router.push('/member'); //로그인이 안된 상태로 private 페이지
-  //   if (!isLoading && !isPrivate && isLoggedin) router.push('/'); //로그인이 된 상태로 public페이지
-  //   setIsLoading(false);
-  // }, []);
+  useEffect(() => {
+    if (isLoggedin) {
+      if (accessToken !== undefined && accessToken !== '') {
+        axios.defaults.headers.common.Authorization = `${accessToken}`;
+      }
+    }
+    console.log(axios.defaults.headers.common);
+  }, []);
 
   // 로그인 안된 상태로 private에 접근하면 로딩창부터 띄움
   const notLoginAndPrivate = (isLoading || !isLoggedin) && isPrivate;
@@ -97,10 +102,11 @@ MyApp.getInitialProps = async (context: NextPageContext) => {
 
   const allCookies = cookies(ctx);
   const accessToken = allCookies[ACCESS_TOKEN];
+
   if (accessToken !== undefined && accessToken !== '') {
     const refreshToken = allCookies[REFRESH_TOKEN] || '';
     setToken(accessToken, refreshToken);
-    axios.defaults.headers.common.access_token = `${accessToken}`;
+    axios.defaults.headers.common.Authorization = `${accessToken}`;
   }
 
   return { pageProps };

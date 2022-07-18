@@ -32,14 +32,14 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       try {
-        console.log(axios.defaults.headers.common);
         const res = await loginApi(identity, password);
         const { accessToken, refreshToken, auth } = res;
-        dispatch(loginAction({ identity, auth, bikeNumber: '' })); //일단 임시로 bikeNumber는 ''인걸로
-        setToken(accessToken, refreshToken);
+        dispatch(loginAction({ identity, auth, bikeNumber: '', accessToken, refreshToken })); //일단 임시로 bikeNumber는 ''인걸로
+        axios.defaults.headers.common.Authorization = `${accessToken}`;
+        // axios.defaults.headers.common.refresh_token = `${refreshToken}`;
         Router.push('/');
       } catch (error) {
-        alert(error);
+        alert('아이디 및 비밀번호를 확인해주세요');
       }
     }
   };

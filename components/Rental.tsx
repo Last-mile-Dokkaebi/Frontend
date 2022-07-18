@@ -2,11 +2,14 @@ import { getRentalPriceApi, rentalScooterApi } from 'pages/api/scooter';
 import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
-import { Button } from './common';
+import { Button, CustomInput } from './common';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // css import
 import { DateToString } from 'utils/processing';
+
+import axios from 'utils/customAxios';
+import { useInput } from 'hooks';
 
 const Rental = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -16,6 +19,8 @@ const Rental = () => {
   const [endDateString, setEndDateString] = useState<string>(DateToString(endDate));
 
   const [price, setPrice] = useState<number>(0);
+
+  const [address, onChangeAddress] = useInput<string>('');
 
   const onChangeStartDate = (e: Date) => {
     const target = new Date(e.getFullYear(), e.getMonth(), e.getDate());
@@ -46,15 +51,33 @@ const Rental = () => {
   };
 
   const onClickRental = async () => {
+    if (address == '') {
+      alert('주소를 입력해주세요');
+      return;
+    }
     if (startDate > endDate) {
       alert('종료날짜는 시작날짜 이전일 수 없습니다');
-    } else {
+      return;
+    }
+
+    let dialog = confirm(
+      `시작 : ${DateToString(startDate)}
+종료 : ${DateToString(endDate)}
+주소 : ${address}\n위 정보로 대여를 신청하시겠습니까?`,
+    );
+    if (dialog) {
       try {
         await rentalScooterApi({ start: startDate, end: endDate });
         alert('성공적으로 렌탈요청을 하였습니다');
-      } catch (err) {
-        JSON.stringify(err);
+      } catch (err: any) {
+        if (err.errorCode === 106) {
+          alert(err.description);
+        } else {
+          alert(JSON.stringify(err));
+        }
       }
+    } else {
+      return;
     }
   };
 
@@ -88,6 +111,7 @@ const Rental = () => {
           <Calendar onChange={onChangeEndDate} value={endDate} />
         </Centering>
       </details>
+      <CustomInput type="text" placeholder="킥보드를 수령 할 주소" value={address} onChange={onChangeAddress} />
       <div>
         <strong>{startDateString}</strong>에서 <strong>{endDateString}</strong>까지 대여 시
       </div>
