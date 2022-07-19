@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import axios from 'utils/customAxios'
 
 // user 스토어 타입 정의
 interface UserTypes{
@@ -6,6 +7,8 @@ interface UserTypes{
   identity: string;                 // user의 identity
   auth: string | 'USER' | 'ADMIN';  //로그인 사람의 접근권한
   bikeNumber: string;               //빌린 바이크 번호, 없으면 ""으로 초기화
+  accessToken: string;              //서버로부터 받은 access toekn
+  refreshToken: string;             //서버로부터 받은 refresh token
 }
 
 // user스토어의 초기값을 설정
@@ -14,6 +17,9 @@ const initialState:UserTypes = {
   identity: "",
   auth: 'USER',                     //일단 초기값은 USER인걸로
   bikeNumber: '',
+
+  accessToken: '',
+  refreshToken: '',
 }
 
 // user스토어 동작부 설계
@@ -23,18 +29,26 @@ const userSlice = createSlice({
   reducers:{
     loginAction: (state:UserTypes, action: PayloadAction<{identity: string, 
                                                           auth: string | 'USER'|'ADMIN', 
-                                                          bikeNumber: string}>) => {
-      const {identity, auth, bikeNumber} = action.payload;
+                                                          bikeNumber: string,
+                                                          accessToken: string,
+                                                      refreshToken: string,}>) => {
+      const {identity, auth, bikeNumber, accessToken, refreshToken} = action.payload;
       state.isLoggedin = true;
       state.identity = identity;
       state.auth = auth;
       state.bikeNumber = bikeNumber;
+
+      state.accessToken = accessToken
+      state.refreshToken = refreshToken
     },
     logoutAction: (state:UserTypes) => {
       state.isLoggedin = false;
       state.identity = "";
       state.auth = 'USER';
       state.bikeNumber = '';
+      state.accessToken = '';
+      state.refreshToken = ''
+      delete axios.defaults.headers.common["access_token"]; //로그아웃하면 accessToken삭제
     },
   }
 })

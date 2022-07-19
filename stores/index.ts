@@ -8,6 +8,7 @@ import logger from "redux-logger";
 
 import userReducer from "stores/user";
 import systemReducer from "stores/system";
+import bikeReducer from "stores/bike"
 
 //https://velog.io/@baemki/Next.js-redux-toolkit-redux-wrapper-redux-persist-%EC%84%B8%ED%8C%85
 
@@ -20,6 +21,7 @@ const persistConfig = {
 const rootReducer = combineReducers({ 
   user: userReducer, 
   system: systemReducer, 
+  bike: bikeReducer,
 });
 
 
@@ -32,7 +34,7 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
-        }).concat(logger),
+        }),
     devTools: process.env.NODE_ENV !== "production"
 });
 

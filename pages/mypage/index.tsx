@@ -5,34 +5,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction } from 'stores/user';
 import { RootState } from 'stores';
 import Button from 'components/common/Button';
-import { FaQuestionCircle, FaUserAlt,FaRegMap } from 'react-icons/fa';
-import { MdOutlineQuestionAnswer } from 'react-icons/md'
-import {BiSupport} from "react-icons/bi"
-import {BsCreditCard2Back} from "react-icons/bs"
+import { FaQuestionCircle, FaUserAlt, FaRegMap } from 'react-icons/fa';
+import { MdOutlineQuestionAnswer } from 'react-icons/md';
+import { BiSupport } from 'react-icons/bi';
+import { BsCreditCard2Back } from 'react-icons/bs';
 import Router from 'next/router';
 import { deleteToken } from 'utils/token';
+import axios from 'utils/customAxios';
 
 const mypage: NextPage = () => {
   const dispatch = useDispatch();
-  const { isLoggedin, nickname } = useSelector((state: RootState) => state.user);
+  const { identity } = useSelector((state: RootState) => state.user);
   const onClickLogout = () => {
     dispatch(logoutAction());
     deleteToken();
+    delete axios.defaults.headers.common.Authorization;
+    // delete axios.defaults.headers.common.refresh_token;
   };
   const onClickRentalHistory = () => {
     Router.push('/mypage/rental');
   };
-  const onClickFAQ = () =>{
+  const onClickFAQ = () => {
     Router.push('/support/faq');
-  }
-  const onClickQNA = () =>{
+  };
+  const onClickQNA = () => {
     Router.push('/support/qna/send');
-  }
+  };
   return (
     <>
       <AppLayout>
         <ContentBox>
-          <strong>{nickname}</strong>님, 안녕하세요 😄
+          <strong>{identity}</strong>님, 안녕하세요 😄
         </ContentBox>
         <ContentBox>
           <div className="menu-title">관리</div>
@@ -41,7 +44,7 @@ const mypage: NextPage = () => {
               <FaUserAlt />
               사용자 정보 수정
             </li>
-            <li >
+            <li>
               <BsCreditCard2Back />
               결제 관리
             </li>
@@ -63,7 +66,7 @@ const mypage: NextPage = () => {
               서비스 이용 안내
             </li>
             <li onClick={onClickQNA}>
-              <BiSupport/>
+              <BiSupport />
               고객 문의 게시판
             </li>
           </ul>
@@ -74,7 +77,7 @@ const mypage: NextPage = () => {
   );
 };
 const ContentBox = styled.div`
-  border-radius:4px;
+  border-radius: 4px;
   background-color: white;
   padding: 1rem;
   margin-bottom: 0.5rem;
@@ -93,12 +96,12 @@ const ContentBox = styled.div`
       & * {
         margin-right: 0.5rem;
       }
-      &:hover, &:active{
-          cursor:pointer;
-          background-color:#eee;
-          padding:0.5rem;
-          border-radius:4px;
-          
+      &:hover,
+      &:active {
+        cursor: pointer;
+        background-color: #eee;
+        padding: 0.5rem;
+        border-radius: 4px;
       }
     }
     &:hover {

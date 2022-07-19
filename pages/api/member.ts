@@ -10,6 +10,8 @@ interface loginReturnTypes{
 /* 로그인을 위한 함수*/
 const loginApi = async (identity: string, password: string): Promise<loginReturnTypes> => {
   const body = { identity, password };
+
+  delete axios.defaults.headers.common["access_token"]; //일단 accessToken삭제
   const res = await axios.post("/member/login", body)
   return res.data
 };

@@ -1,13 +1,18 @@
 import styled from 'styled-components';
-import { BsClockHistory, BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
+import { BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
 import Router from 'next/router';
-import { GiKickScooter } from 'react-icons/gi';
-const NavBar = () => {
+import { useDispatch } from 'react-redux';
+import { logoutAction } from 'stores/user';
+
+const AdminNavBar = () => {
+  const dispatch = useDispatch();
+
   const onClickAlarm = () => {
     Router.push('/alarm');
   };
   const onClickMypage = () => {
-    Router.push('/mypage');
+    dispatch(logoutAction()); //그냥 임시로 로그아웃으로 해둠
+    // Router.push('/mypage');
   };
   const onClickScooter = () => {
     Router.push('/scooter');
@@ -29,7 +34,7 @@ const NavBar = () => {
         </MenuButtonWrapper>
         <MenuButtonWrapper onClick={onClickMypage}>
           <BsFillPersonFill size={24} />
-          <div>마이페이지</div>
+          <div>로그아웃</div>
         </MenuButtonWrapper>
       </MenuWrapper>
     </NavWrapper>
@@ -75,4 +80,4 @@ const MenuButtonWrapper = styled.li`
     cursor: pointer;
   }
 `;
-export default NavBar;
+export default AdminNavBar;

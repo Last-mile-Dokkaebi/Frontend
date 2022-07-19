@@ -14,6 +14,8 @@ import { loginAction } from 'stores/user';
 import { loginApi } from 'pages/api/member'; // 로그인 api
 import { setToken } from 'utils/token';
 
+import axios from 'utils/customAxios';
+
 const login: NextPage = () => {
   const dispatch = useDispatch();
 
@@ -32,11 +34,12 @@ const login: NextPage = () => {
       try {
         const res = await loginApi(identity, password);
         const { accessToken, refreshToken, auth } = res;
-        dispatch(loginAction({ identity, auth, bikeNumber: '' })); //일단 임시로 bikeNumber는 ''인걸로
-        setToken(accessToken, refreshToken);
+        dispatch(loginAction({ identity, auth, bikeNumber: '', accessToken, refreshToken })); //일단 임시로 bikeNumber는 ''인걸로
+        axios.defaults.headers.common.Authorization = `${accessToken}`;
+        // axios.defaults.headers.common.refresh_token = `${refreshToken}`;
         Router.push('/');
       } catch (error) {
-        alert(error);
+        alert('아이디 및 비밀번호를 확인해주세요');
       }
     }
   };

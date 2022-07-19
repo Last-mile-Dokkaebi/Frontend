@@ -3,22 +3,22 @@ import styled from 'styled-components';
 import { Button } from 'components/common';
 import React from 'react';
 import { startRidingApi } from 'pages/api/scooter';
+import { setRidingAction } from 'stores/bike';
+import { useDispatch } from 'react-redux';
 
-interface BikeStateMapTypes {
-  lat: number;
-  lng: number;
-  soc: number;
-  endDate: string;
-  endTime: string;
-  setIsRiding: (state: boolean) => void;
-}
+const BikeStateMap = () => {
+  const dispatch = useDispatch();
+  const lat = 36.14514;
+  const lng = 128.14521;
+  const soc = 30;
+  const endDate = '2022-20-20';
+  const endTime = '22:22';
 
-const BikeStateMap = ({ lat, lng, soc, endDate, endTime, setIsRiding }: BikeStateMapTypes) => {
   const onClickStartRiding = () => {
     try {
       //API호출 부 필요
       // async startRidingApi()
-      setIsRiding(true); //주행중이라고 바꿈
+      dispatch(setRidingAction({ isRiding: true }));
       alert('주행을 시작합니다');
     } catch (err) {
       alert(err);
