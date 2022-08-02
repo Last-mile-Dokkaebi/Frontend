@@ -2,9 +2,13 @@
 import styled from 'styled-components';
 import Router from 'next/router';
 
-const Header = () => {
+interface HeaderTypes {
+  route?: string;
+}
+
+const Header = ({ route = '/' }: HeaderTypes) => {
   const onClickLogo = () => {
-    Router.push('/');
+    Router.push(route);
   };
   return (
     <HeaderWrapper>

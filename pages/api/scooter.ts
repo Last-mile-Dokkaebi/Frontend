@@ -2,6 +2,18 @@
 import axios from 'utils/customAxios';
 import {DateToString} from 'utils/processing'
 
+/* 멤버의 상태를 확인하기 위한 함수 */
+interface memberScooterStatusOutputTypes{
+  status: 'NONE' | 'RENTAL' | 'DRIVE' | 'notRiding',
+  startDate: string;
+  endDate: string;
+}
+const memberScooterStatusApi = async(): Promise<memberScooterStatusOutputTypes> => {
+  const res = await axios.get("/scooter/state");
+
+  return res.data;
+}
+
 interface getScooterInfoReturnTypes{
   driveDist: number;
   route: Array<{lat:number, lng: number}>;
@@ -52,7 +64,7 @@ const rentalScooterApi = async({start, end}: getRentalPriceInput): Promise<numbe
   const startDate = DateToString(start);
   const endDate = DateToString(end);
 
-  const res = await axios.post('/rental/price', {startDate, endDate})
+  const res = await axios.post('/rental/new', {startDate, endDate, price:0})
 
   return res.data
 }
@@ -68,4 +80,28 @@ const endRidingApi = async() => {
   return true;
 }
 
-export {getScooterInfoApi, getScooterLocationApi, getRentalPriceApi, rentalScooterApi, startRidingApi, endRidingApi}
+/* TEST용 */
+const testApi = async() => {
+  // const res = await axios.get("http://lwc421.iptime.org:5000/")
+  // console.log(res)
+  const voltage = new Array(32).fill(0).map((value, index)=>index*0.01)
+  const current = new Array(32).fill(0).map((value, index)=>index*0.01)
+  const temperature = new Array(32).fill(0).map((value, index)=>index*0.01)
+
+  const res = await axios.post("http://202.31.200.185:9000/remainTime", {voltage, current, temperature})
+
+  console.log(res)
+
+  return res.data
+}
+
+export {
+  memberScooterStatusApi,
+  getScooterInfoApi, 
+  getScooterLocationApi, 
+  getRentalPriceApi, 
+  rentalScooterApi, 
+  startRidingApi, 
+  endRidingApi, 
+  testApi
+}

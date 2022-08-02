@@ -14,7 +14,7 @@ const HTTP_ONLY = process.env.NODE_ENV === "development"
 
 // accessToken, refreshToken을 받아 cookie에 저장
 const setToken = (accessToken: string, refreshToken: string) => {
-  axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken
+  axios.defaults.headers.common["Authorization"] = accessToken
 
   const expires = new Date()
   expires.setDate(Date.now() + 1000 * 60 * 60 *24 )
