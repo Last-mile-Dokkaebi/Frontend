@@ -13,6 +13,7 @@ const ride: NextPage = ({ data }: any) => {
   const [soc, setSoc] = useState<number>(0);
   const [driveDist, setDriveDist] = useState<number>(0);
   let count = 0;
+
   useEffect(() => {
     // api통신해서 불러오는 부분 작성 필요
     const rounded = Math.round((data.driveDist + Number.EPSILON) * 100) / 100;

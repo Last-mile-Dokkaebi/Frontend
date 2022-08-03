@@ -28,12 +28,6 @@ const Home: NextPage<HomeTypes> = () => {
     (state: RootState) => state.bike,
   );
 
-  useEffect(() => {
-    if (scooterStateError) {
-      alert(scooterStateError);
-    }
-  }, [scooterStateError]);
-
   return (
     <div>
       <Head>

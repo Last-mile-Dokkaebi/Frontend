@@ -13,7 +13,7 @@ const send: NextPage = () => {
 
   const onClickSubmit = (e: any) => {
     e.preventDefault();
-    dispatch();
+    // dispatch();
   };
 
   return (

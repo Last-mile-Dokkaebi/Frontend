@@ -28,11 +28,6 @@ const login: NextPage = () => {
       Router.push('/');
     }
   }, [loginDone]);
-  useEffect(() => {
-    if (loginError) {
-      alert(loginError);
-    }
-  }, [loginError]);
 
   const onClickJoin = () => {
     Router.push('/member/join');
@@ -43,17 +38,6 @@ const login: NextPage = () => {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
       dispatch(loginRequest({ identity, password }));
-      // try {
-      //   dispatch(loginRequest({ identity, password }));
-      // const res = await loginApi(identity, password);
-      // const { accessToken, refreshToken, auth } = res;
-      // dispatch(loginRequest({ identity, auth, bikeNumber: '', accessToken, refreshToken })); //일단 임시로 bikeNumber는 ''인걸로
-      // axios.defaults.headers.common.Authorization = `${accessToken}`;
-      // axios.defaults.headers.common.refresh_token = `${refreshToken}`;
-      //   Router.push('/');
-      // } catch (error) {
-      //   alert('아이디 및 비밀번호를 확인해주세요');
-      // }
     }
   };
   return (

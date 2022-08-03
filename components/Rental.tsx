@@ -42,12 +42,6 @@ const Rental = () => {
     }
   }, [scooterRentalDone]);
 
-  useEffect(() => {
-    if (scooterRentalError) {
-      alert(scooterRentalError);
-    }
-  }, [scooterRentalError]);
-
   const onChangeStartDate = (e: Date) => {
     const target = new Date(e.getFullYear(), e.getMonth(), e.getDate());
     const current = new Date();
