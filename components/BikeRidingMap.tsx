@@ -6,11 +6,7 @@ import { endRidingApi } from 'pages/api/scooter';
 import { DateToString, TimeToString } from 'utils/processing';
 import { useRouter } from 'next/router';
 
-interface BikeStateMapTypes {
-  setIsRiding: (state: boolean) => void;
-}
-
-const BikeRidingMap = ({ setIsRiding }: BikeStateMapTypes) => {
+const BikeRidingMap = () => {
   const router = useRouter();
   /* 테스트용 더미 데이터*/
   const lat = 36.144765;
@@ -24,7 +20,7 @@ const BikeRidingMap = ({ setIsRiding }: BikeStateMapTypes) => {
     try {
       //API호출 부 필요
       // async endRidingApi()
-      setIsRiding(false); //주행중이 아니라고 바꿈
+      // setIsRiding(false); //주행중이 아니라고 바꿈
       alert('주행을 종료합니다');
       router.push('/'); //새로고침
     } catch (err) {

@@ -1,20 +1,25 @@
 /* 일반회원 회원가입 */
 import { NextPage } from 'next';
-import { useState } from 'react';
-import MemberLayout from 'components/layout/MemberLayout';
+import { useEffect, useState } from 'react';
+import { MemberLayout } from 'components/layout';
 import styled from 'styled-components';
-import {Button,CustomInput} from 'components/common';
+import { Button, CustomInput } from 'components/common';
 import { useInput } from 'hooks';
-import { joinApi } from 'pages/api/member'; // 로그인 api
 import Router from 'next/router';
+import { useAppDispatch, RootState } from 'store/configureStore';
+import { signupRequest } from 'actions/user';
+import { useSelector } from 'react-redux';
 
 const join: NextPage = () => {
+  const dispatch = useAppDispatch();
+
   const [name, nameHandler] = useInput<string>('');
   const [identity, identityHandler] = useInput<string>('');
   const [password, passwordHandler] = useInput<string>('');
   const [passwordConfirm, passwordConfirmHandler] = useInput<string>('');
   const [phoneNumber, phoneNumberHandler] = useInput<string>('');
   const [errorMessage, setErrorMessage] = useState<string[]>([]); // 0: 이름에러, 1: 아이디 에러 2: 비밀번호에러 3: 전화번호 에러
+  const { signupLoading, signupDone, signupError } = useSelector((state: RootState) => state.user);
 
   const onClickJoin = async () => {
     if (joinCheck()) {
@@ -22,15 +27,22 @@ const join: NextPage = () => {
       phoneNumberArray[0] = phoneNumber.slice(0, 3);
       phoneNumberArray[1] = phoneNumber.slice(3, 7);
       phoneNumberArray[2] = phoneNumber.slice(7, 11);
-      try {
-        await joinApi({ name, identity, password, phoneNumberArray });
-        alert('회원가입을 환영합니다! 🤗');
-        Router.push('/member/login');
-      } catch (err) {
-        alert(err);
-      }
+
+      dispatch(signupRequest({ name, identity, password, phoneNumberArray }));
     }
   };
+
+  useEffect(() => {
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError]);
+  useEffect(() => {
+    if (signupDone) {
+      alert('회원가입을 환영합니다! 🤗');
+      Router.push('/member/login');
+    }
+  }, [signupDone]);
 
   const joinCheck = () => {
     let err: string[] = ['', '', '', ''];
@@ -96,7 +108,14 @@ const join: NextPage = () => {
         <TOSWrapper>뭐시기뭐시기 약관~ 나중에 체크형식으로 변경. 당장 중요한건 아닌데 구현리스트에 있길래..</TOSWrapper>
       </FormWrapper>
       <FormWrapper>
-        <Button onClick={onClickJoin} width={'100%'} height={'3rem'} bgcolor={'#77b8c0'} color={'white '}>
+        <Button
+          onClick={onClickJoin}
+          width={'100%'}
+          height={'3rem'}
+          bgcolor={'#77b8c0'}
+          color={'white '}
+          loading={signupLoading}
+        >
           회원가입
         </Button>
       </FormWrapper>

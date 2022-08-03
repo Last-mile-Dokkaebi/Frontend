@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { FaSpinner } from 'react-icons/fa';
 
 //Button에 사용될 타입 지정
 interface ButtonTypes {
@@ -10,17 +11,43 @@ interface ButtonTypes {
   bgcolor?: string;
 
   children?: React.ReactNode;
+  loading?: boolean;
   [x: string]: any;
 }
 
 // rest로 해서 너무 기본적인 props들은 그냥 처리되도록 변경
-const Button = ({ bgcolor = '#eeeeee', children, ...rest }: ButtonTypes) => {
+const Button = ({ bgcolor = '#eeeeee', children, loading, ...rest }: ButtonTypes) => {
   return (
-    <CustomButton bgcolor={bgcolor} {...rest}>
+    <CustomButton bgcolor={bgcolor} disabled={loading} {...rest}>
+      {loading && (
+        <Spinner animation={spin}>
+          <FaSpinner fontSize="1rem" />
+        </Spinner>
+      )}
       {children}
     </CustomButton>
   );
 };
+
+interface SpinnerTypes {
+  animation: ReturnType<typeof keyframes>;
+}
+const Spinner = styled.div<SpinnerTypes>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+  animation: ${(props) => props.animation} 1s cubic-bezier(0.2, 0.6, 0.5, 0.1) infinite;
+`;
+
+const spin = keyframes`
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+`;
 
 // GlobalStyle에서 사용할 변수 타입 지정
 interface ColorProps {
