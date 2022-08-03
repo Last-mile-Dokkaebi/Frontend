@@ -1,10 +1,11 @@
 import { GoCheck } from 'react-icons/go';
 import styled from 'styled-components';
 import { DateToString } from 'utils/processing';
+import { RootState } from 'store/configureStore';
+import { useSelector } from 'react-redux';
 
 const Rentaling = () => {
-  const startDate = DateToString(new Date());
-  const endDate = DateToString(new Date());
+  const { startDate, endDate } = useSelector((state: RootState) => state.bike);
 
   return (
     <Wrapper>

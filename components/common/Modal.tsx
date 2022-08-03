@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setModal } from 'stores/system';
-import { RootState } from 'stores';
 import styled, { keyframes } from 'styled-components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MdClose } from 'react-icons/md';
+import { RootState } from 'store/configureStore';
 interface ModalTypes {
   /**
    * 열고 닫는 delay를 s단위로 입력
@@ -30,9 +29,9 @@ const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes)
   }, [modalIsOpen]);
   const closeModal = useCallback(() => {
     //Delay를 주고 닫는다
-    setTimeout(() => {
-      dispatch(setModal(false));
-    }, delay * 100);
+    // setTimeout(() => {
+    //   dispatch(setModal(false));
+    // }, delay * 100);
     //닫는 Animation으로 변경
     setAnimation(PopDown);
   }, []);
@@ -45,7 +44,7 @@ const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes)
             {/* Modal component클릭시 background 컴포넌트 클릭 방지 */}
             <ModalWrapper animation={animation} delay={delay} onClick={(e) => e.stopPropagation()}>
               <div className="close-button-wrapper" onClick={closeModal}>
-                <MdClose size={30}/>
+                <MdClose size={30} />
               </div>
               {iconUrl && (
                 <div className="icon-wrapper">
@@ -129,23 +128,22 @@ const ModalWrapper = styled.div<ModalWrapperTypes>`
     }
   }
   .modal-body-wrapper {
-    padding:1rem;
+    padding: 1rem;
   }
   .modal-action-wrapper {
-    display:flex;
-    justify-content:center;
-    padding:1rem;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
     .modal-action-btn {
-      border-radius:4px;
-      background-color:#77b8c0;
-      color:white;
-      font-weight:bold;
-      border:none;
-      width:100%;
-      height:2rem;
+      border-radius: 4px;
+      background-color: #77b8c0;
+      color: white;
+      font-weight: bold;
+      border: none;
+      width: 100%;
+      height: 2rem;
+    }
   }
-  }
-  
 `;
 
 //Modal이 켜질때 Animation

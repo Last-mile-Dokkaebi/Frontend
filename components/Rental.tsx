@@ -1,26 +1,52 @@
-import { getRentalPriceApi, rentalScooterApi } from 'pages/api/scooter';
 import { useEffect, useState } from 'react';
-
 import styled from 'styled-components';
 import { Button, CustomInput } from './common';
-
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // css import
 import { DateToString } from 'utils/processing';
-
-import axios from 'utils/customAxios';
 import { useInput } from 'hooks';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from 'store/configureStore';
+import { rentalPriceRequest, scooterRentalRequest } from 'actions/bike';
 
 const Rental = () => {
+  const dispatch = useAppDispatch();
+
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const [startDateString, setStartDateString] = useState<string>(DateToString(startDate));
   const [endDateString, setEndDateString] = useState<string>(DateToString(endDate));
 
-  const [price, setPrice] = useState<number>(0);
+  const { rentalPrice, rentalPriceError, scooterRentalLoading, scooterRentalDone, scooterRentalError } = useSelector(
+    (state: RootState) => state.bike,
+  );
 
   const [address, onChangeAddress] = useInput<string>('');
+
+  useEffect(() => {
+    if (startDate <= endDate) {
+      dispatch(rentalPriceRequest({ startDate, endDate }));
+    }
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    if (rentalPriceError) {
+      alert(rentalPriceError);
+    }
+  }, [rentalPriceError]);
+
+  useEffect(() => {
+    if (scooterRentalDone) {
+      alert('스쿠터 대여신청을 성공하였습니다');
+    }
+  }, [scooterRentalDone]);
+
+  useEffect(() => {
+    if (scooterRentalError) {
+      alert(scooterRentalError);
+    }
+  }, [scooterRentalError]);
 
   const onChangeStartDate = (e: Date) => {
     const target = new Date(e.getFullYear(), e.getMonth(), e.getDate());
@@ -66,34 +92,11 @@ const Rental = () => {
 주소 : ${address}\n위 정보로 대여를 신청하시겠습니까?`,
     );
     if (dialog) {
-      try {
-        await rentalScooterApi({ start: startDate, end: endDate });
-        alert('성공적으로 렌탈요청을 하였습니다');
-      } catch (err: any) {
-        if (err.errorCode === 106) {
-          alert(err.description);
-        } else {
-          alert(JSON.stringify(err));
-        }
-      }
+      dispatch(scooterRentalRequest({ price: rentalPrice, startDate, endDate }));
     } else {
       return;
     }
   };
-
-  const getPrice = async () => {
-    try {
-      let res = await getRentalPriceApi({ start: startDate, end: endDate });
-      res = res <= 0 ? 0 : res;
-      setPrice(res);
-    } catch (err) {
-      alert(JSON.stringify(err));
-    }
-  };
-
-  useEffect(() => {
-    getPrice();
-  }, [startDate, endDate]);
 
   return (
     <Wrapper>
@@ -116,9 +119,11 @@ const Rental = () => {
         <strong>{startDateString}</strong>에서 <strong>{endDateString}</strong>까지 대여 시
       </div>
       <div>
-        비용은 <strong>{price}</strong>원입니다
+        비용은 <strong>{rentalPrice}</strong>원입니다
       </div>
-      <Button onClick={onClickRental}>대여신청</Button>
+      <Button onClick={onClickRental} loading={scooterRentalLoading}>
+        대여신청
+      </Button>
     </Wrapper>
   );
 };

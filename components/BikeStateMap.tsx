@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Button } from 'components/common';
 import React from 'react';
 import { startRidingApi } from 'pages/api/scooter';
-import { setRidingAction } from 'stores/bike';
 import { useDispatch } from 'react-redux';
 
 const BikeStateMap = () => {
@@ -18,7 +17,7 @@ const BikeStateMap = () => {
     try {
       //API호출 부 필요
       // async startRidingApi()
-      dispatch(setRidingAction({ isRiding: true }));
+      // dispatch(setRidingAction({ isRiding: true }));
       alert('주행을 시작합니다');
     } catch (err) {
       alert(err);

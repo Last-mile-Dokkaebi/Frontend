@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
-import { logoutAction } from 'stores/user';
+import { logoutAction } from 'actions/user';
 
 const AdminNavBar = () => {
   const dispatch = useDispatch();
