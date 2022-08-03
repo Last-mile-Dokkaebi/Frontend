@@ -1,6 +1,6 @@
 /* 일반회원 회원가입 */
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 import MemberLayout from 'components/layout/MemberLayout';
@@ -9,38 +9,51 @@ import Button from 'components/common/Button';
 import { useInput } from 'hooks';
 
 /* redux */
-import { useDispatch } from 'react-redux';
-import { loginAction } from 'stores/user';
-import { loginApi } from 'pages/api/member'; // 로그인 api
-import { setToken } from 'utils/token';
-
-import axios from 'utils/customAxios';
+import { useSelector } from 'react-redux';
+import { loginRequest } from 'actions/user';
+import { RootState, useAppDispatch } from 'store/configureStore';
 
 const login: NextPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  const { loginLoading, loginDone, loginError } = useSelector((state: RootState) => state.user);
 
   const [identity, identityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
   const [password, passwordHandler] = useInput<string>('');
 
   const [errorMessage, setErrorMessage] = useState<string>('');
 
+  useEffect(() => {
+    if (loginDone) {
+      Router.push('/');
+    }
+  }, [loginDone]);
+  useEffect(() => {
+    if (loginError) {
+      alert(loginError);
+    }
+  }, [loginError]);
+
   const onClickJoin = () => {
     Router.push('/member/join');
   };
+
   const onClickLogin = async () => {
     if (identity === '' || password === '') {
       setErrorMessage('아이디 또는 비밀번호를 입력해주세요');
     } else {
-      try {
-        const res = await loginApi(identity, password);
-        const { accessToken, refreshToken, auth } = res;
-        dispatch(loginAction({ identity, auth, bikeNumber: '', accessToken, refreshToken })); //일단 임시로 bikeNumber는 ''인걸로
-        axios.defaults.headers.common.Authorization = `${accessToken}`;
-        // axios.defaults.headers.common.refresh_token = `${refreshToken}`;
-        Router.push('/');
-      } catch (error) {
-        alert('아이디 및 비밀번호를 확인해주세요');
-      }
+      dispatch(loginRequest({ identity, password }));
+      // try {
+      //   dispatch(loginRequest({ identity, password }));
+      // const res = await loginApi(identity, password);
+      // const { accessToken, refreshToken, auth } = res;
+      // dispatch(loginRequest({ identity, auth, bikeNumber: '', accessToken, refreshToken })); //일단 임시로 bikeNumber는 ''인걸로
+      // axios.defaults.headers.common.Authorization = `${accessToken}`;
+      // axios.defaults.headers.common.refresh_token = `${refreshToken}`;
+      //   Router.push('/');
+      // } catch (error) {
+      //   alert('아이디 및 비밀번호를 확인해주세요');
+      // }
     }
   };
   return (
@@ -52,7 +65,14 @@ const login: NextPage = () => {
         <CustomInput type="text" placeholder="아이디" onChange={identityHandler} />
         <CustomInput type="password" placeholder="비밀번호" onChange={passwordHandler} />
         <ErrorMessage>{errorMessage}</ErrorMessage>
-        <Button onClick={onClickLogin} width={'100%'} height={'3rem'} bgcolor={'#77b8c0'} color={'white'}>
+        <Button
+          onClick={onClickLogin}
+          width={'100%'}
+          height={'3rem'}
+          bgcolor={'#77b8c0'}
+          color={'white'}
+          loading={loginLoading}
+        >
           로그인
         </Button>
         <Button onClick={onClickJoin} width={'100%'} height={'3rem'} bgcolor={'#eeeeee'} color={'black'}>
