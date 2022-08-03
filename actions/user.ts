@@ -18,6 +18,8 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue:
     const response = await axiosInstance.get("/member");
     return response.data;
   } catch(error: any){
+    console.log("내정보 불러오기 에러")
+    console.log(error.response.data)
     if(error.response.status === 401){  //Access Token만료로 인한 재발급 필요
       // 코드 수정 필요
       try{

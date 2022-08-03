@@ -15,6 +15,8 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
     return response.data;
   }
   catch(error: any){
+    console.log("Bike Error")
+    console.log(error.response.data)
     return rejectWithValue(error.response.data ?? "서버로부터 데이터를 읽어오는 데 실패하였습니다")
   }
 })
@@ -63,6 +65,8 @@ export const scooterRentalRequest = createAsyncThunk<ScooterRentalSuccess, Scoot
     return {startDate, endDate}
   }
   catch(error: any){
+    console.log("스쿠터 대여 오류")
+    console.log(error.repsonse.data)
     return rejectWithValue(error.response.data.description ?? "대여 요청을 실패하였습니다")
   }
 })

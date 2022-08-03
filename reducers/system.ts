@@ -1,4 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit'
+import { openModalAction, closeModalAction, startLoadingAction, endLoadingAction } from 'actions/system';
 
 interface SystemState{
   modalIsOpen: boolean;
@@ -13,20 +14,24 @@ const initialState:SystemState = {
 const systemSlice = createSlice({
   name: "system",
   initialState,
-  reducers:{
-    openModalAction:(state: SystemState) => {
+  reducers:{  },
+  extraReducers: (builder: ActionReducerMapBuilder<SystemState>) => builder
+    //모달 열기
+    .addCase(openModalAction, (state) =>{
       state.modalIsOpen = true;
-    },
-    closeModalAction:(state: SystemState) => {
+    })
+    //모달 닫기
+    .addCase(closeModalAction, (state) =>{
       state.modalIsOpen = false;
-    },
-    startLoadingAction: (state: SystemState) => {
+    })
+    //로딩 시작
+    .addCase(startLoadingAction, (state) =>{
       state.isLoading = true;
-    },
-    endLoadingAction: (state: SystemState) => {
+    })
+    //로딩 종료
+    .addCase(endLoadingAction, (state) =>{
       state.isLoading = false;
-    }
-  }
+    })
 })
 
 export default systemSlice.reducer
