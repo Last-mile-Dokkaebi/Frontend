@@ -9,7 +9,6 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import axiosInstance from 'utils/customAxios';
 import { myInfoRequest } from 'actions/user';
 import { scooterStateRequest } from 'actions/bike';
-import { useEffect } from 'react';
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
 
