@@ -98,14 +98,14 @@ interface MyContext extends NextPageContext {
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
-  console.log('--------------------');
-  console.log(context.ctx.req.header);
-  console.log(context.ctx.req.headers);
-  console.log('--------------------');
-
-  const allCookies = cookies(context);
+  const allCookies = cookies(context.ctx);
   const accessToken = allCookies[ACCESS_TOKEN];
   const refreshToken = allCookies[REFRESH_TOKEN];
+
+  console.log('--------------------');
+  console.log(context.ctx.req.headers.cookie);
+  console.log(allCookies);
+  console.log('--------------------');
 
   const path = context.router.pathname;
 
