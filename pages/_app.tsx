@@ -99,7 +99,8 @@ interface MyContext extends NextPageContext {
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
   console.log('--------------------');
-  console.log(context.ctx.req.headers.cookies);
+  console.log(context.ctx.req.header);
+  console.log(context.ctx.req.headers);
   console.log('--------------------');
 
   const allCookies = cookies(context);
@@ -115,8 +116,6 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
     //private 페이지 이면 내 정보를 요청
     axiosInstance.defaults.headers.common.Authorization = '';
     axiosInstance.defaults.headers.common.refresh_token = '';
-
-    console.log('access token : ', accessToken);
 
     if (accessToken && refreshToken) {
       axiosInstance.defaults.headers.common.Authorization = accessToken;
