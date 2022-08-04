@@ -94,11 +94,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 interface MyContext extends NextPageContext {
   router: any;
-  req: any;
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
-  console.log(context.req.headers);
+  console.log(context.req?.headers);
 
   const allCookies = cookies(context);
   const accessToken = allCookies[ACCESS_TOKEN];
