@@ -23,14 +23,15 @@ const store = configureStore({
 })
 
 const createStore = () => {
-  if(isDev){
-    middleware.push(logger)
-  }
+  // if(isDev){
+  //   middleware.push(logger)
+  // }
   return store;
 }
 
 const wrapper = createWrapper(createStore, {
-  debug: isDev,
+  // debug: isDev,
+  debug: false
 })
 
 export type RootState = ReturnType<typeof store.getState>;

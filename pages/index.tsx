@@ -68,6 +68,12 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   await store.dispatch(myInfoRequest());
   await store.dispatch(scooterStateRequest());
 
+  // return {
+  //   redirect: {
+  //     destination: '/scooter',
+  //     permanent: false,
+  //   },
+  // };
   return {
     props: {},
   };

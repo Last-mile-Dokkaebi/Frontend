@@ -10,6 +10,7 @@ import axiosInstance from 'utils/customAxios';
 import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { setErrorAction } from 'actions/system';
+import { NextPageContext } from 'next';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isLoggedin, auth, accessToken, refreshToken } = useSelector((state: RootState) => state.user);
@@ -87,5 +88,14 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
   }
 }
+
+interface MyContext extends NextPageContext {
+  router: any;
+}
+
+MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
+  const path = context.router.pathname;
+  const isPrivate = !path.startsWith('/member');
+});
 
 export default wrapper.withRedux(MyApp);
