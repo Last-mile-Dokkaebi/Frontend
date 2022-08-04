@@ -98,7 +98,9 @@ interface MyContext extends NextPageContext {
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
-  console.log(context.ctx.req);
+  console.log('--------------------');
+  console.log(context.ctx.req.headers.cookies);
+  console.log('--------------------');
 
   const allCookies = cookies(context);
   const accessToken = allCookies[ACCESS_TOKEN];
