@@ -59,6 +59,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   axiosInstance.defaults.headers.common.refresh_token = '';
 
   if (accessToken) {
+    console.log('ACCESS TOKEN 있음');
     axiosInstance.defaults.headers.common.Authorization = accessToken;
   }
   if (refreshToken) {

@@ -1,6 +1,5 @@
 import {configureStore, getDefaultMiddleware, isRejectedWithValue, Middleware, MiddlewareAPI} from '@reduxjs/toolkit'
 import {createWrapper} from 'next-redux-wrapper'
-import logger from 'redux-logger'
 import rootReducer from 'reducers'
 import { useDispatch } from 'react-redux';
 import { setErrorAction } from 'actions/system';

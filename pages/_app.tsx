@@ -11,6 +11,9 @@ import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
+import { myInfoRequest } from 'actions/user';
+import cookies from 'next-cookies';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isLoggedin, auth, accessToken, refreshToken } = useSelector((state: RootState) => state.user);
@@ -94,8 +97,29 @@ interface MyContext extends NextPageContext {
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
+  const allCookies = cookies(context);
+  const accessToken = allCookies[ACCESS_TOKEN];
+  const refreshToken = allCookies[REFRESH_TOKEN];
+
   const path = context.router.pathname;
+
   const isPrivate = !path.startsWith('/member');
+  const isAdminOnly = path.startsWith('/admin');
+
+  if (isPrivate) {
+    //private 페이지 이면 내 정보를 요청
+    axiosInstance.defaults.headers.common.Authorization = '';
+    axiosInstance.defaults.headers.common.refresh_token = '';
+
+    if (accessToken && refreshToken) {
+      axiosInstance.defaults.headers.common.Authorization = accessToken;
+      axiosInstance.defaults.headers.common.refresh_token = refreshToken;
+      console.log('내정보 요청');
+      await store.dispatch(myInfoRequest());
+      const state = store.getState();
+      console.log(state);
+    }
+  }
 });
 
 export default wrapper.withRedux(MyApp);

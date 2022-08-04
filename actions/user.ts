@@ -20,7 +20,7 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue:
   } catch(error: any){
     const {errorCode, description} = error;
     console.log("Token 만료")
-    console.log(error.response)
+    console.log(error.response.config.headers)
     if(errorCode === 302){  //Access Token이 만료된 경우
 
       const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")

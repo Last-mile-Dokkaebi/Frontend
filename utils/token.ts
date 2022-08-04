@@ -16,7 +16,7 @@ const HTTP_ONLY = process.env.NODE_ENV === "development"
 const setToken = (accessToken: string, refreshToken: string) => {
   axios.defaults.headers.common["Authorization"] = accessToken
 
-  const accessExpires = new Date(Date.now() + 1000 * 60 * 30)
+  const accessExpires = new Date(Date.now() + 1000 * 60 * 60 *24)
   const refreshExpires = new Date(Date.now() + 1000 * 60 * 60 *24 )
 
   cookie.save(
