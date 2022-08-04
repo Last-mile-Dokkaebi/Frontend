@@ -107,10 +107,11 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
   const isAdminOnly = path.startsWith('/admin');
 
   if (isPrivate) {
-    console.log('private');
     //private 페이지 이면 내 정보를 요청
     axiosInstance.defaults.headers.common.Authorization = '';
     axiosInstance.defaults.headers.common.refresh_token = '';
+
+    console.log('access token : ', accessToken);
 
     if (accessToken && refreshToken) {
       axiosInstance.defaults.headers.common.Authorization = accessToken;
