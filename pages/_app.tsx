@@ -102,11 +102,6 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
   const accessToken = allCookies[ACCESS_TOKEN];
   const refreshToken = allCookies[REFRESH_TOKEN];
 
-  console.log('--------------------');
-  console.log(context.ctx.req.headers.cookie);
-  console.log(allCookies);
-  console.log('--------------------');
-
   const path = context.router.pathname;
 
   const isPrivate = !path.startsWith('/member');
@@ -120,7 +115,6 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
     if (accessToken && refreshToken) {
       axiosInstance.defaults.headers.common.Authorization = accessToken;
       axiosInstance.defaults.headers.common.refresh_token = refreshToken;
-      console.log('내정보 요청');
       await store.dispatch(myInfoRequest());
       const state = store.getState();
       console.log(state);
