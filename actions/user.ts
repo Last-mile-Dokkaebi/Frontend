@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "utils/customAxios";
-import { deleteToken } from "utils/token";
+import { deleteToken, setToken } from "utils/token";
 
 /* 내 정보 액션 */
 interface MyInfoSuccess{
@@ -18,16 +18,15 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue:
     const response = await axiosInstance.get("/member");
     return response.data;
   } catch(error: any){
-    if(error.response.status === 401){  //Access Token만료로 인한 재발급 필요
-      // 코드 수정 필요
-      try{
-        const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")
-        console.log("Re Issue")
-        console.log(response.data)
-      } catch(error: any){
-        console.log("Re Issue Error")
-        console.log(error.response)
-      }
+    const {errorCode, description} = error;
+    console.log("Token 만료")
+    console.log(error.response)
+    if(errorCode === 302){  //Access Token이 만료된 경우
+
+      const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")
+      const {accessToken, refreshToken} = response.data;
+      setToken(accessToken, refreshToken);
+      console.log("Token 재발급")
     }
     return rejectWithValue("내 정보 불러오기 에러")
   }

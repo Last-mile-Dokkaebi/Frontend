@@ -2,16 +2,29 @@ import { NextPage } from 'next';
 import { QnaLayout } from 'components/layout';
 import styled from 'styled-components';
 import { CustomInput, Button } from 'components/common';
+import { useInput } from 'hooks';
+import { useAppDispatch } from 'store/configureStore';
+
 const send: NextPage = () => {
+  const dispatch = useAppDispatch();
+
+  const [title, onChangeTitle] = useInput<string>('');
+  const [content, onChangeContent] = useInput<string>('');
+
+  const onClickSubmit = (e: any) => {
+    e.preventDefault();
+    // dispatch();
+  };
+
   return (
     <>
       <QnaLayout>
         <FormWrapper>
-          <CustomInput type="text" placeholder="제목" />
-          <CustomTextarea placeholder="본문" />
-          <input type="file"></input>
+          <CustomInput type="text" placeholder="제목" onChange={onChangeTitle} />
+          <CustomTextarea placeholder="본문" onChange={onChangeContent} />
+          {/* <input type="file"></input> */}
         </FormWrapper>
-        <Button>보내기</Button>
+        <Button onClick={onClickSubmit}>보내기</Button>
       </QnaLayout>
     </>
   );

@@ -9,10 +9,14 @@ import { FullPageLoading } from 'components/layout';
 import axiosInstance from 'utils/customAxios';
 import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
+import { setErrorAction } from 'actions/system';
+import { NextPageContext } from 'next';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isLoggedin, auth, accessToken, refreshToken } = useSelector((state: RootState) => state.user);
+  const { errorMessage, errorCount } = useSelector((state: RootState) => state.system);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
   const router = useRouter();
 
   //접근권한 참고 페이지 : https://theodorusclarence.com/blog/nextjs-redirect-no-flashing
@@ -22,6 +26,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   //현재 `/admin`페이지를 AdminOnly로 지정
   const isAdminOnly = router.pathname.startsWith('/admin');
   const isAdmin = auth === 'ADMIN';
+
+  //처음 페이지를 이동하면 에러 메시지를 초기화
+  useEffect(() => {
+    if (errorMessage) {
+      dispatch(setErrorAction(null));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (errorMessage) {
+      alert(errorMessage);
+    }
+  }, [errorCount]);
 
   useEffect(() => {
     if (!isLoading && isAdminOnly && !isAdmin) router.push('/'); //관리자가 아닌 사람이 관리페이지에 접속할려는 경우
@@ -71,5 +88,14 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
   }
 }
+
+interface MyContext extends NextPageContext {
+  router: any;
+}
+
+MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
+  const path = context.router.pathname;
+  const isPrivate = !path.startsWith('/member');
+});
 
 export default wrapper.withRedux(MyApp);

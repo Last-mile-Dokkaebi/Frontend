@@ -9,3 +9,17 @@ interface ScooterState{
   lng: number;  //Scooter의 Longitude
   soc: number;  //Scooter의 SOC
 }
+
+interface Qna{
+  qnaId: number;
+  title: string;
+  status: "REGISTERED" | "RESPONDED" | "COMPLETE"
+  contents: Array<Contents>;
+  writer: string;
+}
+
+interface Contents{
+  comment: string;
+  date: string;
+  writer: "ADMIN" | "USER"
+}

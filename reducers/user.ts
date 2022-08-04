@@ -73,6 +73,8 @@ const userSlice = createSlice({
     .addCase(myInfoRequest.rejected, (state, action) => {
       state.myInfoLoading = false;
       state.myInfoError = action.payload ?? "무언가의 에러";
+
+      state.isLoggedin = true;  //임시로 설정 추후 삭제 해야됨
     })
 
     //로그인

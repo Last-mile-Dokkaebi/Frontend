@@ -28,12 +28,6 @@ const Home: NextPage<HomeTypes> = () => {
     (state: RootState) => state.bike,
   );
 
-  useEffect(() => {
-    if (scooterStateError) {
-      alert(scooterStateError);
-    }
-  }, [scooterStateError]);
-
   return (
     <div>
       <Head>
@@ -74,6 +68,12 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   await store.dispatch(myInfoRequest());
   await store.dispatch(scooterStateRequest());
 
+  // return {
+  //   redirect: {
+  //     destination: '/scooter',
+  //     permanent: false,
+  //   },
+  // };
   return {
     props: {},
   };
