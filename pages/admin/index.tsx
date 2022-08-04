@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 import { MdCalendarToday, MdLocationPin, MdElectricScooter, MdPerson } from 'react-icons/md';
 import { Button } from 'components/common';
+import wrapper from 'store/configureStore';
+import { requestRentalRequest } from 'actions/admin';
 
 const dummy = [
   {
@@ -137,5 +139,13 @@ const RentalList = styled.ul`
     }
   }
 `;
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  await store.dispatch(requestRentalRequest());
+
+  return {
+    props: {},
+  };
+});
 
 export default AdminHome;

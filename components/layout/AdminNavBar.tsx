@@ -12,7 +12,7 @@ const AdminNavBar = () => {
   };
   const onClickMypage = () => {
     dispatch(logoutAction()); //그냥 임시로 로그아웃으로 해둠
-    // Router.push('/mypage');
+    location.href = '/member';
   };
   const onClickScooter = () => {
     Router.push('/scooter');

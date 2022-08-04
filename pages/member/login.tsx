@@ -16,7 +16,7 @@ import { RootState, useAppDispatch } from 'store/configureStore';
 const login: NextPage = () => {
   const dispatch = useAppDispatch();
 
-  const { loginLoading, loginDone, loginError } = useSelector((state: RootState) => state.user);
+  const { loginLoading, loginDone, loginError, auth } = useSelector((state: RootState) => state.user);
 
   const [identity, identityHandler] = useInput<string>(''); // 값을 넣지 않으면 "" 로 초기화
   const [password, passwordHandler] = useInput<string>('');
@@ -25,7 +25,11 @@ const login: NextPage = () => {
 
   useEffect(() => {
     if (loginDone) {
-      Router.push('/');
+      if (auth === 'ADMIN') {
+        location.href = '/admin';
+      } else {
+        location.href = '/';
+      }
     }
   }, [loginDone]);
 

@@ -18,16 +18,19 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue:
     const response = await axiosInstance.get("/member");
     return response.data;
   } catch(error: any){
-    const {errorCode, description} = error;
-    console.log("Token 만료")
-    console.log(error.response.config.headers)
-    if(errorCode === 302){  //Access Token이 만료된 경우
-
-      const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")
-      const {accessToken, refreshToken} = response.data;
-      setToken(accessToken, refreshToken);
-      console.log("Token 재발급")
+    const {errorCode, description}  = error.response.data
+    if(errorCode === 302){  //Access Token 만료로 다시 발급
+      try{
+        const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")
+        const {accessToken, refreshToken} = response.data
+        console.log("재발급")
+        // setToken(accessToken, refreshToken)
+      } catch(error: any){
+        console.log("토큰 재발급 에러")
+        // console.log(error.response)
+      }
     }
+
     return rejectWithValue("내 정보 불러오기 에러")
   }
 })

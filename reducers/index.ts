@@ -5,6 +5,7 @@ import userReducer from './user'
 import bikeReducer from './bike'
 import systemReducer from './system'
 import helpReducer from './help'
+import adminReducer from './admin'
 
 const rootReducer = (state:any, action:any) => {
   switch(action.type){
@@ -15,7 +16,8 @@ const rootReducer = (state:any, action:any) => {
         user: userReducer,
         bike: bikeReducer,
         system: systemReducer,
-        help: helpReducer
+        help: helpReducer,
+        admin: adminReducer
       })
       return combinedReducer(state, action)
     }

@@ -19,6 +19,8 @@ interface UserState{
   loginDone: boolean;
   loginError: string | null;
 
+  logoutDone: boolean;
+
   signupLoading: boolean;
   signupDone: boolean;
   signupError: string | null;
@@ -39,6 +41,8 @@ export const initialState: UserState = {
   loginLoading: false,
   loginDone: false,
   loginError: null,
+
+  logoutDone: false,
 
   signupLoading: false,
   signupDone: false,
@@ -111,8 +115,9 @@ const userSlice = createSlice({
       state.accessToken = "";
       state.refreshToken = "";
 
+      state.logoutDone = true;
+
       deleteToken();
-      delete axiosInstance.defaults.headers.common?.Authorization
     })
 
     //회원가입

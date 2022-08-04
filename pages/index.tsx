@@ -50,29 +50,8 @@ const Home: NextPage<HomeTypes> = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  const allCookies = cookies(context);
-  const accessToken = allCookies[ACCESS_TOKEN];
-  const refreshToken = allCookies[REFRESH_TOKEN];
-
-  axiosInstance.defaults.headers.common.Authorization = '';
-  axiosInstance.defaults.headers.common.refresh_token = '';
-
-  if (accessToken) {
-    axiosInstance.defaults.headers.common.Authorization = accessToken;
-  }
-  if (refreshToken) {
-    axiosInstance.defaults.headers.common.refresh_token = refreshToken;
-  }
-
-  await store.dispatch(myInfoRequest());
   await store.dispatch(scooterStateRequest());
 
-  // return {
-  //   redirect: {
-  //     destination: '/scooter',
-  //     permanent: false,
-  //   },
-  // };
   return {
     props: {},
   };

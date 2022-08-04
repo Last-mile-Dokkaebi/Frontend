@@ -23,3 +23,12 @@ interface Contents{
   date: string;
   writer: "ADMIN" | "USER"
 }
+
+interface RequestRental{
+  rentalId: number;
+  identity: string;
+  address: string;
+  date: string;
+  startDate: string;
+  endDate: string;
+}
