@@ -14,7 +14,6 @@ import { NextPageContext } from 'next';
 import { myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
-import { stringify } from 'querystring';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isLoggedin, auth, accessToken, refreshToken, logoutDone } = useSelector((state: RootState) => state.user);
@@ -35,14 +34,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (errorMessage) {
       dispatch(setErrorAction(null));
-
+    }
+    if (typeof window === 'object') {
       const cookies: { [index: string]: string } = {};
       document.cookie.split(';').forEach((cookieString) => {
         const [key, value] = cookieString.split('=');
         cookies[key] = value;
       });
+      console.log(cookies);
       axiosInstance.defaults.headers.common.Authorization = cookies[ACCESS_TOKEN];
-      axiosInstance.defaults.headers.common.refresh_token = cookies[REFRESH_TOKEN];
     }
   }, []);
 
@@ -72,6 +72,7 @@ interface MyContext extends NextPageContext {
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
+  console.log('페이지 이동 됨');
   const res = context.ctx.res;
   const allCookies = cookies(context.ctx);
 
@@ -87,12 +88,9 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
     //로그인 하였던 기록이 있으면 -> 로그인 유지 절차 실행
     if (isPrivate) {
       //private 페이지 이면 내 정보를 요청
-      axiosInstance.defaults.headers.common.Authorization = '';
-      axiosInstance.defaults.headers.common.refresh_token = '';
-
       axiosInstance.defaults.headers.common.Authorization = accessToken;
-      axiosInstance.defaults.headers.common.refresh_token = refreshToken;
-      await store.dispatch(myInfoRequest());
+
+      await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
       const auth = store.getState().user.auth;
       const isAdmin = auth === 'ADMIN';
 

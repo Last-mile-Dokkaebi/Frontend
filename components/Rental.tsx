@@ -99,13 +99,13 @@ const Rental = () => {
       <details>
         <summary>시작날짜 설정</summary>
         <Centering>
-          <Calendar onChange={onChangeStartDate} value={startDate} />
+          <Calendar onChange={onChangeStartDate} value={startDate} locale="ko" />
         </Centering>
       </details>
       <details>
         <summary>종료날짜 설정</summary>
         <Centering>
-          <Calendar onChange={onChangeEndDate} value={endDate} />
+          <Calendar onChange={onChangeEndDate} value={endDate} locale="ko" />
         </Centering>
       </details>
       <CustomInput type="text" placeholder="킥보드를 수령 할 주소" value={address} onChange={onChangeAddress} />

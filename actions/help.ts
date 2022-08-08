@@ -25,6 +25,7 @@ export const postQnaRequest = createAsyncThunk<void, PostQnaRequest, {rejectValu
   try{
     await axiosInstance.post("/help/qna", data);
   } catch(error: any){
+    console.log(error.response)
     return rejectWithValue(error.response.data.description ?? "QNA 등록 실패")
   }
 })

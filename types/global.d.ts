@@ -14,11 +14,11 @@ interface Qna{
   qnaId: number;
   title: string;
   status: "REGISTERED" | "RESPONDED" | "COMPLETE"
-  contents: Array<Contents>;
+  contents: Array<Content>;
   writer: string;
 }
 
-interface Contents{
+interface Content{
   comment: string;
   date: string;
   writer: "ADMIN" | "USER"

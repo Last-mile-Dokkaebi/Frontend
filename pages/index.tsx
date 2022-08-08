@@ -4,10 +4,6 @@ import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지�
 import { useSelector } from 'react-redux';
 import { Rental, BikeStateMap, BikeRidingMap, Rentaling } from 'components';
 import wrapper, { RootState } from 'store/configureStore';
-import cookies from 'next-cookies';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
-import axiosInstance from 'utils/customAxios';
-import { myInfoRequest } from 'actions/user';
 import { scooterStateRequest } from 'actions/bike';
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
@@ -23,9 +19,7 @@ interface HomeTypes {
 }
 
 const Home: NextPage<HomeTypes> = () => {
-  const { scooterStateLoading, scooterStateDone, scooterStateError, status, startDate, endDate } = useSelector(
-    (state: RootState) => state.bike,
-  );
+  const { status } = useSelector((state: RootState) => state.bike);
 
   return (
     <div>

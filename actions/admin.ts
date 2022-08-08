@@ -11,6 +11,5 @@ export const requestRentalRequest = createAsyncThunk<Array<RequestRental>, void,
   catch(error: any){
     console.log(error.response.data)
     return rejectWithValue("렌탈 요청 정보를 읽어오는 데 실패하였습니다")
-    // return rejectWithValue(error.response.data ?? "서버로부터 데이터를 읽어오는 데 실패하였습니다")
   }
 })

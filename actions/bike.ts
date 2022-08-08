@@ -16,8 +16,7 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
     return response.data;
   }
   catch(error: any){
-    return rejectWithValue("서버로부터 정보를 읽어오는 데 실패하였습니다")
-    // return rejectWithValue(error.response.data ?? "서버로부터 데이터를 읽어오는 데 실패하였습니다")
+    return rejectWithValue(typeof error.response.data==="string" ? error.response.data : "서버로부터 대여정보를 읽어오는 데 실패하였습니다");
   }
 })
 
@@ -46,7 +45,6 @@ export const rentalPriceRequest = createAsyncThunk<number, RentalPriceRequest, {
     const response = await axiosInstance.post("/rental/price", {startDate, endDate});
 
     axiosInstance.defaults.headers.common.Authorization = cookies[ACCESS_TOKEN];
-    axiosInstance.defaults.headers.common.refresh_token = cookies[REFRESH_TOKEN];
 
     return response.data
   }

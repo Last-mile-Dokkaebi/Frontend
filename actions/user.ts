@@ -3,6 +3,11 @@ import axiosInstance from "utils/customAxios";
 import { deleteToken, setToken } from "utils/token";
 
 /* 내 정보 액션 */
+interface MyInfoRequest{
+  accessToken: string;
+  refreshToken: string;
+}
+
 interface MyInfoSuccess{
   identity: string;
   auth: string | "USER" | "ADMIN";
@@ -13,7 +18,7 @@ interface ReIssueSuccess{
   refreshToken: string;
 }
 
-export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue: string}>('user/myInfo', async(_:void, {rejectWithValue}) => {
+export const myInfoRequest = createAsyncThunk<MyInfoSuccess, MyInfoRequest, {rejectValue: string}>('user/myInfo', async({accessToken, refreshToken}:MyInfoRequest, {rejectWithValue}) => {
   try{
     const response = await axiosInstance.get("/member");
     return response.data;
@@ -21,12 +26,21 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue:
     const {errorCode, description}  = error.response.data
     if(errorCode === 302){  //Access Token 만료로 다시 발급
       try{
+        axiosInstance.defaults.headers.common.refresh_token = refreshToken
+
         const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")
-        const {accessToken, refreshToken} = response.data
-        console.log("재발급")
-        // setToken(accessToken, refreshToken)
+
+        delete axiosInstance.defaults.headers.common?.refresh_token
+        const {accessToken: newAccessToken, refreshToken: newRefreshToken} = response.data
+        setToken(newAccessToken, newRefreshToken)
+        console.log("토큰 재발급 완료")
+        console.log(accessToken)
+        console.log(newAccessToken)
+        const memberResponse = await axiosInstance.get("/member");
+        return memberResponse.data;
+
       } catch(error: any){
-        console.log("토큰 재발급 에러")
+        delete axiosInstance.defaults.headers.common?.refresh_token
         // console.log(error.response)
       }
     }
@@ -73,6 +87,7 @@ interface SignupRequest{
 
 export const signupRequest = createAsyncThunk<any, SignupRequest, {rejectValue: string}>("user/signup", async(data, {rejectWithValue}) => {
   try{
+    deleteToken()
     await axiosInstance.post("/member/new", Object.assign(data, {auth:"USER"}))
   }
   catch(error: any){

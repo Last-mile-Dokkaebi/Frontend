@@ -28,7 +28,7 @@ const mypage: NextPage = () => {
     Router.push('/support/faq');
   };
   const onClickQNA = () => {
-    Router.push('/support/qna/send');
+    Router.push('/support/qna/list');
   };
   return (
     <>
