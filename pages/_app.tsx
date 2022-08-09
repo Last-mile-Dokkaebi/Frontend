@@ -11,43 +11,38 @@ import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
-import { myInfoRequest } from 'actions/user';
+import { myInfoRequest, setTokenAction } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
+import { getBrowserToken, setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { isLoggedin, auth, accessToken, refreshToken, logoutDone } = useSelector((state: RootState) => state.user);
+  const { accessToken, refreshToken, reissueDone } = useSelector((state: RootState) => state.user);
   const { errorMessage, errorCount } = useSelector((state: RootState) => state.system);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const router = useRouter();
-
-  //접근권한 참고 페이지 : https://theodorusclarence.com/blog/nextjs-redirect-no-flashing
-  //현재 `/member`페이지를 제외하고 모두 private으로 설정
-  const isPrivate = !router.pathname.startsWith('/member');
-
-  //현재 `/admin`페이지를 AdminOnly로 지정
-  const isAdminOnly = router.pathname.startsWith('/admin');
-  const isAdmin = auth === 'ADMIN';
 
   //처음 페이지를 이동하면 에러 메시지를 초기화, Client Axios에 토큰 넣기
   useEffect(() => {
     if (errorMessage) {
       dispatch(setErrorAction(null));
     }
-    if (typeof window === 'object') {
-      const cookies: { [index: string]: string } = {};
-      document.cookie.split(';').forEach((cookieString) => {
-        const [key, value] = cookieString.split('=');
-        cookies[key] = value;
-      });
-      console.log(cookies);
-      axiosInstance.defaults.headers.common.Authorization = cookies[ACCESS_TOKEN];
+    const cookies = getBrowserToken();
+    if (cookies !== null) {
+      const { accessToken, refreshToken } = cookies;
+      axiosInstance.defaults.headers.common.Authorization = accessToken;
     }
   }, []);
 
   useEffect(() => {
-    if (errorMessage) {
+    if (reissueDone) {
+      if (typeof window === 'object') {
+        setToken(accessToken, refreshToken);
+      }
+    }
+  }, [reissueDone]);
+
+  useEffect(() => {
+    if (errorMessage && errorCount) {
       alert(errorMessage);
     }
   }, [errorCount]);
@@ -88,8 +83,8 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
     //로그인 하였던 기록이 있으면 -> 로그인 유지 절차 실행
     if (isPrivate) {
       //private 페이지 이면 내 정보를 요청
-      axiosInstance.defaults.headers.common.Authorization = accessToken;
 
+      axiosInstance.defaults.headers.common.Authorization = accessToken;
       await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
       const auth = store.getState().user.auth;
       const isAdmin = auth === 'ADMIN';

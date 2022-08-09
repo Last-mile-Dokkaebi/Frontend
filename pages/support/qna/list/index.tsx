@@ -19,10 +19,6 @@ const list: NextPage = () => {
     dispatch(openModalAction());
   };
 
-  useEffect(() => {
-    console.log(qnaHistory);
-  }, []);
-
   return (
     <>
       <QnaLayout>
@@ -60,7 +56,7 @@ const list: NextPage = () => {
           <History>
             {currentQna.contents.map((content: Content, index: number) => {
               return (
-                <div className={content.writer}>
+                <div className={content.writer} key={index}>
                   <div className="content">
                     <div>{content.comment}</div>
                     <div className="date">{DateToString(new Date(content.date))}</div>

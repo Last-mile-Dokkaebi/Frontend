@@ -16,6 +16,9 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
     return response.data;
   }
   catch(error: any){
+    // console.log(error.response)
+    // console.log(error.request._header)
+    // console.log(error.response.data)
     return rejectWithValue(typeof error.response.data==="string" ? error.response.data : "서버로부터 대여정보를 읽어오는 데 실패하였습니다");
   }
 })
@@ -71,7 +74,6 @@ export const scooterRentalRequest = createAsyncThunk<ScooterRentalSuccess, Scoot
     const startDate = DateToString(data.startDate)
     const endDate = DateToString(data.endDate)
     const price = data.price
-    console.log(price, startDate, endDate)
 
     await axiosInstance.post("/rental/new", {price, startDate, endDate});
 

@@ -90,7 +90,6 @@ const testApi = async() => {
 
   const res = await axios.post("http://202.31.200.185:9000/remainTime", {voltage, current, temperature})
 
-  console.log(res)
 
   return res.data
 }

@@ -66,4 +66,26 @@ const deleteToken = () => {
   delete axiosInstance.defaults.headers.common?.refresh_token
 }
 
-export {setToken, deleteToken}
+interface GetBrowserTokenSuccess{
+  accessToken: string;
+  refreshToken: string;
+}
+
+const getBrowserToken = ():GetBrowserTokenSuccess | null => {
+  if (typeof window === 'object') {
+    const cookies: { [index: string]: string } = {};
+    document.cookie.split(';').forEach((cookieString) => {
+      const [key, value] = cookieString.split('=');
+      cookies[key] = value;
+    });
+    const accessToken = cookies[ACCESS_TOKEN];
+    const refreshToken = cookies[REFRESH_TOKEN];
+
+    return {accessToken, refreshToken}
+  }
+  else{
+    return null;
+  }
+}
+
+export {setToken, deleteToken, getBrowserToken}

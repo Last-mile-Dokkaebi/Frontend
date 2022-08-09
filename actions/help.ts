@@ -1,5 +1,8 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import axiosInstance from 'utils/customAxios'
+import { getBrowserToken } from 'utils/token';
+import { myInfoRequest } from './user';
 
 /* 내 QNA 전부 조회 */
 interface MyQnaSuccess{
@@ -21,11 +24,16 @@ interface PostQnaRequest{
   comment: string;
 }
 
-export const postQnaRequest = createAsyncThunk<void, PostQnaRequest, {rejectValue: string}>("help/postQna", async(data, {rejectWithValue}) => {
+export const postQnaRequest = createAsyncThunk<void, PostQnaRequest, {rejectValue: string | object}>("help/postQna", async(data, {dispatch, rejectWithValue}) => {
   try{
+    const cookies = getBrowserToken();
+    if(cookies !== null){
+      const {accessToken, refreshToken} = cookies;
+      await dispatch(myInfoRequest({accessToken, refreshToken}))
+    }
     await axiosInstance.post("/help/qna", data);
   } catch(error: any){
     console.log(error.response)
-    return rejectWithValue(error.response.data.description ?? "QNA 등록 실패")
+    return rejectWithValue(error.response.data ?? "QNA 등록 실패")
   }
 })
