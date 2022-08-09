@@ -1,23 +1,21 @@
 // 이곳에서 전역 스타일 관리. 일반 CRA에서의 index.js 와 같은 역할을 함.
 import 'styles/globals.css';
-import type { AppContext, AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
+import type { AppProps } from 'next/app';
+import { useEffect } from 'react';
 import Script from 'next/script';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { FullPageLoading } from 'components/layout';
 import axiosInstance from 'utils/customAxios';
 import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
-import { myInfoRequest, setTokenAction } from 'actions/user';
+import { myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import { getBrowserToken, setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { accessToken, refreshToken, reissueDone } = useSelector((state: RootState) => state.user);
+  const { accessToken, refreshToken, reissueDone, logoutDone } = useSelector((state: RootState) => state.user);
   const { errorMessage, errorCount } = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
 
@@ -40,6 +38,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, [reissueDone]);
+
+  useEffect(() => {
+    if (logoutDone) {
+      location.href = '/member';
+    }
+  }, [logoutDone]);
 
   useEffect(() => {
     if (errorMessage && errorCount) {

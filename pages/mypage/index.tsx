@@ -18,7 +18,6 @@ const mypage: NextPage = () => {
   const onClickLogout = () => {
     dispatch(logoutAction());
     deleteToken();
-    location.href = '/member';
   };
 
   const onClickRentalHistory = () => {
