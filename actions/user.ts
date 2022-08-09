@@ -28,6 +28,7 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, MyInfoRequest, {rej
         return response.data;
       }
       catch(error){
+        dispatch(logoutAction());
         return rejectWithValue("토큰 재발급 요청실패")
       }
     }
@@ -113,8 +114,9 @@ export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, {
 
       return {accessToken: newAccessToken, refreshToken: newRefreshToken} 
     }
-    catch(error:any){
+    catch(error:any){ //토큰 재발급 실패로 로그아웃
       delete axiosInstance.defaults.headers.common?.refresh_token
-      return rejectWithValue(typeof error.response.data ==="string" ? error.response.data : "시간초과로 자동 로그아웃")
+      dispatch(logoutAction());
+      return rejectWithValue("로그아웃 되었습니다")
     }
 })
