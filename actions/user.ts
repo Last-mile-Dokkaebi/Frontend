@@ -1,34 +1,39 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "store/configureStore";
 import axiosInstance from "utils/customAxios";
 import { deleteToken, setToken } from "utils/token";
 
 /* 내 정보 액션 */
+interface MyInfoRequest{
+  accessToken: string;
+  refreshToken: string;
+}
+
 interface MyInfoSuccess{
   identity: string;
   auth: string | "USER" | "ADMIN";
 }
 
-interface ReIssueSuccess{
-  accessToken: string;
-  refreshToken: string;
-}
 
-export const myInfoRequest = createAsyncThunk<MyInfoSuccess, void, {rejectValue: string}>('user/myInfo', async(_:void, {rejectWithValue}) => {
+export const myInfoRequest = createAsyncThunk<MyInfoSuccess, MyInfoRequest, {rejectValue: string}>('user/myInfo', async({accessToken, refreshToken}:MyInfoRequest, {dispatch, rejectWithValue, getState}) => {
   try{
     const response = await axiosInstance.get("/member");
     return response.data;
   } catch(error: any){
-    const {errorCode, description} = error;
-    console.log("Token 만료")
-    console.log(error.response)
-    if(errorCode === 302){  //Access Token이 만료된 경우
-
-      const response = await axiosInstance.post<ReIssueSuccess>("/member/reissue")
-      const {accessToken, refreshToken} = response.data;
-      setToken(accessToken, refreshToken);
-      console.log("Token 재발급")
+    const {errorCode, description}  = error.response.data
+    if(errorCode === 302){  //Access Token 만료로 다시 발급
+        try{
+        await dispatch(reissueRequest({accessToken, refreshToken}));  //재발급 요청
+        const response = await axiosInstance.get("/member");
+        return response.data;
+      }
+      catch(error){
+        return rejectWithValue("토큰 재발급 요청실패")
+      }
     }
-    return rejectWithValue("내 정보 불러오기 에러")
+    else{
+      return rejectWithValue(typeof description === 'string' ? description : "내 정보를 불러오는 중 에러가 발생하였습니다")
+    }
   }
 })
 
@@ -59,6 +64,14 @@ export const loginRequest = createAsyncThunk<LoginSuccess, LoginRequest, {reject
 /* 로그아웃 액션 */
 export const logoutAction = createAction('user/logout')
 
+/* 토큰 셋팅 액션 */
+interface SetTokenAction{
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const setTokenAction = createAction<SetTokenAction>('user/logout')
+
 
 /* 회원가입 액션 */
 interface SignupRequest{
@@ -68,11 +81,40 @@ interface SignupRequest{
   phoneNumberArray: string[]
 }
 
-export const signupRequest = createAsyncThunk<any, SignupRequest, {rejectValue: string}>("user/signup", async(data, {rejectWithValue}) => {
+export const signupRequest = createAsyncThunk<void, SignupRequest, {rejectValue: string}>("user/signup", async(data, {rejectWithValue}) => {
   try{
+    deleteToken()
     await axiosInstance.post("/member/new", Object.assign(data, {auth:"USER"}))
   }
   catch(error: any){
     return rejectWithValue(error.response.data ?? "무언가의 에러")
   }
+})
+
+/* JWT 재발급  */
+interface ReissueSuccess{
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface ReissueRequest{
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, {rejectValue: string}>("user/reissue", async({accessToken, refreshToken}, {dispatch, rejectWithValue}) => {
+    axiosInstance.defaults.headers.common.refresh_token = refreshToken; //Refresh Token을 헤더에 삽입
+    try{
+      const response = await axiosInstance.post<ReissueSuccess>("/member/reissue")
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = response.data
+      setToken(newAccessToken, newRefreshToken)
+
+      delete axiosInstance.defaults.headers.common?.refresh_token;
+
+      return {accessToken: newAccessToken, refreshToken: newRefreshToken} 
+    }
+    catch(error:any){
+      delete axiosInstance.defaults.headers.common?.refresh_token
+      return rejectWithValue(typeof error.response.data ==="string" ? error.response.data : "시간초과로 자동 로그아웃")
+    }
 })

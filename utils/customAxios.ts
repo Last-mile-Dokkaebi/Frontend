@@ -11,17 +11,17 @@ const instance = axios.create({
   }
 })
 
-// //요청 전에 발생
-// instance.interceptors.request.use(
-//   (config: AxiosRequestConfig) => {
-//     //요청 성공 직전 호출
-//     return config;
-//   },
-//   (error: AxiosError) => {
-//     //요청 에러 직전 호출
-//     return Promise.reject(error)
-//   }
-// )
+//요청 전에 발생
+instance.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    //요청 성공 직전 호출
+    return config;
+  },
+  (error: AxiosError) => {
+    //요청 에러 직전 호출
+    return Promise.reject(error)
+  }
+)
 
 // //요청 후 Request에 따라 발생
 // instance.interceptors.response.use(

@@ -1,4 +1,5 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import axiosInstance from 'utils/customAxios'
 import { DateToString } from 'utils/processing';
 
@@ -15,9 +16,10 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
     return response.data;
   }
   catch(error: any){
-    console.log("Bike Error")
-    console.log(error.response.data)
-    return rejectWithValue(error.response.data ?? "서버로부터 데이터를 읽어오는 데 실패하였습니다")
+    // console.log(error.response)
+    // console.log(error.request._header)
+    // console.log(error.response.data)
+    return rejectWithValue(typeof error.response.data==="string" ? error.response.data : "서버로부터 대여정보를 읽어오는 데 실패하였습니다");
   }
 })
 
@@ -34,11 +36,24 @@ export const rentalPriceRequest = createAsyncThunk<number, RentalPriceRequest, {
     const startDate = DateToString(data.startDate)
     const endDate = DateToString(data.endDate)
 
+    const cookies: { [index: string]: string } = {};
+    document.cookie.split(';').forEach((cookieString) => {
+      const [key, value] = cookieString.split('=');
+      cookies[key] = value;
+    });
+
+    delete axiosInstance.defaults.headers.common?.Authorization
+    delete axiosInstance.defaults.headers.common?.refresh_token
+
     const response = await axiosInstance.post("/rental/price", {startDate, endDate});
+
+    axiosInstance.defaults.headers.common.Authorization = cookies[ACCESS_TOKEN];
+
     return response.data
   }
   catch(error: any){
-    return rejectWithValue(error.response.data ?? "대여 요청을 실패하였습니다")
+    return rejectWithValue("가격 불러오기를 실패하였습니다")
+    // return rejectWithValue(error.response.data ?? "대여 요청을 실패하였습니다")
   }
 })
 
@@ -65,8 +80,6 @@ export const scooterRentalRequest = createAsyncThunk<ScooterRentalSuccess, Scoot
     return {startDate, endDate}
   }
   catch(error: any){
-    console.log("스쿠터 대여 오류")
-    console.log(error.repsonse.data)
     return rejectWithValue(error.response.data.description ?? "대여 요청을 실패하였습니다")
   }
 })

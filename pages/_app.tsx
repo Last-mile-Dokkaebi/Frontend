@@ -11,91 +11,105 @@ import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
+import { myInfoRequest, setTokenAction } from 'actions/user';
+import cookies from 'next-cookies';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
+import { getBrowserToken, setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { isLoggedin, auth, accessToken, refreshToken } = useSelector((state: RootState) => state.user);
+  const { accessToken, refreshToken, reissueDone } = useSelector((state: RootState) => state.user);
   const { errorMessage, errorCount } = useSelector((state: RootState) => state.system);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const router = useRouter();
 
-  //접근권한 참고 페이지 : https://theodorusclarence.com/blog/nextjs-redirect-no-flashing
-  //현재 `/member`페이지를 제외하고 모두 private으로 설정
-  const isPrivate = !router.pathname.startsWith('/member');
-
-  //현재 `/admin`페이지를 AdminOnly로 지정
-  const isAdminOnly = router.pathname.startsWith('/admin');
-  const isAdmin = auth === 'ADMIN';
-
-  //처음 페이지를 이동하면 에러 메시지를 초기화
+  //처음 페이지를 이동하면 에러 메시지를 초기화, Client Axios에 토큰 넣기
   useEffect(() => {
     if (errorMessage) {
       dispatch(setErrorAction(null));
     }
+    const cookies = getBrowserToken();
+    if (cookies !== null) {
+      const { accessToken, refreshToken } = cookies;
+      axiosInstance.defaults.headers.common.Authorization = accessToken;
+    }
   }, []);
 
   useEffect(() => {
-    if (errorMessage) {
+    if (reissueDone) {
+      if (typeof window === 'object') {
+        setToken(accessToken, refreshToken);
+      }
+    }
+  }, [reissueDone]);
+
+  useEffect(() => {
+    if (errorMessage && errorCount) {
       alert(errorMessage);
     }
   }, [errorCount]);
 
-  useEffect(() => {
-    if (!isLoading && isAdminOnly && !isAdmin) router.push('/'); //관리자가 아닌 사람이 관리페이지에 접속할려는 경우
-    if (!isLoading && !isAdminOnly && isAdmin) router.push('/admin'); //관리자가 일반페이지에 접속할려는 경우
-    if (!isLoading && isPrivate && !isLoggedin) router.push('/member'); //로그인이 안된 상태로 private 페이지
-    if (!isLoading && !isPrivate && isLoggedin) router.push('/'); //로그인이 된 상태로 public페이지
-    setIsLoading(false);
-  }, [isLoading, isPrivate, isLoggedin, isAdminOnly, isAdmin]);
-
-  useEffect(() => {
-    if (isPrivate && accessToken !== '') {
-      axiosInstance.defaults.headers.common.Authorization = accessToken;
-    }
-  }, [accessToken]);
-
-  // 로그인 안된 상태로 private에 접근하면
-  const notLoginAndPrivate = (isLoading || !isLoggedin) && isPrivate;
-  // 로그인 된 상태로 public에 접근하면
-  const loggedinAndPublic = (isLoading || isLoggedin) && !isPrivate;
-  // 관리자용 페이지를 관리자가 아닌 사람이 접근 할려고 하면
-  const notAdminAndAdminOnly = (isLoading || !isAdmin) && isAdminOnly;
-  // 일반 페이지를 관리자가 접근할려고 하면
-  const isAdminAndPrivate = (isLoading || isAdmin) && !isAdminOnly;
-
-  //로딩창부터 띄워서 화면접근 막기
-  if (notLoginAndPrivate || loggedinAndPublic || notAdminAndAdminOnly || isAdminAndPrivate) {
-    return (
-      <>
-        <Script
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
-          strategy="beforeInteractive"
-        />
-        <FullPageLoading />
-      </>
-    );
-  } else {
-    return (
-      <>
-        {/* 카카오맵 관련 설정부분
+  return (
+    <>
+      {/* 카카오맵 관련 설정부분
       https://react-kakao-maps-sdk.jaeseokim.dev/docs/setup/next/ */}
-        <Script
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
-          strategy="beforeInteractive"
-        />
-        <Component {...pageProps} />
-      </>
-    );
-  }
+      <Script
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP}&libraries=services,clusterer&autoload=false`}
+        strategy="beforeInteractive"
+      />
+      <Component {...pageProps} />
+    </>
+  );
+  // }
 }
 
 interface MyContext extends NextPageContext {
   router: any;
+  ctx: any;
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
+  console.log('페이지 이동 됨');
+  const res = context.ctx.res;
+  const allCookies = cookies(context.ctx);
+
+  const accessToken = allCookies[ACCESS_TOKEN];
+  const refreshToken = allCookies[REFRESH_TOKEN];
+
   const path = context.router.pathname;
+
   const isPrivate = !path.startsWith('/member');
+  const isAdminOnly = path.startsWith('/admin');
+
+  if (accessToken && refreshToken) {
+    //로그인 하였던 기록이 있으면 -> 로그인 유지 절차 실행
+    if (isPrivate) {
+      //private 페이지 이면 내 정보를 요청
+
+      axiosInstance.defaults.headers.common.Authorization = accessToken;
+      await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
+      const auth = store.getState().user.auth;
+      const isAdmin = auth === 'ADMIN';
+
+      if (!isAdmin && isAdminOnly) {
+        //관리자가 아닌 사람이 관리자 페이지를 들어갈 경우
+        res.writeHead(302, { Location: '/' });
+        res.end();
+      } else if (isAdmin && !isAdminOnly) {
+        //관리자가 일반 페이지 들어갈 경우
+        res.writeHead(302, { Location: '/admin' });
+        res.end();
+      }
+    } else {
+      //로그인이 된 채로 public페이지 접근 하면
+      res.writeHead(302, { Location: '/' });
+      res.end();
+    }
+  } else {
+    //로그인 하였던 기록이 없으면
+    if (isPrivate) {
+      res.writeHead(302, { Location: '/member' });
+      res.end();
+    }
+  }
 });
 
 export default wrapper.withRedux(MyApp);

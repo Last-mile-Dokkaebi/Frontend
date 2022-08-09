@@ -1,5 +1,5 @@
 import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit'
-import { myQnaRequest } from 'actions/help';
+import { myQnaRequest, postQnaRequest } from 'actions/help';
 
 
 
@@ -46,25 +46,23 @@ const helpSlice = createSlice({
     })
     .addCase(myQnaRequest.rejected, (state, action) => {
       state.myQnaLoading = false;
-      state.myQnaError = action.payload ?? "무언가의 에러";
+      state.myQnaError = action.payload ?? "문의내역 조회 실패";
     })
 
-    // //QNA 등록하기
-    // .addCase(myQnaRequest.pending, (state) => {
-    //   state.myQnaLoading = true;
-    //   state.myQnaDone = false;
-    //   state.myQnaError = null;
-    // })
-    // .addCase(myQnaRequest.fulfilled, (state, action) => {
-    //   state.myQnaLoading = false;
-    //   state.myQnaDone = true;
-
-    //   state.qnaHistory = action.payload.qnaHistory
-    // })
-    // .addCase(myQnaRequest.rejected, (state, action) => {
-    //   state.myQnaLoading = false;
-    //   state.myQnaError = action.payload ?? "무언가의 에러";
-    // })
+    //QNA 등록하기
+    .addCase(postQnaRequest.pending, (state) => {
+      state.postQnaLoading = true;
+      state.postQnaDone = false;
+      state.postQnaError = null;
+    })
+    .addCase(postQnaRequest.fulfilled, (state, action) => {
+      state.postQnaLoading = false;
+      state.postQnaDone = true;
+    })
+    .addCase(postQnaRequest.rejected, (state, action) => {
+      state.postQnaLoading = false;
+      state.postQnaError = action.payload ?? "무언가의 에러";
+    })
 })
 
 export default helpSlice.reducer

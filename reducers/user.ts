@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
-import { myInfoRequest, loginRequest, logoutAction, signupRequest } from 'actions/user';
+import { myInfoRequest, loginRequest, logoutAction, signupRequest, reissueRequest } from 'actions/user';
 import { deleteToken, setToken } from "utils/token";
 import axiosInstance from 'utils/customAxios'
 
@@ -19,9 +19,15 @@ interface UserState{
   loginDone: boolean;
   loginError: string | null;
 
+  logoutDone: boolean;
+
   signupLoading: boolean;
   signupDone: boolean;
   signupError: string | null;
+
+  reissueLoading: boolean;
+  reissueDone: boolean;
+  reissueError: string | null;
 }
 
 export const initialState: UserState = {
@@ -40,9 +46,15 @@ export const initialState: UserState = {
   loginDone: false,
   loginError: null,
 
+  logoutDone: false,
+
   signupLoading: false,
   signupDone: false,
   signupError: null,
+
+  reissueLoading: false,
+  reissueDone: false,
+  reissueError: null,
 }
 
 const userSlice = createSlice({
@@ -111,8 +123,9 @@ const userSlice = createSlice({
       state.accessToken = "";
       state.refreshToken = "";
 
+      state.logoutDone = true;
+
       deleteToken();
-      delete axiosInstance.defaults.headers.common?.Authorization
     })
 
     //회원가입
@@ -128,6 +141,29 @@ const userSlice = createSlice({
     .addCase(signupRequest.rejected, (state, action) => {
       state.signupLoading = false;
       state.signupError = action.payload ?? "무언가의 에러";
+    })
+
+    //토큰 재발급
+    .addCase(reissueRequest.pending, (state) => {
+      state.reissueLoading = true;
+      state.reissueDone = false;
+      state.reissueError = null;
+    })
+    .addCase(reissueRequest.fulfilled, (state, action) => {
+      const {accessToken, refreshToken} = action.payload;
+
+      state.reissueLoading = false;
+      state.reissueDone = true;
+
+      console.log("리이슈 완료")
+
+      state.accessToken = accessToken
+      state.refreshToken = refreshToken
+    })
+    .addCase(reissueRequest.rejected, (state, action) => {
+      state.reissueLoading = false;
+      state.reissueError = action.payload ?? "무언가의 에러";
+      logoutAction(); //토큰 재발급에 실패할 경우 로그아웃
     })
 })
 

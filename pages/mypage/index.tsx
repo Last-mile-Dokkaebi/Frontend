@@ -11,7 +11,6 @@ import { BiSupport } from 'react-icons/bi';
 import { BsCreditCard2Back } from 'react-icons/bs';
 import Router from 'next/router';
 import { deleteToken } from 'utils/token';
-import axios from 'utils/customAxios';
 
 const mypage: NextPage = () => {
   const dispatch = useDispatch();
@@ -19,9 +18,9 @@ const mypage: NextPage = () => {
   const onClickLogout = () => {
     dispatch(logoutAction());
     deleteToken();
-    delete axios.defaults.headers.common.Authorization;
-    // delete axios.defaults.headers.common.refresh_token;
+    location.href = '/member';
   };
+
   const onClickRentalHistory = () => {
     Router.push('/mypage/rental');
   };
@@ -29,7 +28,7 @@ const mypage: NextPage = () => {
     Router.push('/support/faq');
   };
   const onClickQNA = () => {
-    Router.push('/support/qna/send');
+    Router.push('/support/qna/list');
   };
   return (
     <>

@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import { RootState } from 'store/configureStore';
+import { closeModalAction } from 'actions/system';
 interface ModalTypes {
   /**
    * 열고 닫는 delay를 s단위로 입력
@@ -16,24 +17,13 @@ interface ModalTypes {
 }
 
 const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes) => {
+  const dispatch = useDispatch();
   //Modal을 끌 것인지 켤 것인지 설정
   const { modalIsOpen } = useSelector((state: RootState) => state.system);
-  const dispatch = useDispatch();
-  const [animation, setAnimation] = useState<ReturnType<typeof keyframes>>(PopDown);
+  const animation = PopUp;
 
-  //열때는 다시 PopUp애니메이션으로 변경
-  useEffect(() => {
-    if (animation === PopDown) {
-      setAnimation(PopUp);
-    }
-  }, [modalIsOpen]);
   const closeModal = useCallback(() => {
-    //Delay를 주고 닫는다
-    // setTimeout(() => {
-    //   dispatch(setModal(false));
-    // }, delay * 100);
-    //닫는 Animation으로 변경
-    setAnimation(PopDown);
+    dispatch(closeModalAction());
   }, []);
 
   return (
@@ -57,7 +47,9 @@ const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes)
               </div>
               <div className="modal-body-wrapper">{children}</div>
               <div className="modal-action-wrapper">
-                <button className="modal-action-btn">확인</button>
+                <button className="modal-action-btn" onClick={closeModal}>
+                  확인
+                </button>
               </div>
             </ModalWrapper>
           </Background>
@@ -100,13 +92,20 @@ const ModalWrapper = styled.div<ModalWrapperTypes>`
   border-radius: 4px;
   padding: 1rem;
   animation: ${(props) => props.animation} ${(props) => props.delay}s ease-in-out 0s 1 normal;
-  width: 250px; /* 모달창 기본 사이즈 */
+  min-width: 250px; /* 모달창 기본 사이즈 */
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow: auto;
+
   font-size: 14px;
   color: rgb(59, 59, 59);
   .close-button-wrapper {
     display: flex;
     justify-content: right;
     color: #d6d6d6;
+    &:hover {
+      cursor: pointer;
+    }
   }
   .icon-wrapper {
     display: flex;
@@ -142,6 +141,9 @@ const ModalWrapper = styled.div<ModalWrapperTypes>`
       border: none;
       width: 100%;
       height: 2rem;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 `;

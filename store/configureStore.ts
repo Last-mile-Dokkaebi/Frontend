@@ -1,15 +1,28 @@
-import {configureStore, getDefaultMiddleware, isRejectedWithValue, Middleware, MiddlewareAPI} from '@reduxjs/toolkit'
+import {AsyncThunkAction, configureStore, getDefaultMiddleware, isAsyncThunkAction, isPending, isRejectedWithValue, Middleware, MiddlewareAPI} from '@reduxjs/toolkit'
+import type { AnyAction } from '@reduxjs/toolkit';
 import {createWrapper} from 'next-redux-wrapper'
-import logger from 'redux-logger'
 import rootReducer from 'reducers'
 import { useDispatch } from 'react-redux';
 import { setErrorAction } from 'actions/system';
+import { myInfoRequest } from 'actions/user';
 
 const isDev = process.env.NODE_ENV === "development";
 
-const errorAlert: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
+const errorAlert: Middleware = (api: MiddlewareAPI) => (next) => async(action: AnyAction) => {
+  const isBrowser = typeof window === "object";
+
+  
   if(isRejectedWithValue(action)){  //서버 통신 중 에러 발생시
-    api.dispatch(setErrorAction(action.payload)); //에러메시지를 설정
+    if(isBrowser){
+      console.log(action)
+    }
+    console.log(`Rejected : ${action.type}`)
+    const notAlert = ["user/myInfo/rejected"]; //알림하지 않을 Action 설정
+    if(!notAlert.includes(action.type)){  //알림하지 않을 Action이 아니면
+      api.dispatch(setErrorAction(typeof action.payload === "string" 
+      ? action.payload 
+      : "서버와의 통신 중 에러가 발생하였습니다")); //에러메시지를 설정
+    }
   }
   return next(action)
 }

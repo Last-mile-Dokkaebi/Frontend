@@ -1,6 +1,6 @@
 import cookie from 'react-cookies'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from './constant'
-import axios from 'utils/customAxios'
+import axiosInstance from 'utils/customAxios'
 
 /*
   cookie를 이용해서 token들 관리
@@ -14,9 +14,9 @@ const HTTP_ONLY = process.env.NODE_ENV === "development"
 
 // accessToken, refreshToken을 받아 cookie에 저장
 const setToken = (accessToken: string, refreshToken: string) => {
-  axios.defaults.headers.common["Authorization"] = accessToken
+  axiosInstance.defaults.headers.common["Authorization"] = accessToken
 
-  const accessExpires = new Date(Date.now() + 1000 * 60 * 30)
+  const accessExpires = new Date(Date.now() + 1000 * 60 * 60 *24)
   const refreshExpires = new Date(Date.now() + 1000 * 60 * 60 *24 )
 
   cookie.save(
@@ -41,9 +41,8 @@ const setToken = (accessToken: string, refreshToken: string) => {
 
 //cookie에서 token들을 삭제
 const deleteToken = () => {
-  const expires = new Date()
-  expires.setDate(Date.now() + 1 )
-
+  const expires = new Date(Date.now() + 1)
+  
   cookie.save(
     ACCESS_TOKEN,
     "",
@@ -62,6 +61,31 @@ const deleteToken = () => {
       httpOnly: HTTP_ONLY
     }
   )
+  
+  delete axiosInstance.defaults.headers.common?.Authorization
+  delete axiosInstance.defaults.headers.common?.refresh_token
 }
 
-export {setToken, deleteToken}
+interface GetBrowserTokenSuccess{
+  accessToken: string;
+  refreshToken: string;
+}
+
+const getBrowserToken = ():GetBrowserTokenSuccess | null => {
+  if (typeof window === 'object') {
+    const cookies: { [index: string]: string } = {};
+    document.cookie.split(';').forEach((cookieString) => {
+      const [key, value] = cookieString.split('=');
+      cookies[key] = value;
+    });
+    const accessToken = cookies[ACCESS_TOKEN];
+    const refreshToken = cookies[REFRESH_TOKEN];
+
+    return {accessToken, refreshToken}
+  }
+  else{
+    return null;
+  }
+}
+
+export {setToken, deleteToken, getBrowserToken}
