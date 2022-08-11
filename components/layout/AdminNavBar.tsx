@@ -1,39 +1,46 @@
 import styled from 'styled-components';
-import { BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
-import Router from 'next/router';
+import {
+  BsFillPlusCircleFill,
+  BsFillQuestionCircleFill,
+  BsFileEarmarkBarGraph,
+  BsFillPersonFill,
+} from 'react-icons/bs';
+import { FiLogOut } from 'react-icons/fi';
+import { MdOutlineManageAccounts } from 'react-icons/md';
+
+import router from 'next/router';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from 'actions/user';
 
 const AdminNavBar = () => {
   const dispatch = useDispatch();
 
-  const onClickAlarm = () => {
-    Router.push('/alarm');
-  };
-  const onClickMypage = () => {
-    dispatch(logoutAction()); //그냥 임시로 로그아웃으로 해둠
+  const onClickLogout = () => {
+    dispatch(logoutAction());
     location.href = '/member';
   };
-  const onClickScooter = () => {
-    Router.push('/scooter');
-  };
+
   return (
     <NavWrapper>
       <MenuWrapper>
-        {/* <MenuButtonWrapper onClick={onClickScooter}>
-          <GiKickScooter size={24} />
-          <div>대여 및 주행</div>
-        </MenuButtonWrapper> */}
-        <MenuButtonWrapper onClick={onClickAlarm}>
-          <BsFillBellFill size={24} />
-          <div>알람</div>
+        <MenuButtonWrapper onClick={() => router.push('/admin/enroll')}>
+          <BsFillPlusCircleFill size={24} />
+          <div>등록</div>
         </MenuButtonWrapper>
-        <MenuButtonWrapper>
+        <MenuButtonWrapper onClick={() => router.push('/admin/help')}>
+          <BsFillQuestionCircleFill size={24} />
+          <div>문의</div>
+        </MenuButtonWrapper>
+        <MenuButtonWrapper onClick={() => router.push('/admin/statistics')}>
           <BsFileEarmarkBarGraph size={24} />
           <div>통계</div>
         </MenuButtonWrapper>
-        <MenuButtonWrapper onClick={onClickMypage}>
-          <BsFillPersonFill size={24} />
+        <MenuButtonWrapper onClick={() => router.push('/admin/manage')}>
+          <MdOutlineManageAccounts size={24} />
+          <div>관리</div>
+        </MenuButtonWrapper>
+        <MenuButtonWrapper onClick={onClickLogout}>
+          <FiLogOut size={24} />
           <div>로그아웃</div>
         </MenuButtonWrapper>
       </MenuWrapper>

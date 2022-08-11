@@ -1,14 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface CustomInputTypes {
+  label?: string;
+  [x: string]: any;
+}
 
 // rest로 해서 너무 기본적인 props들은 그냥 처리되도록 변경
-const CustomInput = ({ ...rest }) => {
+const CustomInput = ({ label, ...rest }: CustomInputTypes) => {
   return (
-    <DesignedInput {...rest}/>
+    <>
+      {label && <Label>{label}</Label>}
+      <DesignedInput {...rest} />
+    </>
   );
 };
 
+const Label = styled.div`
+  color: gray;
+  font-size: 0.9rem;
+`;
 
 const DesignedInput = styled.input`
   width: 100%;

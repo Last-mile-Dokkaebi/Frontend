@@ -1,96 +1,20 @@
 import { AdminLayout } from 'components/layout';
 import { NextPage } from 'next';
-import { testApi } from 'pages/api/scooter';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-import { MdCalendarToday, MdLocationPin, MdElectricScooter, MdPerson } from 'react-icons/md';
-import { Button } from 'components/common';
-import wrapper from 'store/configureStore';
+import wrapper, { RootState } from 'store/configureStore';
 import { requestRentalRequest } from 'actions/admin';
-
-const dummy = [
-  {
-    id: 1,
-    identity: 'cilab1',
-    address: '금오공대 디지털관 232호',
-    requestDate: '2022-06-30',
-    startDate: '2022-07-01',
-    endDate: '2022-07-10',
-    bikeNumber: '0001',
-  },
-  {
-    id: 2,
-    identity: 'cilab2',
-    address: '금오공대 디지털관 332호',
-    requestDate: '2022-06-20',
-    startDate: '2022-07-02',
-    endDate: '2022-07-20',
-    bikeNumber: '0002',
-  },
-  {
-    id: 4,
-    identity: 'cilab4',
-    address: '금오공대 DB102',
-    requestDate: '2022-07-01',
-    startDate: '2022-07-05',
-    endDate: '2022-07-20',
-    bikeNumber: '0004',
-  },
-];
+import { RentalRequestCard } from 'components';
+import { useSelector } from 'react-redux';
 
 const AdminHome: NextPage = () => {
-  const [requested, setRequested] = useState<
-    Array<{
-      id: number;
-      identity: string;
-      address: string;
-      requestDate: string;
-      startDate: string;
-      endDate: string;
-      bikeNumber: string;
-    }>
-  >([]);
-
-  useEffect(() => {
-    setRequested(dummy);
-    testApi();
-  }, []);
-
-  const onClickFinishRental = (req: any) => {
-    let dialog = confirm(`id : ${req.id}`);
-    if (dialog) {
-      alert('대여를 완료하였습니다.');
-    }
-  };
+  const { requestRental } = useSelector((state: RootState) => state.admin);
 
   return (
     <AdminLayout>
       <RentalList>
-        {requested.map((req) => (
-          <li>
-            <div id="request">{req.requestDate}</div>
-            <div id="date">
-              <MdCalendarToday className="icon" />
-              {req.startDate} ~ {req.endDate}
-            </div>
-            <div id="address">
-              <MdLocationPin className="icon" />
-              {req.address}
-            </div>
-            <div id="bikeNumber">
-              <MdElectricScooter className="icon" />
-              {req.bikeNumber}
-            </div>
-            <div id="identity">
-              <MdPerson className="icon" />
-              {req.identity}
-            </div>
-            <Button style={{ marginBottom: '0.25rem' }} onClick={() => onClickFinishRental(req)}>
-              대여완료
-            </Button>
-          </li>
-        ))}
+        {requestRental.map((request: RequestRental) => {
+          return <RentalRequestCard request={request} key={request.rentalId} />;
+        })}
       </RentalList>
     </AdminLayout>
   );
@@ -142,6 +66,7 @@ const RentalList = styled.ul`
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(requestRentalRequest());
+  console.log(store.getState().admin);
 
   return {
     props: {},
