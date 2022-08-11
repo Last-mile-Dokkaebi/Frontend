@@ -115,7 +115,7 @@ const Rental = () => {
       <div>
         비용은 <strong>{rentalPrice}</strong>원입니다
       </div>
-      <Button onClick={onClickRental} loading={scooterRentalLoading}>
+      <Button onClick={onClickRental} loading={scooterRentalLoading} bgcolor={'#77b8c0'}>
         대여신청
       </Button>
     </Wrapper>

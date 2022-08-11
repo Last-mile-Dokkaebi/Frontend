@@ -2,17 +2,17 @@ import { AdminLayout } from 'components/layout';
 import { NextPage } from 'next';
 import styled from 'styled-components';
 import wrapper, { RootState } from 'store/configureStore';
-import { requestRentalRequest } from 'actions/admin';
+import { waitRentalRequest } from 'actions/admin';
 import { RentalRequestCard } from 'components';
 import { useSelector } from 'react-redux';
 
 const AdminHome: NextPage = () => {
-  const { requestRental } = useSelector((state: RootState) => state.admin);
+  const { waitRental } = useSelector((state: RootState) => state.admin);
 
   return (
     <AdminLayout>
       <RentalList>
-        {requestRental.map((request: RequestRental) => {
+        {waitRental.map((request: RequestRental) => {
           return <RentalRequestCard request={request} key={request.rentalId} />;
         })}
       </RentalList>
@@ -65,8 +65,7 @@ const RentalList = styled.ul`
 `;
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  await store.dispatch(requestRentalRequest());
-  console.log(store.getState().admin);
+  await store.dispatch(waitRentalRequest());
 
   return {
     props: {},

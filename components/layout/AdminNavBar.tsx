@@ -1,10 +1,6 @@
 import styled from 'styled-components';
-import {
-  BsFillPlusCircleFill,
-  BsFillQuestionCircleFill,
-  BsFileEarmarkBarGraph,
-  BsFillPersonFill,
-} from 'react-icons/bs';
+import { BsFillQuestionCircleFill, BsFileEarmarkBarGraph } from 'react-icons/bs';
+import { GiKickScooter } from 'react-icons/gi';
 import { FiLogOut } from 'react-icons/fi';
 import { MdOutlineManageAccounts } from 'react-icons/md';
 
@@ -23,9 +19,9 @@ const AdminNavBar = () => {
   return (
     <NavWrapper>
       <MenuWrapper>
-        <MenuButtonWrapper onClick={() => router.push('/admin/enroll')}>
-          <BsFillPlusCircleFill size={24} />
-          <div>등록</div>
+        <MenuButtonWrapper onClick={() => router.push('/admin/scooter')}>
+          <GiKickScooter size={24} />
+          <div>스쿠터</div>
         </MenuButtonWrapper>
         <MenuButtonWrapper onClick={() => router.push('/admin/help')}>
           <BsFillQuestionCircleFill size={24} />

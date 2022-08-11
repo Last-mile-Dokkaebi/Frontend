@@ -111,6 +111,7 @@ export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, {
       setToken(newAccessToken, newRefreshToken)
 
       delete axiosInstance.defaults.headers.common?.refresh_token;
+      console.log("재발급 완료")
 
       return {accessToken: newAccessToken, refreshToken: newRefreshToken} 
     }

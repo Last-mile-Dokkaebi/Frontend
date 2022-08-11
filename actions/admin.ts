@@ -1,14 +1,57 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit'
 import axiosInstance from 'utils/customAxios'
+import { getBrowserToken } from 'utils/token';
+import { myInfoRequest } from './user';
 
-/* 렌탈 요청 정보 조회 */
-export const requestRentalRequest = createAsyncThunk<Array<RequestRental>, void, {rejectValue: string}>('admin/requestRental', async(_: void, {rejectWithValue}) => {
+/* NONE 렌탈 요청 정보 조회 */
+export const noneRentalRequest = createAsyncThunk<Array<RequestRental>, void, {rejectValue: string}>('admin/noneRental', async(_:void, {rejectWithValue}) => {
   try{
-    const response = await axiosInstance.get("/rental/admin?status=WAIT")
+    const response = await axiosInstance.get(`/rental/admin?status=NONE`)
     return response.data;
   }
   catch(error: any){
-    return rejectWithValue("렌탈 요청 정보를 읽어오는 데 실패하였습니다")
+    return rejectWithValue(typeof error.response.data ==="string" 
+    ? error.response.data 
+    : "렌탈 요청 정보를 읽어오는 데 실패하였습니다")
+  }
+})
+
+/* WAIT 렌탈 요청 정보 조회 */
+export const waitRentalRequest = createAsyncThunk<Array<RequestRental>, void, {rejectValue: string}>('admin/waitRental', async(_:void, {rejectWithValue}) => {
+  try{
+    const response = await axiosInstance.get(`/rental/admin?status=WAIT`)
+    return response.data;
+  }
+  catch(error: any){
+    return rejectWithValue(typeof error.response.data ==="string" 
+    ? error.response.data 
+    : "렌탈 요청 정보를 읽어오는 데 실패하였습니다")
+  }
+})
+
+/* RENTAL 렌탈 요청 정보 조회 */
+export const rentalRentalRequest = createAsyncThunk<Array<RequestRental>, void, {rejectValue: string}>('admin/rentalRental', async(_:void, {rejectWithValue}) => {
+  try{
+    const response = await axiosInstance.get(`/rental/admin?status=RENTAL`)
+    return response.data;
+  }
+  catch(error: any){
+    return rejectWithValue(typeof error.response.data ==="string" 
+    ? error.response.data 
+    : "렌탈 요청 정보를 읽어오는 데 실패하였습니다")
+  }
+})
+
+/* DRIVE 렌탈 요청 정보 조회 */
+export const driveRentalRequest = createAsyncThunk<Array<RequestRental>, void, {rejectValue: string}>('admin/driveRental', async(_:void, {rejectWithValue}) => {
+  try{
+    const response = await axiosInstance.get(`/rental/admin?status=DRIVE`)
+    return response.data;
+  }
+  catch(error: any){
+    return rejectWithValue(typeof error.response.data ==="string" 
+    ? error.response.data 
+    : "렌탈 요청 정보를 읽어오는 데 실패하였습니다")
   }
 })
 
@@ -18,8 +61,13 @@ interface EnrollScooterRequest{
   identity: string;
 }
 
-export const enrollScooterRequest = createAsyncThunk<void, EnrollScooterRequest, {rejectValue: string}>('admin/enrollScooter', async(data:EnrollScooterRequest, {rejectWithValue}) => {
+export const enrollScooterRequest = createAsyncThunk<void, EnrollScooterRequest, {rejectValue: string}>('admin/enrollScooter', async(data:EnrollScooterRequest, {dispatch, rejectWithValue}) => {
   try{
+    const cookies = getBrowserToken();
+    if (cookies) {
+      const { accessToken, refreshToken } = cookies;
+      await dispatch(myInfoRequest({ accessToken, refreshToken }));
+    }
     const response = await axiosInstance.post("/scooter/new", data);
     return response.data;
   }
