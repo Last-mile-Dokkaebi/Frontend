@@ -77,3 +77,53 @@ export const enrollScooterRequest = createAsyncThunk<void, EnrollScooterRequest,
     : "스쿠터 등록을 실패하였습니다")
   }
 })
+
+/* 문의 사항 조회 */
+interface AdminQnaRequest{
+  status: "REGISTERED"| "RESPONDED"| "COMPLETE";
+}
+
+interface AdminQnaSuccess{
+  qnaHistory: Array<Qna>;
+}
+
+export const adminQnaRequest = createAsyncThunk<AdminQnaSuccess, AdminQnaRequest, {rejectValue: string}>('admin/qnaHistory', async({status}:AdminQnaRequest, {dispatch, rejectWithValue}) => {
+  try{
+    const cookies = getBrowserToken()
+    if(cookies){
+      const { accessToken, refreshToken } = cookies;
+      await dispatch(myInfoRequest({ accessToken, refreshToken }));
+    }
+
+    const response = await axiosInstance.get<AdminQnaSuccess>(`/help/qna/admin?status=${status}`)
+    return response.data;
+  }
+  catch(error: any){
+    return rejectWithValue(typeof error.response.data==="string" 
+    ? error.response.data
+    : "문의사항 조회를 실패하였습니다")
+  }
+})
+
+
+/* 렌탈 완료 처리 */
+// interface EnrollScooterRequest{
+//   identity: string;
+// }
+
+// export const enrollScooterRequest = createAsyncThunk<void, EnrollScooterRequest, {rejectValue: string}>('admin/enrollScooter', async(data:EnrollScooterRequest, {dispatch, rejectWithValue}) => {
+//   try{
+//     const cookies = getBrowserToken();
+//     if (cookies) {
+//       const { accessToken, refreshToken } = cookies;
+//       await dispatch(myInfoRequest({ accessToken, refreshToken }));
+//     }
+//     const response = await axiosInstance.post("/scooter/new", data);
+//     return response.data;
+//   }
+//   catch(error: any){
+//     return rejectWithValue(typeof error.response.data==="string" 
+//     ? error.response.data 
+//     : "스쿠터 등록을 실패하였습니다")
+//   }
+// })

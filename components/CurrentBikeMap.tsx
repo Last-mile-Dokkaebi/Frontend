@@ -1,6 +1,6 @@
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useSelector } from 'react-redux';
-import { RootState } from 'stores';
+import { RootState } from 'store/configureStore';
 
 const CurrentBikeMap = () => {
   const { lat, lng } = useSelector((state: RootState) => state.bike);

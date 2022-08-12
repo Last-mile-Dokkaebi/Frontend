@@ -1,11 +1,13 @@
 import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit'
-import { driveRentalRequest, enrollScooterRequest, noneRentalRequest, rentalRentalRequest, waitRentalRequest } from 'actions/admin';
+import { adminQnaRequest, driveRentalRequest, enrollScooterRequest, noneRentalRequest, rentalRentalRequest, waitRentalRequest } from 'actions/admin';
 
 interface AdminState{
-  noneRental : Array<RequestRental>;   //NONE 렌탈 정보
-  waitRental : Array<RequestRental>;   //NONE 렌탈 정보
-  rentalRental : Array<RequestRental>;   //NONE 렌탈 정보
-  driveRental : Array<RequestRental>;   //NONE 렌탈 정보
+  noneRental : Array<RequestRental>;    //NONE 렌탈 정보
+  waitRental : Array<RequestRental>;    //WAIT 렌탈 정보
+  rentalRental : Array<RequestRental>;  //RENTAL 렌탈 정보
+  driveRental : Array<RequestRental>;   //DRIVE 렌탈 정보
+
+  qnaHistory: Array<Qna>;
 
   noneRentalLoading:boolean;
   noneRentalDone:boolean;
@@ -27,6 +29,10 @@ interface AdminState{
   enrollScooterLoading:boolean;
   enrollScooterDone:boolean;
   enrollScooterError:null | string;
+  
+  adminQnaLoading:boolean;
+  adminQnaDone:boolean;
+  adminQnaError:null | string;
 }
 
 export const initialState: AdminState = {
@@ -34,6 +40,8 @@ export const initialState: AdminState = {
   waitRental : [],  
   rentalRental : [],
   driveRental :[],
+
+  qnaHistory: [],
 
   noneRentalLoading: false,
   noneRentalDone: false,
@@ -54,6 +62,10 @@ export const initialState: AdminState = {
   enrollScooterLoading: false,
   enrollScooterDone: false,
   enrollScooterError: null,
+
+  adminQnaLoading: false,
+  adminQnaDone: false,
+  adminQnaError: null,
 }
 
 const adminSlice = createSlice({
@@ -142,6 +154,23 @@ const adminSlice = createSlice({
     .addCase(enrollScooterRequest.rejected, (state, action) => {
       state.enrollScooterLoading = false;
       state.enrollScooterError = action.payload ?? "무언가의 에러";
+    })
+
+    //문의 사항 조회
+    .addCase(adminQnaRequest.pending, (state) => {
+      state.adminQnaLoading = true;
+      state.adminQnaDone = false;
+      state.adminQnaError = null;
+    })
+    .addCase(adminQnaRequest.fulfilled, (state, action) => {
+      state.adminQnaLoading = false;
+      state.adminQnaDone = true;
+
+      state.qnaHistory = action.payload.qnaHistory;
+    })
+    .addCase(adminQnaRequest.rejected, (state, action) => {
+      state.adminQnaLoading = false;
+      state.adminQnaError = action.payload ?? "문의 사항 조회를 실패했습니다"
     })
 })
 

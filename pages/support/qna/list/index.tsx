@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import wrapper, { RootState } from 'store/configureStore';
 import { myQnaRequest } from 'actions/help';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { DateToString } from 'utils/processing';
 import { openModalAction } from 'actions/system';
 import { Modal } from 'components/common';

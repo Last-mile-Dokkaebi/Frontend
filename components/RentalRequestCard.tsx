@@ -8,8 +8,7 @@ interface RentalRequestCardTypes {
 
 const RentalRequestCard = ({ request }: RentalRequestCardTypes) => {
   const onClickFinishRental = (request: RequestRental) => {
-    let dialog = confirm(`id : ${request.rentalId}`);
-    if (dialog) {
+    if (confirm(`유저 ID : ${request.identity}\n시작날짜 : ${request.startDate}\n종료날짜 : ${request.endDate}`)) {
       alert('대여를 완료하였습니다.');
     }
   };
