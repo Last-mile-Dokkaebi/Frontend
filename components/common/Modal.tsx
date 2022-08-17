@@ -13,10 +13,11 @@ interface ModalTypes {
   iconUrl?: string;
   title?: string;
   subtitle?: string;
+  backgroundClose?: boolean;
   children?: React.ReactNode;
 }
 
-const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes) => {
+const Modal = ({ delay = 0.15, iconUrl, title, subtitle, backgroundClose = true, children }: ModalTypes) => {
   const dispatch = useDispatch();
   //Modal을 끌 것인지 켤 것인지 설정
   const { modalIsOpen } = useSelector((state: RootState) => state.system);
@@ -26,11 +27,17 @@ const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes)
     dispatch(closeModalAction());
   }, []);
 
+  const closeBackgroundModal = useCallback(() => {
+    if (backgroundClose) {
+      dispatch(closeModalAction());
+    }
+  }, []);
+
   return (
     <>
       {modalIsOpen && (
         <>
-          <Background onClick={closeModal}>
+          <Background onClick={closeBackgroundModal}>
             {/* Modal component클릭시 background 컴포넌트 클릭 방지 */}
             <ModalWrapper animation={animation} delay={delay} onClick={(e) => e.stopPropagation()}>
               <div className="close-button-wrapper" onClick={closeModal}>
@@ -48,7 +55,7 @@ const Modal = ({ delay = 0.15, iconUrl, title, subtitle, children }: ModalTypes)
               <div className="modal-body-wrapper">{children}</div>
               <div className="modal-action-wrapper">
                 <button className="modal-action-btn" onClick={closeModal}>
-                  확인
+                  닫기
                 </button>
               </div>
             </ModalWrapper>
@@ -135,9 +142,7 @@ const ModalWrapper = styled.div<ModalWrapperTypes>`
     padding: 1rem;
     .modal-action-btn {
       border-radius: 4px;
-      background-color: #77b8c0;
-      color: white;
-      font-weight: bold;
+      background-color: #eeeeee;
       border: none;
       width: 100%;
       height: 2rem;

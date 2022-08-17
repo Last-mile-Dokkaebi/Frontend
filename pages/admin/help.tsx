@@ -8,13 +8,27 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
 import { DateToString } from 'utils/processing';
+import { useInput } from 'hooks';
 
 const help: NextPage = () => {
+  const maxLength = 240;
+
   const dispatch = useAppDispatch();
   const { qnaHistory } = useSelector((state: RootState) => state.admin);
   const [currentQna, setCurrentQna] = useState<Qna | null>(null);
 
+  const [reply, onChangeReply, setReply] = useInput<string>('', (e) => {
+    const value = e.target.value;
+    if (value.length > maxLength) {
+      alert(`본문은 ${maxLength}자를 넘길 수 없습니다`);
+      return value.substring(0, maxLength);
+    } else {
+      return value;
+    }
+  });
+
   const onClickDetail = (index: number) => {
+    setReply('');
     setCurrentQna(qnaHistory[index]);
     dispatch(openModalAction());
   };
@@ -54,7 +68,12 @@ const help: NextPage = () => {
       </AdminLayout>
 
       {currentQna !== null && (
-        <Modal delay={0.5} title={currentQna.title} subtitle={DateToString(new Date(currentQna.contents[0].date))}>
+        <Modal
+          delay={0.5}
+          title={currentQna.title}
+          subtitle={DateToString(new Date(currentQna.contents[0].date))}
+          backgroundClose={false}
+        >
           <History>
             {currentQna.contents.map((content: Content, index: number) => {
               return (
@@ -70,10 +89,12 @@ const help: NextPage = () => {
           </History>
           <Reply>
             <div className="left">
-              <CustomInput placeholder="문의 답변" />
+              <CustomInput placeholder="문의 답변" onChange={onChangeReply} value={reply} />
             </div>
             <div className="right">
-              <Button>전송</Button>
+              <Button isPrimary={reply.length > 0} disabled={reply.length === 0}>
+                전송
+              </Button>
             </div>
           </Reply>
         </Modal>
@@ -187,8 +208,6 @@ const Reply = styled.div`
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(adminQnaRequest({ status: 'REGISTERED' }));
-
-  console.log(store.getState().admin);
 
   return { props: {} };
 });

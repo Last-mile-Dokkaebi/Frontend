@@ -10,7 +10,7 @@ import React, { useState, useCallback } from 'react';
  * @param callback callback이 주어질 경우 해당 절차에 따라 값을 처리합니다, <T>타입에 맞추어 값을 return해야됩니다
  * @returns [value, handler]
  */
-const useInput = <T>(initialState: T, callback?: (e: any)=>T): [T, (e: any)=>void] => {
+const useInput = <T>(initialState: T, callback?: (e: any)=>T): [T, (e: any)=>void, (e: T) => void] => {
   const [value, setValue] = useState<T>(initialState)
   
   //callback이 주어질 경우 callback에 맞추어 처리
@@ -20,7 +20,7 @@ const useInput = <T>(initialState: T, callback?: (e: any)=>T): [T, (e: any)=>voi
     setValue(targetValue)
   }, [])
 
-  return [value, handler]
+  return [value, handler, setValue]
 }
 
 export default useInput;

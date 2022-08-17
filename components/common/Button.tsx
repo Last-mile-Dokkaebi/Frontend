@@ -10,15 +10,23 @@ interface ButtonTypes {
    */
   bgcolor?: string;
 
-  children?: React.ReactNode;
+  /**
+   * 버튼색상을 지정
+   * @default false
+   */
+  isPrimary?: boolean;
+
   loading?: boolean;
+
+  children?: React.ReactNode;
+
   [x: string]: any;
 }
 
 // rest로 해서 너무 기본적인 props들은 그냥 처리되도록 변경
-const Button = ({ bgcolor = '#eeeeee', children, loading, ...rest }: ButtonTypes) => {
+const Button = ({ bgcolor = '#eeeeee', isPrimary = false, loading, children, ...rest }: ButtonTypes) => {
   return (
-    <CustomButton bgcolor={bgcolor} disabled={loading} {...rest}>
+    <CustomButton bgcolor={isPrimary ? '#77b8c0' : bgcolor} disabled={loading} {...rest}>
       {loading && (
         <Spinner animation={spin}>
           <FaSpinner fontSize="1rem" />

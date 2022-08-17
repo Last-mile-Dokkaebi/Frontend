@@ -67,8 +67,6 @@ const RentalList = styled.ul`
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(waitRentalRequest());
 
-  console.log(store.getState().admin);
-
   return {
     props: {},
   };
