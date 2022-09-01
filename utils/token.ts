@@ -59,7 +59,9 @@ const getBrowserToken = (): GetBrowserTokenSuccess | null => {
     const cookies: { [index: string]: string } = {};
     document.cookie.split(';').forEach((cookieString) => {
       const [key, value] = cookieString.split('=');
-      cookies[key.trim()] = value.trim();
+      if (typeof key === 'string' && typeof value === 'string') {
+        cookies[key.trim()] = value.trim();
+      }
     });
 
     const accessToken = cookies[ACCESS_TOKEN];
