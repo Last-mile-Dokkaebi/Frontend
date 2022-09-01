@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from 'utils/customAxios';
-import { getBrowserToken } from 'utils/token';
+import { getBrowserToken, requestClientInfo } from 'utils/token';
 import { myInfoRequest } from './user';
 
 /* NONE 렌탈 요청 정보 조회 */
@@ -71,11 +71,7 @@ export const doneRentalRequest = createAsyncThunk<void, DoneRentalRequest, { rej
   'admin/doneRental',
   async ({ rentalId }: DoneRentalRequest, { dispatch, rejectWithValue }) => {
     try {
-      const cookies = getBrowserToken();
-      if (cookies) {
-        const { accessToken, refreshToken } = cookies;
-        await dispatch(myInfoRequest({ accessToken, refreshToken }));
-      }
+      await requestClientInfo(dispatch);
       await axiosInstance.get(`/rental/admin/${rentalId}`);
     } catch (error: any) {
       return rejectWithValue(

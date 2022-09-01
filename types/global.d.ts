@@ -4,31 +4,32 @@
   참조 : https://stackoverflow.com/questions/69403269/global-type-declarations-within-a-nx-and-nextjs-monorepo
 */
 
-interface ScooterState{
-  lat: number;  //Scooter의 latitude
-  lng: number;  //Scooter의 Longitude
-  soc: number;  //Scooter의 SOC
+interface ScooterState {
+  lat: number; //Scooter의 latitude
+  lng: number; //Scooter의 Longitude
+  soc: number; //Scooter의 SOC
 }
 
-interface Qna{
+interface Qna {
   qnaId: number;
   title: string;
-  status: "REGISTERED" | "RESPONDED" | "COMPLETE"
+  status: 'REGISTERED' | 'RESPONDED' | 'COMPLETE';
   contents: Array<Content>;
   writer: string;
 }
 
-interface Content{
+interface Content {
   comment: string;
   date: string;
-  writer: "ADMIN" | "USER"
+  writer: 'ADMIN' | 'USER';
 }
 
-interface RequestRental{
+interface RequestRental {
   rentalId: number;
   identity: string;
   address: string;
   date: string;
   startDate: string;
   endDate: string;
+  bikeNm: string;
 }

@@ -2,6 +2,7 @@ import cookie from 'react-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from './constant';
 import axiosInstance from 'utils/customAxios';
 import { access } from 'fs';
+import { myInfoRequest } from 'actions/user';
 
 /*
   cookie를 이용해서 token들 관리
@@ -73,4 +74,12 @@ const getBrowserToken = (): GetBrowserTokenSuccess | null => {
   }
 };
 
-export { setToken, deleteToken, getBrowserToken };
+const requestClientInfo = async (dispatch: any) => {
+  const cookies = getBrowserToken();
+  if (cookies) {
+    const { accessToken, refreshToken } = cookies;
+    await dispatch(myInfoRequest({ accessToken, refreshToken }));
+  }
+};
+
+export { setToken, deleteToken, getBrowserToken, requestClientInfo };
