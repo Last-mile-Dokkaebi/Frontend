@@ -5,9 +5,16 @@ import wrapper, { RootState } from 'store/configureStore';
 import { waitRentalRequest } from 'actions/admin';
 import { RentalRequestCard } from 'components';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const AdminHome: NextPage = () => {
-  const { waitRental } = useSelector((state: RootState) => state.admin);
+  const { waitRental, doneRentalDone } = useSelector((state: RootState) => state.admin);
+
+  useEffect(() => {
+    if (doneRentalDone) {
+      alert('렌탈 처리를 완료하였습니다');
+    }
+  }, [doneRentalDone]);
 
   return (
     <AdminLayout>
@@ -66,7 +73,6 @@ const RentalList = styled.ul`
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(waitRentalRequest());
-
   return {
     props: {},
   };
