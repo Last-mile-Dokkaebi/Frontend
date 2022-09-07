@@ -10,16 +10,17 @@ import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
 import { DateToString } from 'utils/processing';
 import { useInput } from 'hooks';
 import router from 'next/router';
+import { FullSizeLoading } from 'components';
 
 const help: NextPage = () => {
   const maxLength = 240;
 
   const dispatch = useAppDispatch();
-  const { qnaHistory, replyQnaLoading, replyQnaDone } = useSelector((state: RootState) => state.admin);
+  const { qnaHistory, adminQnaLoading, replyQnaLoading, replyQnaDone } = useSelector((state: RootState) => state.admin);
   const [currentQna, setCurrentQna] = useState<Qna | null>(null);
   const [checked, setChecked] = useState<Array<'REGISTERED' | 'RESPONDED' | 'COMPLETE'>>(['REGISTERED', 'RESPONDED']);
 
-  const replyInput = useRef(null);
+  const replyInput = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [reply, onChangeReply, setReply] = useInput<string>('', (e) => {
     const value = e.target.value;
     if (value.length > maxLength) {
@@ -53,11 +54,7 @@ const help: NextPage = () => {
     setReply('');
     setCurrentQna(qnaHistory[index]);
     await dispatch(openModalAction());
-    try {
-      replyInput.current?.scrollIntoView({ behavior: 'smooth' });
-    } catch (err) {
-      return;
-    }
+    replyInput.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const onClickReply = async () => {
@@ -75,6 +72,7 @@ const help: NextPage = () => {
   return (
     <>
       <AdminLayout>
+        {adminQnaLoading && <FullSizeLoading />}
         <label style={{ fontSize: '1.25rem' }}>
           <input
             type="checkbox"
@@ -105,35 +103,38 @@ const help: NextPage = () => {
           />
           Completed
         </label>
-        <QnaTableWrapper>
-          <QnaTable>
-            <thead>
-              <tr>
-                <th>처리 현황</th>
-                <th>제목</th>
-                <th>등록일자</th>
-                <th>작성자</th>
-              </tr>
-            </thead>
-            <tbody>
-              {qnaHistory.map((qna: Qna, index: number) => {
-                return (
-                  <tr
-                    key={qna.qnaId}
-                    onClick={() => {
-                      onClickDetail(index);
-                    }}
-                  >
-                    <td className={qna.status}>{qna.status}</td>
-                    <td>{qna.title}</td>
-                    <td>{DateToString(new Date(qna.contents[0].date))}</td>
-                    <td>{qna.writer}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </QnaTable>
-        </QnaTableWrapper>
+        {qnaHistory.length === 0 && <Empty>조회 된 QnA가 없습니다</Empty>}
+        {qnaHistory.length !== 0 && (
+          <QnaTableWrapper>
+            <QnaTable>
+              <thead>
+                <tr>
+                  <th>처리 현황</th>
+                  <th>제목</th>
+                  <th>등록일자</th>
+                  <th>작성자</th>
+                </tr>
+              </thead>
+              <tbody>
+                {qnaHistory.map((qna: Qna, index: number) => {
+                  return (
+                    <tr
+                      key={qna.qnaId}
+                      onClick={() => {
+                        onClickDetail(index);
+                      }}
+                    >
+                      <td className={qna.status}>{qna.status}</td>
+                      <td>{qna.title}</td>
+                      <td>{DateToString(new Date(qna.contents[0].date))}</td>
+                      <td>{qna.writer}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </QnaTable>
+          </QnaTableWrapper>
+        )}
       </AdminLayout>
 
       {currentQna !== null && (
@@ -180,6 +181,13 @@ const help: NextPage = () => {
     </>
   );
 };
+
+const Empty = styled.div`
+  margin-top: 1rem;
+  background-color: rgb(255, 255, 255, 0.5);
+  text-align: center;
+  font-size: 1.5rem;
+`;
 
 const QnaTableWrapper = styled.div`
   background-color: white;
