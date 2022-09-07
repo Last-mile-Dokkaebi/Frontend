@@ -147,7 +147,7 @@ const scooter: NextPage = () => {
           <tbody>
             {rentals.map((rental) => {
               return (
-                <tr key={rental.rentalId} className={rental.status}>
+                <tr key={rental.bikeNm} className={rental.status}>
                   <td>{rental.status.substring(0, 1)}</td>
                   <td>{rental.bikeNm}</td>
                   <td>{rental.date ?? '·'}</td>
