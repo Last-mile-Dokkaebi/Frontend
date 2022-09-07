@@ -73,7 +73,7 @@ const help: NextPage = () => {
     <>
       <AdminLayout>
         {adminQnaLoading && <FullSizeLoading />}
-        <label style={{ fontSize: '1.25rem' }}>
+        <label style={{ fontSize: '1.25rem', color: 'grey' }}>
           <input
             type="checkbox"
             onChange={(e) => {
@@ -83,7 +83,7 @@ const help: NextPage = () => {
           />
           Registered
         </label>
-        <label style={{ fontSize: '1.25rem' }}>
+        <label style={{ fontSize: '1.25rem', color: 'orange' }}>
           <input
             type="checkbox"
             onChange={(e) => {
@@ -93,7 +93,7 @@ const help: NextPage = () => {
           />
           Responded
         </label>
-        <label style={{ fontSize: '1.25rem' }}>
+        <label style={{ fontSize: '1.25rem', color: '#558287' }}>
           <input
             type="checkbox"
             onChange={(e) => {
@@ -244,6 +244,7 @@ const History = styled.div`
     justify-content: start;
 
     .content {
+      max-width: 80%;
       background-color: rgb(119, 184, 192, 0.2);
       padding: 0.5rem;
       border: 2px solid rgba(119, 184, 192, 0.7);
@@ -264,6 +265,7 @@ const History = styled.div`
     justify-content: end;
 
     .content {
+      max-width: 80%;
       background-color: rgb(250, 250, 250);
       padding: 0.5rem;
       border: 2px solid rgba(119, 184, 192, 0.7);

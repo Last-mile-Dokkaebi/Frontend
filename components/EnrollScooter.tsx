@@ -2,10 +2,10 @@ import { enrollScooterRequest } from 'actions/admin';
 import { logoutAction, myInfoRequest } from 'actions/user';
 import { Button, CustomInput } from 'components/common';
 import { useInput } from 'hooks';
+import router from 'next/router';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'store/configureStore';
-import { getBrowserToken } from 'utils/token';
 
 const EnrollScooter = () => {
   const maxLength = 4; //바이크 번호의 자리수를 정함
@@ -30,6 +30,7 @@ const EnrollScooter = () => {
   useEffect(() => {
     if (enrollScooterDone) {
       alert(`${bikeNumber}를 성공적으로 등록하였습니다`);
+      router.reload();
     }
   }, [enrollScooterDone]);
 
