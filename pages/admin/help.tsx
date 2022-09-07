@@ -3,7 +3,7 @@ import { openModalAction } from 'actions/system';
 import { Button, CustomInput, Modal } from 'components/common';
 import { AdminLayout } from 'components/layout';
 import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
@@ -17,7 +17,9 @@ const help: NextPage = () => {
   const dispatch = useAppDispatch();
   const { qnaHistory, replyQnaLoading, replyQnaDone } = useSelector((state: RootState) => state.admin);
   const [currentQna, setCurrentQna] = useState<Qna | null>(null);
+  const [checked, setChecked] = useState<Array<'REGISTERED' | 'RESPONDED' | 'COMPLETE'>>(['REGISTERED', 'RESPONDED']);
 
+  const replyInput = useRef(null);
   const [reply, onChangeReply, setReply] = useInput<string>('', (e) => {
     const value = e.target.value;
     if (value.length > maxLength) {
@@ -35,10 +37,27 @@ const help: NextPage = () => {
     }
   }, [replyQnaDone]);
 
-  const onClickDetail = (index: number) => {
+  const onChangeCheck = async (target: boolean, value: 'REGISTERED' | 'RESPONDED' | 'COMPLETE') => {
+    let next;
+    if (target) {
+      next = [...checked, value].sort();
+    } else {
+      next = checked.filter((check) => check !== value);
+    }
+
+    setChecked(next);
+    await dispatch(adminQnaRequest({ status: next }));
+  };
+
+  const onClickDetail = async (index: number) => {
     setReply('');
     setCurrentQna(qnaHistory[index]);
-    dispatch(openModalAction());
+    await dispatch(openModalAction());
+    try {
+      replyInput.current?.scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      return;
+    }
   };
 
   const onClickReply = async () => {
@@ -56,6 +75,36 @@ const help: NextPage = () => {
   return (
     <>
       <AdminLayout>
+        <label style={{ fontSize: '1.25rem' }}>
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              onChangeCheck(e.currentTarget.checked, 'REGISTERED');
+            }}
+            checked={checked.includes('REGISTERED')}
+          />
+          Registered
+        </label>
+        <label style={{ fontSize: '1.25rem' }}>
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              onChangeCheck(e.currentTarget.checked, 'RESPONDED');
+            }}
+            checked={checked.includes('RESPONDED')}
+          />
+          Responded
+        </label>
+        <label style={{ fontSize: '1.25rem' }}>
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              onChangeCheck(e.currentTarget.checked, 'COMPLETE');
+            }}
+            checked={checked.includes('COMPLETE')}
+          />
+          Completed
+        </label>
         <QnaTableWrapper>
           <QnaTable>
             <thead>
@@ -97,7 +146,11 @@ const help: NextPage = () => {
           <History>
             {currentQna.contents.map((content: Content, index: number) => {
               return (
-                <div className={content.writer} key={index}>
+                <div
+                  className={content.writer}
+                  key={index}
+                  ref={index + 1 === currentQna.contents.length ? replyInput : null}
+                >
                   <div className="content">
                     <div className="writer">{content.writer === 'USER' ? currentQna.writer : '관리자'}</div>
                     <div>{content.comment}</div>
