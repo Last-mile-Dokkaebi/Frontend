@@ -1,4 +1,4 @@
-import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
+import { ActionReducerMapBuilder, createSlice, current } from '@reduxjs/toolkit';
 import {
   adminQnaRequest,
   doneRentalRequest,
@@ -6,8 +6,10 @@ import {
   enrollScooterRequest,
   noneRentalRequest,
   rentalRentalRequest,
+  replyQnaRequest,
   waitRentalRequest,
 } from 'actions/admin';
+import { DateToString } from 'utils/processing';
 
 interface AdminState {
   noneRental: Array<RequestRental>; //NONE 렌탈 정보
@@ -45,6 +47,10 @@ interface AdminState {
   adminQnaLoading: boolean;
   adminQnaDone: boolean;
   adminQnaError: null | string;
+
+  replyQnaLoading: boolean;
+  replyQnaDone: boolean;
+  replyQnaError: null | string;
 }
 
 export const initialState: AdminState = {
@@ -83,6 +89,10 @@ export const initialState: AdminState = {
   adminQnaLoading: false,
   adminQnaDone: false,
   adminQnaError: null,
+
+  replyQnaLoading: false,
+  replyQnaDone: false,
+  replyQnaError: null,
 };
 
 const adminSlice = createSlice({
@@ -209,6 +219,21 @@ const adminSlice = createSlice({
       .addCase(adminQnaRequest.rejected, (state, action) => {
         state.adminQnaLoading = false;
         state.adminQnaError = action.payload ?? '문의 사항 조회를 실패했습니다';
+      })
+
+      //문의 사항 답변
+      .addCase(replyQnaRequest.pending, (state) => {
+        state.replyQnaLoading = true;
+        state.replyQnaDone = false;
+        state.replyQnaError = null;
+      })
+      .addCase(replyQnaRequest.fulfilled, (state) => {
+        state.replyQnaLoading = false;
+        state.replyQnaDone = true;
+      })
+      .addCase(replyQnaRequest.rejected, (state, action) => {
+        state.replyQnaLoading = false;
+        state.replyQnaError = action.payload ?? '문의 사항 답변에 실패하였습니다';
       }),
 });
 

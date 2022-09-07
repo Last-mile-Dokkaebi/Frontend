@@ -107,7 +107,7 @@ export const enrollScooterRequest = createAsyncThunk<void, EnrollScooterRequest,
 
 /* 문의 사항 조회 */
 interface AdminQnaRequest {
-  status: 'REGISTERED' | 'RESPONDED' | 'COMPLETE';
+  status: Array<'REGISTERED' | 'RESPONDED' | 'COMPLETE'>;
 }
 
 interface AdminQnaSuccess {
@@ -117,18 +117,51 @@ interface AdminQnaSuccess {
 export const adminQnaRequest = createAsyncThunk<AdminQnaSuccess, AdminQnaRequest, { rejectValue: string }>(
   'admin/qnaHistory',
   async ({ status }: AdminQnaRequest, { dispatch, rejectWithValue }) => {
+    console.log(status);
     try {
       const cookies = getBrowserToken();
       if (cookies) {
         const { accessToken, refreshToken } = cookies;
         await dispatch(myInfoRequest({ accessToken, refreshToken }));
       }
-
-      const response = await axiosInstance.get<AdminQnaSuccess>(`/help/qna/admin?status=${status}`);
-      return response.data;
+      const qna = [];
+      for (let s of status) {
+        const response = await axiosInstance.get<AdminQnaSuccess>(`/help/qna/admin?status=${s}`);
+        qna.push(...response.data.qnaHistory);
+      }
+      return { qnaHistory: qna };
     } catch (error: any) {
       return rejectWithValue(
         typeof error.response.data === 'string' ? error.response.data : '문의사항 조회를 실패하였습니다',
+      );
+    }
+  },
+);
+
+/* 문의 사항 조회 */
+interface ReplyQnaRequest {
+  qnaId: number;
+  comment: string;
+}
+
+interface ReplyQnaSuccess {
+  qnaId: number;
+  comment: string;
+}
+
+export const replyQnaRequest = createAsyncThunk<void, ReplyQnaRequest, { rejectValue: string }>(
+  'admin/replyQna',
+  async ({ qnaId, comment }: ReplyQnaRequest, { dispatch, rejectWithValue }) => {
+    try {
+      const cookies = getBrowserToken();
+      if (cookies) {
+        const { accessToken, refreshToken } = cookies;
+        await dispatch(myInfoRequest({ accessToken, refreshToken }));
+      }
+      await axiosInstance.post<void>(`/help/qna/${qnaId}`, { comment });
+    } catch (error: any) {
+      return rejectWithValue(
+        typeof error.response.data === 'string' ? error.response.data : '문의사항 답변에 실패하였습니다',
       );
     }
   },

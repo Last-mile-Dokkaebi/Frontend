@@ -1,20 +1,21 @@
-import { adminQnaRequest } from 'actions/admin';
+import { adminQnaRequest, replyQnaRequest } from 'actions/admin';
 import { openModalAction } from 'actions/system';
 import { Button, CustomInput, Modal } from 'components/common';
 import { AdminLayout } from 'components/layout';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
 import { DateToString } from 'utils/processing';
 import { useInput } from 'hooks';
+import router from 'next/router';
 
 const help: NextPage = () => {
   const maxLength = 240;
 
   const dispatch = useAppDispatch();
-  const { qnaHistory } = useSelector((state: RootState) => state.admin);
+  const { qnaHistory, replyQnaLoading, replyQnaDone } = useSelector((state: RootState) => state.admin);
   const [currentQna, setCurrentQna] = useState<Qna | null>(null);
 
   const [reply, onChangeReply, setReply] = useInput<string>('', (e) => {
@@ -27,10 +28,29 @@ const help: NextPage = () => {
     }
   });
 
+  useEffect(() => {
+    if (replyQnaDone) {
+      alert('문의사항에 답변을 완료하였습니다');
+      router.reload();
+    }
+  }, [replyQnaDone]);
+
   const onClickDetail = (index: number) => {
     setReply('');
     setCurrentQna(qnaHistory[index]);
     dispatch(openModalAction());
+  };
+
+  const onClickReply = async () => {
+    const qnaId = currentQna?.qnaId;
+
+    if (qnaId === undefined) {
+      alert('잘못 된 접근입니다');
+      return;
+    }
+    if (confirm(`"${reply}"\n로 답변을 등록합니다`)) {
+      await dispatch(replyQnaRequest({ qnaId, comment: reply }));
+    }
   };
 
   return (
@@ -92,7 +112,12 @@ const help: NextPage = () => {
               <CustomInput placeholder="문의 답변" onChange={onChangeReply} value={reply} />
             </div>
             <div className="right">
-              <Button isPrimary={reply.length > 0} disabled={reply.length === 0}>
+              <Button
+                isPrimary={reply.length > 0}
+                disabled={reply.length === 0}
+                onClick={onClickReply}
+                loading={replyQnaLoading}
+              >
                 전송
               </Button>
             </div>
@@ -148,6 +173,10 @@ const QnaTable = styled.table`
 
 const History = styled.div`
   width: 80vw;
+
+  & > div {
+    margin-bottom: 0.25rem;
+  }
 
   .ADMIN {
     display: flex;
@@ -207,7 +236,7 @@ const Reply = styled.div`
 `;
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  await store.dispatch(adminQnaRequest({ status: 'REGISTERED' }));
+  await store.dispatch(adminQnaRequest({ status: ['REGISTERED', 'RESPONDED'] }));
 
   return { props: {} };
 });

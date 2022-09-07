@@ -1,4 +1,5 @@
 import { driveRentalRequest, noneRentalRequest, rentalRentalRequest, waitRentalRequest } from 'actions/admin';
+import { myInfoRequest } from 'actions/user';
 import { EnrollScooter } from 'components';
 import { AdminLayout } from 'components/layout';
 import { NextPage } from 'next';
@@ -29,12 +30,12 @@ const scooter: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  await store.dispatch(noneRentalRequest());
-  await store.dispatch(waitRentalRequest());
-  await store.dispatch(rentalRentalRequest());
-  await store.dispatch(driveRentalRequest());
-
-  console.log(store.getState().admin);
+  await Promise.all([
+    store.dispatch(noneRentalRequest()),
+    store.dispatch(waitRentalRequest()),
+    store.dispatch(rentalRentalRequest()),
+    store.dispatch(driveRentalRequest()),
+  ]);
 
   return {
     props: {},
