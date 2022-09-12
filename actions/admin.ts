@@ -138,13 +138,8 @@ export const adminQnaRequest = createAsyncThunk<AdminQnaSuccess, AdminQnaRequest
   },
 );
 
-/* 문의 사항 조회 */
+/* 문의 사항 답변 */
 interface ReplyQnaRequest {
-  qnaId: number;
-  comment: string;
-}
-
-interface ReplyQnaSuccess {
   qnaId: number;
   comment: string;
 }

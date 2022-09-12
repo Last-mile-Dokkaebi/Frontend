@@ -139,7 +139,6 @@ const ModalWrapper = styled.div<ModalWrapperTypes>`
   .modal-action-wrapper {
     display: flex;
     justify-content: center;
-    padding: 1rem;
     .modal-action-btn {
       border-radius: 4px;
       background-color: #eeeeee;

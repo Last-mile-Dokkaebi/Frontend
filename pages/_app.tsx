@@ -9,13 +9,15 @@ import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
-import { myInfoRequest } from 'actions/user';
+import { logoutAction, myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import { getBrowserToken, setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { accessToken, refreshToken, reissueDone, logoutDone } = useSelector((state: RootState) => state.user);
+  const { accessToken, refreshToken, reissueDone, logoutDone, myInfoError } = useSelector(
+    (state: RootState) => state.user,
+  );
   const { errorMessage, errorCount } = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
 
@@ -50,6 +52,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       alert(errorMessage);
     }
   }, [errorCount]);
+
+  useEffect(() => {
+    if (myInfoError) {
+      alert('토큰만료로 로그아웃');
+      dispatch(logoutAction());
+    }
+  });
 
   return (
     <>
