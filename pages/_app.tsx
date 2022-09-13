@@ -13,6 +13,7 @@ import { logoutAction, myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import { getBrowserToken, setToken } from 'utils/token';
+import router from 'next/router';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { accessToken, refreshToken, reissueDone, logoutDone, myInfoError } = useSelector(
@@ -57,6 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (myInfoError) {
       alert('토큰만료로 로그아웃');
       dispatch(logoutAction());
+      router.replace('/member');
     }
   });
 
