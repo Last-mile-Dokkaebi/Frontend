@@ -94,6 +94,10 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
   const isPrivate = !path.startsWith('/member');
   const isAdminOnly = path.startsWith('/admin');
 
+  //기존의 요청값들 지우기
+  delete axiosInstance.defaults.headers.common['Authorization'];
+  delete axiosInstance.defaults.headers.common['refresh_token'];
+
   if (accessToken && refreshToken) {
     //로그인 하였던 기록이 있으면 -> 로그인 유지 절차 실행
     if (isPrivate) {
