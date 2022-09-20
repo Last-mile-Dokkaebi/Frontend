@@ -161,7 +161,6 @@ const userSlice = createSlice({
       .addCase(reissueRequest.rejected, (state, action) => {
         state.reissueLoading = false;
         state.reissueError = action.payload ?? '무언가의 에러';
-        logoutAction(); //토큰 재발급에 실패할 경우 로그아웃
       }),
 });
 

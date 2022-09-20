@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
 import { AppLayout } from 'components/layout';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { logoutAction } from 'actions/user';
-import { RootState } from 'store/configureStore';
+import { RootState, useAppDispatch } from 'store/configureStore';
 import { Button } from 'components/common';
 import { FaQuestionCircle, FaUserAlt, FaRegMap } from 'react-icons/fa';
 import { MdOutlineQuestionAnswer } from 'react-icons/md';
@@ -11,13 +11,22 @@ import { BiSupport } from 'react-icons/bi';
 import { BsCreditCard2Back } from 'react-icons/bs';
 import Router from 'next/router';
 import { deleteToken } from 'utils/token';
+import { scooterReturnRequest } from 'actions/bike';
+import { useEffect } from 'react';
 
 const mypage: NextPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { identity } = useSelector((state: RootState) => state.user);
+  const { scooterReturnDone } = useSelector((state: RootState) => state.bike);
+
+  useEffect(() => {
+    if (scooterReturnDone) {
+      alert('반납 처리를 완료하였습니다');
+    }
+  }, [scooterReturnDone]);
+
   const onClickLogout = () => {
     dispatch(logoutAction());
-    deleteToken();
   };
 
   const onClickRentalHistory = () => {
@@ -29,6 +38,11 @@ const mypage: NextPage = () => {
   const onClickQNA = () => {
     Router.push('/support/qna/list');
   };
+
+  const onClickReturn = async () => {
+    await dispatch(scooterReturnRequest());
+  };
+
   return (
     <>
       <AppLayout>
@@ -67,6 +81,7 @@ const mypage: NextPage = () => {
               <BiSupport />
               고객 문의 게시판
             </li>
+            <li onClick={onClickReturn}>스쿠터 반납처리</li>
           </ul>
         </ContentBox>
         <Button onClick={onClickLogout}>로그아웃</Button>

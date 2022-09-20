@@ -83,11 +83,6 @@ export const scooterRentalRequest = createAsyncThunk<
   { rejectValue: string }
 >('bike/scooterRental', async (data, { dispatch, rejectWithValue }) => {
   try {
-    // const cookies = getBrowserToken();
-    // if (cookies) {
-    //   const { accessToken, refreshToken } = cookies;
-    //   await dispatch(myInfoRequest({ accessToken, refreshToken }));
-    // }
     await requestClientInfo(dispatch);
 
     const startDate = DateToString(data.startDate);
@@ -101,3 +96,17 @@ export const scooterRentalRequest = createAsyncThunk<
     return rejectWithValue(error.response.data.description ?? '대여 요청을 실패하였습니다');
   }
 });
+
+/* 스쿠터 반납 요청 */
+export const scooterReturnRequest = createAsyncThunk<void, void, { rejectValue: string }>(
+  'bike/scooterReturn',
+  async (_: void, { dispatch, rejectWithValue }) => {
+    try {
+      await requestClientInfo(dispatch);
+
+      await axiosInstance.post('/rental/return');
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.description ?? error.response.data ?? '반납 요청을 실패하였습니다');
+    }
+  },
+);
