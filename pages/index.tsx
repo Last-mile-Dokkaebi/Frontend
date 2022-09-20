@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Rental, BikeStateMap, BikeRidingMap, Rentaling } from 'components';
 import wrapper, { RootState } from 'store/configureStore';
 import { scooterStateRequest } from 'actions/bike';
+import { useEffect } from 'react';
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
 
@@ -20,6 +21,15 @@ interface HomeTypes {
 
 const Home: NextPage<HomeTypes> = () => {
   const { status } = useSelector((state: RootState) => state.bike);
+  const { scooterRentalDone } = useSelector((state: RootState) => state.bike);
+
+  useEffect(() => {
+    if (scooterRentalDone) {
+      alert('스쿠터 대여신청을 성공하였습니다');
+      //이 부분은 임시로 새로고침 하기
+      window.location.href = '/';
+    }
+  }, [scooterRentalDone]);
 
   return (
     <div>

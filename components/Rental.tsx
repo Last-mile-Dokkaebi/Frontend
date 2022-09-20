@@ -30,20 +30,6 @@ const Rental = () => {
     }
   }, [startDate, endDate]);
 
-  useEffect(() => {
-    if (rentalPriceError) {
-      alert(rentalPriceError);
-    }
-  }, [rentalPriceError]);
-
-  useEffect(() => {
-    if (scooterRentalDone) {
-      alert('스쿠터 대여신청을 성공하였습니다');
-      //이 부분은 임시로 새로고침 하기
-      window.location.href = '/';
-    }
-  }, [scooterRentalDone]);
-
   const onChangeStartDate = (e: Date) => {
     const target = new Date(e.getFullYear(), e.getMonth(), e.getDate());
     const current = new Date();
