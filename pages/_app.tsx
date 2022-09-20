@@ -120,11 +120,11 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
       res.end();
     }
   } else {
-    //로그인 하였던 기록이 없으면
-    // if (isPrivate) {
-    res.writeHead(302, { Location: '/member' });
-    res.end();
-    // }
+    // 로그인 하였던 기록이 없으면
+    if (isPrivate) {
+      res.writeHead(302, { Location: '/member' });
+      res.end();
+    }
   }
 });
 
