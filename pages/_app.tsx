@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (cookies !== null) {
       const { accessToken, refreshToken } = cookies;
       axiosInstance.defaults.headers.common.Authorization = accessToken;
+      axiosInstance.defaults.headers.common.refresh_token = refreshToken;
     }
   }, []);
 
@@ -99,6 +100,7 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
       //private 페이지 이면 내 정보를 요청
 
       axiosInstance.defaults.headers.common.Authorization = accessToken;
+      axiosInstance.defaults.headers.common.refresh_token = refreshToken;
       await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
       const auth = store.getState().user.auth;
       const isAdmin = auth === 'ADMIN';
