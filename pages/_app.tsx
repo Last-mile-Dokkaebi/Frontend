@@ -58,8 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (myInfoError) {
       alert('토큰만료로 로그아웃');
       dispatch(logoutAction());
-      router.replace('/member');
-      deleteToken();
+      window.location.href = '/member';
     }
   }, [myInfoError]);
 
