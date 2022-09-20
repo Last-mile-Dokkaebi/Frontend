@@ -18,7 +18,7 @@ const Rental = () => {
   const [startDateString, setStartDateString] = useState<string>(DateToString(startDate));
   const [endDateString, setEndDateString] = useState<string>(DateToString(endDate));
 
-  const { rentalPrice, rentalPriceError, scooterRentalLoading, scooterRentalDone, scooterRentalError } = useSelector(
+  const { rentalPrice, rentalPriceError, scooterRentalLoading, scooterRentalDone } = useSelector(
     (state: RootState) => state.bike,
   );
 
@@ -39,6 +39,8 @@ const Rental = () => {
   useEffect(() => {
     if (scooterRentalDone) {
       alert('스쿠터 대여신청을 성공하였습니다');
+      //이 부분은 임시로 새로고침 하기
+      window.location.href = '/';
     }
   }, [scooterRentalDone]);
 
@@ -86,7 +88,7 @@ const Rental = () => {
 주소 : ${address}\n위 정보로 대여를 신청하시겠습니까?`,
     );
     if (dialog) {
-      dispatch(scooterRentalRequest({ price: rentalPrice, startDate, endDate }));
+      await dispatch(scooterRentalRequest({ price: rentalPrice, startDate, endDate }));
     } else {
       return;
     }
