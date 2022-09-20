@@ -1,19 +1,9 @@
-import {
-  AsyncThunkAction,
-  configureStore,
-  getDefaultMiddleware,
-  isAsyncThunkAction,
-  isPending,
-  isRejectedWithValue,
-  Middleware,
-  MiddlewareAPI,
-} from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware, isRejectedWithValue, Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
 import type { AnyAction } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import rootReducer from 'reducers';
 import { useDispatch } from 'react-redux';
 import { setErrorAction } from 'actions/system';
-import { myInfoRequest } from 'actions/user';
 
 const isDev = process.env.NODE_ENV === 'development';
 

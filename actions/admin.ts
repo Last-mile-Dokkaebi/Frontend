@@ -12,7 +12,9 @@ export const noneRentalRequest = createAsyncThunk<Array<RequestRental>, void, { 
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        typeof error.response.data === 'string' ? error.response.data : '렌탈 요청 정보를 읽어오는 데 실패하였습니다',
+        typeof error.response.data === 'string'
+          ? error.response.data
+          : 'None렌탈 요청 정보를 읽어오는 데 실패하였습니다',
       );
     }
   },
@@ -27,7 +29,9 @@ export const waitRentalRequest = createAsyncThunk<Array<RequestRental>, void, { 
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        typeof error.response.data === 'string' ? error.response.data : '렌탈 요청 정보를 읽어오는 데 실패하였습니다',
+        typeof error.response.data === 'string'
+          ? error.response.data
+          : 'Wait렌탈 요청 정보를 읽어오는 데 실패하였습니다',
       );
     }
   },
@@ -42,7 +46,9 @@ export const rentalRentalRequest = createAsyncThunk<Array<RequestRental>, void, 
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        typeof error.response.data === 'string' ? error.response.data : '렌탈 요청 정보를 읽어오는 데 실패하였습니다',
+        typeof error.response.data === 'string'
+          ? error.response.data
+          : 'Rental렌탈 요청 정보를 읽어오는 데 실패하였습니다',
       );
     }
   },
@@ -57,7 +63,9 @@ export const driveRentalRequest = createAsyncThunk<Array<RequestRental>, void, {
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        typeof error.response.data === 'string' ? error.response.data : '렌탈 요청 정보를 읽어오는 데 실패하였습니다',
+        typeof error.response.data === 'string'
+          ? error.response.data
+          : 'Drive렌탈 요청 정보를 읽어오는 데 실패하였습니다',
       );
     }
   },
@@ -117,7 +125,6 @@ interface AdminQnaSuccess {
 export const adminQnaRequest = createAsyncThunk<AdminQnaSuccess, AdminQnaRequest, { rejectValue: string }>(
   'admin/qnaHistory',
   async ({ status }: AdminQnaRequest, { dispatch, rejectWithValue }) => {
-    console.log(status);
     try {
       const cookies = getBrowserToken();
       if (cookies) {
