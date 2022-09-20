@@ -19,9 +19,6 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
       const response = await axiosInstance.get('/scooter/state');
       return response.data;
     } catch (error: any) {
-      // console.log(error.response)
-      // console.log(error.request._header)
-      // console.log(error.response.data)
       return rejectWithValue(
         typeof error.response.data === 'string'
           ? error.response.data

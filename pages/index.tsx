@@ -45,7 +45,6 @@ const Home: NextPage<HomeTypes> = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(scooterStateRequest());
-  // console.log(store.getState());
   return {
     props: {},
   };

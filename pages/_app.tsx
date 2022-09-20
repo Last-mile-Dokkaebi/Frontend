@@ -12,8 +12,7 @@ import { NextPageContext } from 'next';
 import { logoutAction, myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
-import { deleteToken, getBrowserToken, setToken } from 'utils/token';
-import router from 'next/router';
+import { getBrowserToken, setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { accessToken, refreshToken, reissueDone, logoutDone, myInfoError } = useSelector(

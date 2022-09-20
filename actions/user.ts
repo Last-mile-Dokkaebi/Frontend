@@ -126,7 +126,6 @@ export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, {
     } catch (error: any) {
       //토큰 재발급 실패로 로그아웃
       delete axiosInstance.defaults.headers.common?.refresh_token;
-      dispatch(logoutAction());
       return rejectWithValue('로그아웃 되었습니다');
     }
   },

@@ -1,8 +1,6 @@
 import { enrollScooterRequest } from 'actions/admin';
-import { logoutAction, myInfoRequest } from 'actions/user';
 import { Button, CustomInput } from 'components/common';
 import { useInput } from 'hooks';
-import router from 'next/router';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'store/configureStore';
