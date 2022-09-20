@@ -30,7 +30,7 @@ const EnrollScooter = () => {
   useEffect(() => {
     if (enrollScooterDone) {
       alert(`${bikeNumber}를 성공적으로 등록하였습니다`);
-      router.reload();
+      // router.reload();
     }
   }, [enrollScooterDone]);
 
