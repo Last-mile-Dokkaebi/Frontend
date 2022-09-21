@@ -73,7 +73,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       // alert('토큰만료로 로그아웃');
       dispatch(logoutAction());
       window.location.href = '/member';
-      restoreError;
+      restoreError();
+      console.log('토큰만료로 로그아웃');
     }
   }, [myInfoError]);
 
