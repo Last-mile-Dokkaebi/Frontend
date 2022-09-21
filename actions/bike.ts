@@ -1,9 +1,8 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ACCESS_TOKEN } from 'utils/constant';
 import axiosInstance from 'utils/customAxios';
 import { DateToString } from 'utils/processing';
-import { getBrowserToken, requestClientInfo } from 'utils/token';
-import { myInfoRequest } from './user';
+import { requestClientInfo } from 'utils/token';
 
 /* 스쿠터 정보 요청 */
 interface ScooterStateSuccess {

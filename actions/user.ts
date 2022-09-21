@@ -113,6 +113,7 @@ interface ReissueRequest {
 export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, { rejectValue: string }>(
   'user/reissue',
   async ({ accessToken, refreshToken }, { dispatch, rejectWithValue }) => {
+    delete axiosInstance.defaults.headers.common.refresh_token;
     axiosInstance.defaults.headers.common.refresh_token = refreshToken; //Refresh Token을 헤더에 삽입
     try {
       const response = await axiosInstance.post<ReissueSuccess>('/member/reissue');
@@ -125,6 +126,7 @@ export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, {
       return { accessToken: newAccessToken, refreshToken: newRefreshToken };
     } catch (error: any) {
       //토큰 재발급 실패로 로그아웃
+      delete axiosInstance.defaults.headers.common?.Authorization;
       delete axiosInstance.defaults.headers.common?.refresh_token;
       return rejectWithValue('로그아웃 되었습니다');
     }

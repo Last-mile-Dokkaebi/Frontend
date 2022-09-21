@@ -1,5 +1,4 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from 'utils/customAxios';
 import { getBrowserToken } from 'utils/token';
 import { myInfoRequest } from './user';
