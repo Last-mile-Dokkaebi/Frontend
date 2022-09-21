@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (myInfoError) {
-      alert('토큰만료로 로그아웃');
+      // alert('토큰만료로 로그아웃');
       dispatch(logoutAction());
       window.location.href = '/member';
     }
