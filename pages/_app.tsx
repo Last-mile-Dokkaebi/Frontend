@@ -56,10 +56,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [logoutDone]);
 
+  const restoreError = async () => {
+    await dispatch(deleteErrorAction());
+  };
+
   useEffect(() => {
     if (errorMessage && errorCount) {
       console.log(errorCount, ':', errorMessage);
       alert(errorMessage);
+      restoreError();
     }
   }, [errorCount]);
 
@@ -68,6 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       // alert('토큰만료로 로그아웃');
       dispatch(logoutAction());
       window.location.href = '/member';
+      restoreError;
     }
   }, [myInfoError]);
 
