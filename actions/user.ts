@@ -24,8 +24,9 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, MyInfoRequest, { re
       const { errorCode, description } = error.response.data;
       if (errorCode === 302) {
         //Access Token 만료로 다시 발급
+        // try {
+        await dispatch(reissueRequest({ accessToken, refreshToken })); //재발급 요청
         try {
-          await dispatch(reissueRequest({ accessToken, refreshToken })); //재발급 요청
           const response = await axiosInstance.get('/member');
           return response.data;
         } catch (error) {
@@ -126,8 +127,6 @@ export const reissueRequest = createAsyncThunk<ReissueSuccess, ReissueRequest, {
       return { accessToken: newAccessToken, refreshToken: newRefreshToken };
     } catch (error: any) {
       //토큰 재발급 실패로 로그아웃
-      delete axiosInstance.defaults.headers.common?.Authorization;
-      delete axiosInstance.defaults.headers.common?.refresh_token;
       return rejectWithValue('로그아웃 되었습니다');
     }
   },

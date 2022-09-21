@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from 'utils/customAxios';
 import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
-import { setErrorAction } from 'actions/system';
+import { deleteErrorAction, setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
 import { logoutAction, myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
@@ -15,7 +15,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import { getBrowserToken, setToken } from 'utils/token';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { accessToken, refreshToken, reissueDone, logoutDone, myInfoError } = useSelector(
+  const { accessToken, refreshToken, reissueDone, logoutDone, myInfoError, reissueError } = useSelector(
     (state: RootState) => state.user,
   );
   const { errorMessage, errorCount } = useSelector((state: RootState) => state.system);
@@ -41,6 +41,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, [reissueDone]);
+
+  useEffect(() => {
+    if (reissueError) {
+      delete axiosInstance.defaults.headers.common?.Authorization;
+      delete axiosInstance.defaults.headers.common?.refresh_token;
+      dispatch(logoutAction());
+    }
+  }, [reissueError]);
 
   useEffect(() => {
     if (logoutDone) {
@@ -83,6 +91,8 @@ interface MyContext extends NextPageContext {
 }
 
 MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: MyContext) => {
+  await store.dispatch(deleteErrorAction());
+
   console.log('페이지 이동 됨');
   const res = context.ctx.res;
   const allCookies = cookies(context.ctx);
