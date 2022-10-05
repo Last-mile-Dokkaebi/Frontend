@@ -2,12 +2,16 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { Button } from 'components/common';
 import React from 'react';
-import { endRidingApi } from 'pages/api/scooter';
 import { DateToString, TimeToString } from 'utils/processing';
-import { useRouter } from 'next/router';
+import { RootState, useAppDispatch } from 'store/configureStore';
+import { useSelector } from 'react-redux';
+import { scooterFinishRequest } from 'actions/bike';
 
 const BikeRidingMap = () => {
-  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { bikeNumber } = useSelector((state: RootState) => state.bike);
+
+  const router = useAppDispatch();
   /* 테스트용 더미 데이터*/
   const lat = 36.144765;
   const lng = 128.392134;
@@ -16,16 +20,8 @@ const BikeRidingMap = () => {
   const endTime = TimeToString(new Date());
   /*---------------------*/
 
-  const onClickEndRiding = () => {
-    try {
-      //API호출 부 필요
-      // async endRidingApi()
-      // setIsRiding(false); //주행중이 아니라고 바꿈
-      alert('주행을 종료합니다');
-      router.push('/'); //새로고침
-    } catch (err) {
-      alert(err);
-    }
+  const onClickEndRiding = async () => {
+    await dispatch(scooterFinishRequest({ identity: bikeNumber, act: 'off' }));
   };
   return (
     <Wrapper>

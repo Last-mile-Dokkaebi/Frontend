@@ -9,6 +9,7 @@ interface ScooterStateSuccess {
   status: 'NONE' | 'WAIT' | 'RENTAL' | 'DRIVE';
   startDate: string;
   endDate: string;
+  bikeNum: string;
 }
 
 export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, { rejectValue: string }>(
@@ -92,6 +93,42 @@ export const scooterRentalRequest = createAsyncThunk<
     return rejectWithValue(error.response.data.description ?? '대여 요청을 실패하였습니다');
   }
 });
+
+/* 스쿠터 주행시작 요청 */
+interface ScooterStartRequest {
+  act: 'on';
+  identity: string;
+}
+
+export const scooterStartRequest = createAsyncThunk<void, ScooterStartRequest, { rejectValue: string }>(
+  'bike/scooterStart',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      await requestClientInfo(dispatch);
+      await axiosInstance.post('/api/scooter', data);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.description ?? '스쿠터 주행시작을 실패하였습니다');
+    }
+  },
+);
+
+/* 스쿠터 주행종료 요청 */
+interface ScooterFinishRequest {
+  act: 'off';
+  identity: string;
+}
+
+export const scooterFinishRequest = createAsyncThunk<void, ScooterFinishRequest, { rejectValue: string }>(
+  'bike/scooterFinish',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      await requestClientInfo(dispatch);
+      await axiosInstance.post('/api/scooter', data);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.description ?? '스쿠터 주행종료를 실패하였습니다');
+    }
+  },
+);
 
 /* 스쿠터 반납 요청 */
 export const scooterReturnRequest = createAsyncThunk<void, void, { rejectValue: string }>(

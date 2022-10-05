@@ -21,7 +21,7 @@ interface HomeTypes {
 
 const Home: NextPage<HomeTypes> = () => {
   const { status } = useSelector((state: RootState) => state.bike);
-  const { scooterRentalDone } = useSelector((state: RootState) => state.bike);
+  const { scooterRentalDone, scooterStartDone, scooterFinishDone } = useSelector((state: RootState) => state.bike);
 
   useEffect(() => {
     if (scooterRentalDone) {
@@ -30,6 +30,20 @@ const Home: NextPage<HomeTypes> = () => {
       window.location.href = '/';
     }
   }, [scooterRentalDone]);
+
+  useEffect(() => {
+    if (scooterStartDone) {
+      alert('주행을 시작합니다');
+      window.location.href = '/';
+    }
+  }, [scooterStartDone]);
+
+  useEffect(() => {
+    if (scooterFinishDone) {
+      alert('주행을 종료합니다');
+      window.location.href = '/';
+    }
+  }, [scooterFinishDone]);
 
   return (
     <div>
@@ -47,7 +61,6 @@ const Home: NextPage<HomeTypes> = () => {
         {status === 'RENTAL' && <BikeStateMap />}
         {/* 빌린 상태이면서 주행중이면 */}
         {status === 'DRIVE' && <BikeRidingMap />}
-        {/* <Button onClick={onClickTest}>테스트용</Button> */}
       </AppLayout>
     </div>
   );
@@ -55,6 +68,9 @@ const Home: NextPage<HomeTypes> = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(scooterStateRequest());
+
+  console.log(store.getState().bike);
+
   return {
     props: {},
   };

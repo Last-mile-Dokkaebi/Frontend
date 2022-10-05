@@ -1,5 +1,12 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
-import { scooterStateRequest, rentalPriceRequest, scooterRentalRequest, scooterReturnRequest } from 'actions/bike';
+import {
+  scooterStateRequest,
+  rentalPriceRequest,
+  scooterRentalRequest,
+  scooterReturnRequest,
+  scooterStartRequest,
+  scooterFinishRequest,
+} from 'actions/bike';
 
 interface BikeState {
   status: 'NONE' | 'WAIT' | 'RENTAL' | 'DRIVE';
@@ -23,6 +30,14 @@ interface BikeState {
   scooterReturnLoading: boolean;
   scooterReturnDone: boolean;
   scooterReturnError: string | null;
+
+  scooterStartLoading: boolean;
+  scooterStartDone: boolean;
+  scooterStartError: string | null;
+
+  scooterEndLoading: boolean;
+  scooterEndDone: boolean;
+  scooterEndError: string | null;
 }
 
 const initialState: BikeState = {
@@ -47,6 +62,14 @@ const initialState: BikeState = {
   scooterReturnLoading: false,
   scooterReturnDone: false,
   scooterReturnError: null,
+
+  scooterStartLoading: false,
+  scooterStartDone: false,
+  scooterStartError: null,
+
+  scooterEndLoading: false,
+  scooterEndDone: false,
+  scooterEndError: null,
 };
 
 const bikeSlice = createSlice({
@@ -62,10 +85,12 @@ const bikeSlice = createSlice({
         state.scooterStateError = null;
       })
       .addCase(scooterStateRequest.fulfilled, (state, action) => {
-        const { status, startDate, endDate } = action.payload;
+        console.log(action.payload);
+        const { status, startDate, endDate, bikeNum: bikeNumber } = action.payload;
         state.status = status;
         state.startDate = startDate;
         state.endDate = endDate;
+        state.bikeNumber = bikeNumber;
         state.scooterStateLoading = false;
         state.scooterStateDone = true;
       })
@@ -108,6 +133,36 @@ const bikeSlice = createSlice({
       .addCase(scooterRentalRequest.rejected, (state, action) => {
         state.scooterRentalLoading = false;
         state.scooterRentalError = action.payload ?? '스쿠터 대여에 실패하였습니다';
+      })
+
+      //스쿠터 시작 요청
+      .addCase(scooterStartRequest.pending, (state) => {
+        state.scooterStartLoading = true;
+        state.scooterStartDone = false;
+        state.scooterStartError = null;
+      })
+      .addCase(scooterStartRequest.fulfilled, (state) => {
+        state.scooterStartLoading = false;
+        state.scooterStartDone = true;
+      })
+      .addCase(scooterStartRequest.rejected, (state, action) => {
+        state.scooterStartLoading = false;
+        state.scooterStartError = action.payload ?? '스쿠터 주행 시작에 실패하였습니다';
+      })
+
+      //스쿠터 종료 요청
+      .addCase(scooterFinishRequest.pending, (state) => {
+        state.scooterEndLoading = true;
+        state.scooterEndDone = false;
+        state.scooterEndError = null;
+      })
+      .addCase(scooterFinishRequest.fulfilled, (state) => {
+        state.scooterEndLoading = false;
+        state.scooterEndDone = true;
+      })
+      .addCase(scooterFinishRequest.rejected, (state, action) => {
+        state.scooterEndLoading = false;
+        state.scooterEndError = action.payload ?? '스쿠터 주행 종료에 실패하였습니다';
       })
 
       //스쿠터 반납 요청

@@ -2,27 +2,24 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { Button } from 'components/common';
 import React from 'react';
-import { startRidingApi } from 'pages/api/scooter';
-import { useDispatch } from 'react-redux';
+import { RootState, useAppDispatch } from 'store/configureStore';
+import { useSelector } from 'react-redux';
+import { scooterStartRequest } from 'actions/bike';
 
 const BikeStateMap = () => {
-  const dispatch = useDispatch();
+  const { bikeNumber } = useSelector((state: RootState) => state.bike);
+
+  const dispatch = useAppDispatch();
   const lat = 36.14514;
   const lng = 128.14521;
   const soc = 30;
   const endDate = '2022-20-20';
   const endTime = '22:22';
 
-  const onClickStartRiding = () => {
-    try {
-      //API호출 부 필요
-      // async startRidingApi()
-      // dispatch(setRidingAction({ isRiding: true }));
-      alert('주행을 시작합니다');
-    } catch (err) {
-      alert(err);
-    }
+  const onClickStartRiding = async () => {
+    await dispatch(scooterStartRequest({ identity: bikeNumber, act: 'on' }));
   };
+
   return (
     <Wrapper>
       <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 6rem)' }} level={5}>
