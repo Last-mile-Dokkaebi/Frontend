@@ -35,9 +35,9 @@ interface BikeState {
   scooterStartDone: boolean;
   scooterStartError: string | null;
 
-  scooterEndLoading: boolean;
-  scooterEndDone: boolean;
-  scooterEndError: string | null;
+  scooterFinishLoading: boolean;
+  scooterFinishDone: boolean;
+  scooterFinishError: string | null;
 }
 
 const initialState: BikeState = {
@@ -67,9 +67,9 @@ const initialState: BikeState = {
   scooterStartDone: false,
   scooterStartError: null,
 
-  scooterEndLoading: false,
-  scooterEndDone: false,
-  scooterEndError: null,
+  scooterFinishLoading: false,
+  scooterFinishDone: false,
+  scooterFinishError: null,
 };
 
 const bikeSlice = createSlice({
@@ -152,17 +152,17 @@ const bikeSlice = createSlice({
 
       //스쿠터 종료 요청
       .addCase(scooterFinishRequest.pending, (state) => {
-        state.scooterEndLoading = true;
-        state.scooterEndDone = false;
-        state.scooterEndError = null;
+        state.scooterFinishLoading = true;
+        state.scooterFinishDone = false;
+        state.scooterFinishError = null;
       })
       .addCase(scooterFinishRequest.fulfilled, (state) => {
-        state.scooterEndLoading = false;
-        state.scooterEndDone = true;
+        state.scooterFinishLoading = false;
+        state.scooterFinishDone = true;
       })
       .addCase(scooterFinishRequest.rejected, (state, action) => {
-        state.scooterEndLoading = false;
-        state.scooterEndError = action.payload ?? '스쿠터 주행 종료에 실패하였습니다';
+        state.scooterFinishLoading = false;
+        state.scooterFinishError = action.payload ?? '스쿠터 주행 종료에 실패하였습니다';
       })
 
       //스쿠터 반납 요청
