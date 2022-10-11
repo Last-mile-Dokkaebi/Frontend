@@ -68,11 +68,14 @@ const Home: NextPage<HomeTypes> = () => {
   };
 
   useEffect(() => {
+    let intervalId: any;
     if (status === 'DRIVE') {
       locationRequest();
-      //주행 중일 경우 10초마다 현재 위치를 갱신합니다
-      useInterval(locationRequest, 1000 * 10);
+      intervalId = setInterval(locationRequest, 1000 * 10);
     }
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (

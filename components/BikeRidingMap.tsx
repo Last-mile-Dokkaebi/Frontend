@@ -1,8 +1,7 @@
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { Button } from 'components/common';
-import React, { useEffect } from 'react';
-import { DateToString, TimeToString } from 'utils/processing';
+import React from 'react';
 import { RootState, useAppDispatch } from 'store/configureStore';
 import { useSelector } from 'react-redux';
 import { scooterFinishRequest } from 'actions/bike';
