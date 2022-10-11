@@ -35,7 +35,7 @@ const join: NextPage = () => {
   useEffect(() => {
     if (signupDone) {
       alert('회원가입을 환영합니다! 🤗');
-      Router.push('/member/login');
+      window.location.href = '/member/login';
     }
   }, [signupDone]);
 
