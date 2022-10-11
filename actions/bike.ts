@@ -104,6 +104,7 @@ export const scooterStartRequest = createAsyncThunk<void, ScooterStartRequest, {
   'bike/scooterStart',
   async (data, { dispatch, rejectWithValue }) => {
     try {
+      delete axiosInstance.defaults.headers.common?.refresh_token;
       await requestClientInfo(dispatch);
       await axiosInstance.post('/api/scooter', data);
     } catch (error: any) {
