@@ -2,10 +2,11 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지정
 import { useSelector } from 'react-redux';
-import { Rental, BikeStateMap, BikeRidingMap, Rentaling } from 'components';
-import wrapper, { RootState } from 'store/configureStore';
+import { Rental, BikeStateMap, BikeRidingMap, Rentaling, FullSizeLoading } from 'components';
+import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
 import { scooterStateRequest } from 'actions/bike';
 import { useEffect } from 'react';
+import { logoutAction } from 'actions/user';
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
 
@@ -20,8 +21,18 @@ interface HomeTypes {
 }
 
 const Home: NextPage<HomeTypes> = () => {
+  const dispatch = useAppDispatch();
   const { status } = useSelector((state: RootState) => state.bike);
-  const { scooterRentalDone, scooterStartDone, scooterFinishDone } = useSelector((state: RootState) => state.bike);
+  const {
+    scooterRentalDone,
+    scooterStartDone,
+    scooterFinishDone,
+    scooterStateError,
+    scooterRentalLoading,
+    scooterStartLoading,
+    scooterFinishLoading,
+    scooterStateLoading,
+  } = useSelector((state: RootState) => state.bike);
 
   useEffect(() => {
     if (scooterRentalDone) {
@@ -45,8 +56,17 @@ const Home: NextPage<HomeTypes> = () => {
     }
   }, [scooterFinishDone]);
 
+  useEffect(() => {
+    if (scooterStateError) {
+      dispatch(logoutAction());
+    }
+  }, [scooterStateError]);
+
   return (
     <div>
+      {(scooterRentalLoading || scooterStartLoading || scooterFinishLoading || scooterStateLoading) && (
+        <FullSizeLoading />
+      )}
       <Head>
         <title>DOKKAEBI - LAST MILE 모빌리티</title>
         <meta name="description" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
