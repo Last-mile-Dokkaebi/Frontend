@@ -85,7 +85,6 @@ const bikeSlice = createSlice({
         state.scooterStateError = null;
       })
       .addCase(scooterStateRequest.fulfilled, (state, action) => {
-        console.log(action.payload);
         const { status, startDate, endDate, bikeNum: bikeNumber } = action.payload;
         state.status = status;
         state.startDate = startDate;

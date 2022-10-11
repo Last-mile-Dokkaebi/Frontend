@@ -30,7 +30,6 @@ export const myInfoRequest = createAsyncThunk<MyInfoSuccess, MyInfoRequest, { re
           const response = await axiosInstance.get('/member');
           return response.data;
         } catch (error) {
-          console.log(error);
           return rejectWithValue('토큰 재발급 요청실패');
         }
       } else {

@@ -62,7 +62,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (errorMessage && errorCount) {
-      console.log(errorCount, ':', errorMessage);
       alert(errorMessage);
       restoreError();
     }
