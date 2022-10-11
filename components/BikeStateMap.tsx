@@ -10,8 +10,6 @@ const BikeStateMap = () => {
   const { bikeNumber, lat, lng, soc, rentalId } = useSelector((state: RootState) => state.bike);
 
   const dispatch = useAppDispatch();
-  const endDate = '2022-20-20';
-  const endTime = '22:22';
 
   const onClickStartRiding = async () => {
     await dispatch(scooterStartRequest({ identity: bikeNumber, act: 'on', rentalId }));
@@ -19,7 +17,7 @@ const BikeStateMap = () => {
 
   return (
     <Wrapper>
-      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 6rem)' }} level={5}>
+      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 8rem)' }} level={5}>
         <MapMarker
           position={{ lat, lng }}
           image={{
@@ -28,12 +26,6 @@ const BikeStateMap = () => {
           }}
         />
       </Map>
-      <div className="time">
-        <strong>
-          {endDate} {endTime}
-        </strong>
-        에 주행을 종료하였습니다
-      </div>
       <div>
         배터리는 <strong>{soc}%</strong>남았습니다
       </div>

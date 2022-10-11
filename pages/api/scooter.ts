@@ -69,17 +69,6 @@ const rentalScooterApi = async ({ start, end }: getRentalPriceInput): Promise<nu
   return res.data;
 };
 
-/* 대여한 스쿠터를 켜기위한 API */
-const startRidingApi = async () => {
-  // await axios.post()
-  return true;
-};
-/* 대여한 스쿠터를 끄기위한 API */
-const endRidingApi = async () => {
-  // await axios.post()
-  return true;
-};
-
 /* TEST용 */
 const testApi = async () => {
   // const res = await axios.get("http://lwc421.iptime.org:5000/")
@@ -99,7 +88,5 @@ export {
   getScooterLocationApi,
   getRentalPriceApi,
   rentalScooterApi,
-  startRidingApi,
-  endRidingApi,
   testApi,
 };

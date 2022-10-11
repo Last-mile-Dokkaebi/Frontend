@@ -6,6 +6,7 @@ import {
   scooterReturnRequest,
   scooterStartRequest,
   scooterFinishRequest,
+  scooterLocationRequest,
 } from 'actions/bike';
 
 interface BikeState {
@@ -34,6 +35,10 @@ interface BikeState {
   scooterReturnLoading: boolean;
   scooterReturnDone: boolean;
   scooterReturnError: string | null;
+
+  scooterLocationLoading: boolean;
+  scooterLocationDone: boolean;
+  scooterLocationError: string | null;
 
   scooterStartLoading: boolean;
   scooterStartDone: boolean;
@@ -71,6 +76,10 @@ const initialState: BikeState = {
   scooterReturnDone: false,
   scooterReturnError: null,
 
+  scooterLocationLoading: false,
+  scooterLocationDone: false,
+  scooterLocationError: null,
+
   scooterStartLoading: false,
   scooterStartDone: false,
   scooterStartError: null,
@@ -100,7 +109,7 @@ const bikeSlice = createSlice({
         state.bikeNumber = bikeNumber;
         state.lat = lat;
         state.lng = lng;
-        state.soc = lat;
+        state.soc = soc;
         state.rentalId = rentalId;
 
         state.scooterStateLoading = false;
@@ -145,6 +154,27 @@ const bikeSlice = createSlice({
       .addCase(scooterRentalRequest.rejected, (state, action) => {
         state.scooterRentalLoading = false;
         state.scooterRentalError = action.payload ?? '스쿠터 대여에 실패하였습니다';
+      })
+
+      //스쿠터 위치확인 요청
+      .addCase(scooterLocationRequest.pending, (state) => {
+        state.scooterLocationLoading = true;
+        state.scooterLocationDone = false;
+        state.scooterLocationError = null;
+      })
+      .addCase(scooterLocationRequest.fulfilled, (state, action) => {
+        state.scooterLocationLoading = false;
+        state.scooterLocationDone = true;
+
+        const { lat, lng, soc } = action.payload;
+
+        state.lat = lat;
+        state.lng = lng;
+        state.soc = soc;
+      })
+      .addCase(scooterLocationRequest.rejected, (state, action) => {
+        state.scooterLocationLoading = false;
+        state.scooterLocationError = action.payload ?? '스쿠터 대여에 실패하였습니다';
       })
 
       //스쿠터 시작 요청

@@ -4,9 +4,10 @@ import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지�
 import { useSelector } from 'react-redux';
 import { Rental, BikeStateMap, BikeRidingMap, Rentaling, FullSizeLoading } from 'components';
 import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
-import { scooterStateRequest } from 'actions/bike';
+import { scooterLocationRequest, scooterStateRequest } from 'actions/bike';
 import { useEffect } from 'react';
 import { logoutAction } from 'actions/user';
+import { useInterval } from 'hooks';
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
 
@@ -62,6 +63,18 @@ const Home: NextPage<HomeTypes> = () => {
     }
   }, [scooterStateError]);
 
+  const locationRequest = async () => {
+    await dispatch(scooterStateRequest());
+  };
+
+  useEffect(() => {
+    if (status === 'DRIVE') {
+      locationRequest();
+      //주행 중일 경우 10초마다 현재 위치를 갱신합니다
+      useInterval(locationRequest, 1000 * 10);
+    }
+  }, []);
+
   return (
     <div>
       {(scooterRentalLoading || scooterStartLoading || scooterFinishLoading || scooterStateLoading) && (
@@ -88,6 +101,7 @@ const Home: NextPage<HomeTypes> = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   await store.dispatch(scooterStateRequest());
+
   return {
     props: {},
   };

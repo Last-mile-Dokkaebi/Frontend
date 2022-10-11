@@ -9,15 +9,7 @@ import { scooterFinishRequest } from 'actions/bike';
 
 const BikeRidingMap = () => {
   const dispatch = useAppDispatch();
-  const { bikeNumber } = useSelector((state: RootState) => state.bike);
-
-  /* 테스트용 더미 데이터*/
-  const lat = 36.144765;
-  const lng = 128.392134;
-  const soc = 40;
-  const endDate = DateToString(new Date());
-  const endTime = TimeToString(new Date());
-  /*---------------------*/
+  const { bikeNumber, lat, lng, soc, rentalId } = useSelector((state: RootState) => state.bike);
 
   const onClickEndRiding = async () => {
     await dispatch(scooterFinishRequest({ identity: bikeNumber, act: 'off' }));
@@ -25,7 +17,7 @@ const BikeRidingMap = () => {
 
   return (
     <Wrapper>
-      {/* <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 6rem)' }} level={5}>
+      <Map center={{ lat, lng }} style={{ width: '100%', height: 'calc(100% - 8rem)' }} level={5}>
         <MapMarker
           position={{ lat, lng }}
           image={{
@@ -33,16 +25,11 @@ const BikeRidingMap = () => {
             size: { width: 35, height: 40 },
           }}
         />
-      </Map> */}
-      {/* <div className="time">
-        <strong>
-          {endDate} {endTime}
-        </strong>
-        에 주행을 시작하였습니다
-      </div>
+      </Map>
+
       <div>
         배터리는 <strong>{soc}%</strong>남았습니다
-      </div> */}
+      </div>
       <div>
         <Button onClick={onClickEndRiding}>주행종료</Button>
       </div>

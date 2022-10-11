@@ -98,6 +98,28 @@ export const scooterRentalRequest = createAsyncThunk<
   }
 });
 
+/* 스쿠터 위치 확인 요청 */
+interface ScooterLocationSuccess {
+  endDate: string;
+  lat: number;
+  lng: number;
+  soc: number;
+}
+
+export const scooterLocationRequest = createAsyncThunk<ScooterLocationSuccess, void, { rejectValue: string }>(
+  'bike/scooterLocation',
+  async (_: void, { dispatch, rejectWithValue }) => {
+    try {
+      await requestClientInfo(dispatch);
+      const response = await axiosInstance.get('/scooter/location');
+
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.description ?? '스쿠터 위치확인을 실패하였습니다');
+    }
+  },
+);
+
 /* 스쿠터 주행시작 요청 */
 interface ScooterStartRequest {
   act: 'on';
