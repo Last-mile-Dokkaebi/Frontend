@@ -70,7 +70,6 @@ const Home: NextPage<HomeTypes> = () => {
   useEffect(() => {
     let intervalId: any;
     if (status === 'DRIVE') {
-      locationRequest();
       intervalId = setInterval(locationRequest, 1000 * 10);
     }
     return () => {
