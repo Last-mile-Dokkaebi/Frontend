@@ -7,17 +7,14 @@ import { useSelector } from 'react-redux';
 import { scooterStartRequest } from 'actions/bike';
 
 const BikeStateMap = () => {
-  const { bikeNumber } = useSelector((state: RootState) => state.bike);
+  const { bikeNumber, lat, lng, soc, rentalId } = useSelector((state: RootState) => state.bike);
 
   const dispatch = useAppDispatch();
-  const lat = 36.14514;
-  const lng = 128.14521;
-  const soc = 30;
   const endDate = '2022-20-20';
   const endTime = '22:22';
 
   const onClickStartRiding = async () => {
-    await dispatch(scooterStartRequest({ identity: bikeNumber, act: 'on' }));
+    await dispatch(scooterStartRequest({ identity: bikeNumber, act: 'on', rentalId }));
   };
 
   return (

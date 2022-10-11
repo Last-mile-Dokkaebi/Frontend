@@ -14,6 +14,10 @@ interface BikeState {
   endDate: string;
   bikeNumber: string;
   rentalPrice: number;
+  lat: number;
+  lng: number;
+  soc: number;
+  rentalId: number;
 
   scooterStateLoading: boolean;
   scooterStateDone: boolean;
@@ -46,6 +50,10 @@ const initialState: BikeState = {
   endDate: '',
   bikeNumber: '',
   rentalPrice: 0,
+  lat: 0,
+  lng: 0,
+  soc: 0,
+  rentalId: 0,
 
   scooterStateLoading: false,
   scooterStateDone: false,
@@ -85,11 +93,16 @@ const bikeSlice = createSlice({
         state.scooterStateError = null;
       })
       .addCase(scooterStateRequest.fulfilled, (state, action) => {
-        const { status, startDate, endDate, bikeNum: bikeNumber } = action.payload;
+        const { status, startDate, endDate, bikeNum: bikeNumber, lat, lng, soc, rentalId } = action.payload;
         state.status = status;
         state.startDate = startDate;
         state.endDate = endDate;
         state.bikeNumber = bikeNumber;
+        state.lat = lat;
+        state.lng = lng;
+        state.soc = lat;
+        state.rentalId = rentalId;
+
         state.scooterStateLoading = false;
         state.scooterStateDone = true;
       })

@@ -10,6 +10,10 @@ interface ScooterStateSuccess {
   startDate: string;
   endDate: string;
   bikeNum: string;
+  lat: number;
+  lng: number;
+  soc: number;
+  rentalId: number;
 }
 
 export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, { rejectValue: string }>(
@@ -17,8 +21,10 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
   async (_: void, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('/scooter/state');
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
+      console.log(error.response);
       return rejectWithValue(
         typeof error.response.data === 'string'
           ? error.response.data
@@ -98,6 +104,7 @@ export const scooterRentalRequest = createAsyncThunk<
 interface ScooterStartRequest {
   act: 'on';
   identity: string;
+  rentalId: number;
 }
 
 export const scooterStartRequest = createAsyncThunk<void, ScooterStartRequest, { rejectValue: string }>(
