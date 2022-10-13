@@ -87,6 +87,7 @@ const DataTable = styled.table`
 
 export async function getServerSideProps() {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/scooter/test`);
+
   const data = res.data;
 
   // const data = [
