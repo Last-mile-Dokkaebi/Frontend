@@ -70,6 +70,7 @@ export const loginRequest = createAsyncThunk<LoginSuccess, LoginRequest, { rejec
 
 /* 로그아웃 액션 */
 export const logoutAction = createAction('user/logout');
+export const logoutDoneAction = createAction('user/logoutDone');
 
 /* 토큰 셋팅 액션 */
 interface SetTokenAction {

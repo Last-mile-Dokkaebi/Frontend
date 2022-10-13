@@ -1,5 +1,12 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
-import { myInfoRequest, loginRequest, logoutAction, signupRequest, reissueRequest } from 'actions/user';
+import {
+  myInfoRequest,
+  loginRequest,
+  logoutAction,
+  signupRequest,
+  reissueRequest,
+  logoutDoneAction,
+} from 'actions/user';
 import { deleteToken, setToken } from 'utils/token';
 import axiosInstance from 'utils/customAxios';
 
@@ -126,6 +133,10 @@ const userSlice = createSlice({
         state.logoutDone = true;
 
         deleteToken();
+      })
+      //로그아웃 완료시
+      .addCase(logoutDoneAction, (state) => {
+        state.logoutDone = false;
       })
 
       //회원가입

@@ -9,7 +9,7 @@ import wrapper from 'store/configureStore';
 import { RootState } from 'store/configureStore';
 import { deleteErrorAction, setErrorAction } from 'actions/system';
 import { NextPageContext } from 'next';
-import { logoutAction, myInfoRequest } from 'actions/user';
+import { logoutAction, logoutDoneAction, myInfoRequest } from 'actions/user';
 import cookies from 'next-cookies';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constant';
 import { getBrowserToken, setToken } from 'utils/token';
@@ -52,6 +52,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (logoutDone) {
+      dispatch(logoutDoneAction());
       location.href = '/member';
     }
   }, [logoutDone]);
