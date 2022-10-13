@@ -39,13 +39,13 @@ const test: NextPage<TestTypes> = ({ data }) => {
             <th>time</th>
             <th>lat</th>
             <th>lng</th>
-            <th>power</th>
+            <th>pow</th>
             {/* <th>shock</th> */}
             <th>soc</th>
             {/* <th>stat</th> */}
             <th>temp</th>
             <th>volt</th>
-            <th>current</th>
+            <th>curr</th>
             <th>speed</th>
           </tr>
           {data.map((d) => {
@@ -74,11 +74,11 @@ const test: NextPage<TestTypes> = ({ data }) => {
 
 const DataTable = styled.table`
   th {
-    font-size: 1rem;
+    font-size: 0.85rem;
     border-bottom: 2px solid black;
   }
   td {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
 `;
 
