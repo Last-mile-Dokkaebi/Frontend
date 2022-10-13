@@ -38,9 +38,9 @@ const test: NextPage<TestTypes> = ({ data }) => {
             <th>lat</th>
             <th>lng</th>
             <th>power</th>
-            <th>shock</th>
+            {/* <th>shock</th> */}
             <th>soc</th>
-            <th>stat</th>
+            {/* <th>stat</th> */}
             <th>temp</th>
             <th>time</th>
             <th>volt</th>
@@ -53,9 +53,9 @@ const test: NextPage<TestTypes> = ({ data }) => {
                 <td>{d.lat}</td>
                 <td>{d.lng}</td>
                 <td>{d.pow}</td>
-                <td>{d.shock}</td>
+                {/* <td>{d.shock}</td> */}
                 <td>{d.soc}</td>
-                <td>{d.stat}</td>
+                {/* <td>{d.stat}</td> */}
                 <td>{d.temp}</td>
                 <td>{d.time}</td>
                 <td>{d.volt}</td>
