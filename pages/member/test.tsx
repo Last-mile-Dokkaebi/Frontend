@@ -17,6 +17,7 @@ interface DataTypes {
   time: string;
   volt: number;
   current: string;
+  speed: number;
 }
 
 interface TestTypes {
@@ -35,6 +36,7 @@ const test: NextPage<TestTypes> = ({ data }) => {
         <DataTable>
           <tr>
             <th>id</th>
+            <th>time</th>
             <th>lat</th>
             <th>lng</th>
             <th>power</th>
@@ -42,14 +44,15 @@ const test: NextPage<TestTypes> = ({ data }) => {
             <th>soc</th>
             {/* <th>stat</th> */}
             <th>temp</th>
-            <th>time</th>
             <th>volt</th>
             <th>current</th>
+            <th>speed</th>
           </tr>
           {data.map((d) => {
             return (
               <tr key={d.id}>
                 <td>{d.id}</td>
+                <td>{d.time}</td>
                 <td>{d.lat}</td>
                 <td>{d.lng}</td>
                 <td>{d.pow}</td>
@@ -57,9 +60,9 @@ const test: NextPage<TestTypes> = ({ data }) => {
                 <td>{d.soc}</td>
                 {/* <td>{d.stat}</td> */}
                 <td>{d.temp}</td>
-                <td>{d.time}</td>
                 <td>{d.volt}</td>
                 <td>{d.current}</td>
+                <td>{d.speed}</td>
               </tr>
             );
           })}
