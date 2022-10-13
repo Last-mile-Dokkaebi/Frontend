@@ -3,19 +3,20 @@ import Head from 'next/head';
 import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지정
 import axios from 'axios';
 import styled from 'styled-components';
+import wrapper from 'store/configureStore';
 
 interface DataTypes {
   id: number;
   lat: number;
   lng: number;
-  power: number;
+  pow: string;
   shock: number;
   soc: number;
   stat: string;
   temp: number;
   time: string;
   volt: number;
-  current: number;
+  current: string;
 }
 
 interface TestTypes {
@@ -51,12 +52,12 @@ const test: NextPage<TestTypes> = ({ data }) => {
                 <td>{d.id}</td>
                 <td>{d.lat}</td>
                 <td>{d.lng}</td>
-                <td>{d.power}</td>
+                <td>{d.pow}</td>
                 <td>{d.shock}</td>
                 <td>{d.soc}</td>
                 <td>{d.stat}</td>
                 <td>{d.temp}</td>
-                <td>{d.time.toString().substring(10, 8)}</td>
+                <td>{d.time}</td>
                 <td>{d.volt}</td>
                 <td>{d.current}</td>
               </tr>
@@ -70,77 +71,26 @@ const test: NextPage<TestTypes> = ({ data }) => {
 
 const DataTable = styled.table`
   th {
-    font-size: 0.55rem;
+    font-size: 1rem;
     border-bottom: 2px solid black;
   }
   td {
-    font-size: 0.65rem;
+    font-size: 0.8rem;
   }
 `;
 
-export async function getServerSideProps() {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/scooter/test`);
 
-  const data = res.data;
+  const data: Array<DataTypes> = res.data.map((d: any) => {
+    return { ...d, time: d.time.toString().substring(11, 11 + 8) };
+  });
 
-  // const data = [
-  //   {
-  //     id: 6808,
-  //     lat: 36.14533,
-  //     lng: 128.39234,
-  //     pow: 0,
-  //     shock: 0,
-  //     soc: 94,
-  //     stat: 'AA',
-  //     temp: 24,
-  //     time: '2022-10-12 17:57:54.424466',
-  //     volt: 53.65,
-  //     current: 0,
-  //   },
-  //   {
-  //     id: 6807,
-  //     lat: 36.14533,
-  //     lng: 128.39234,
-  //     pow: 0,
-  //     shock: 0,
-  //     soc: 94,
-  //     stat: 'AA',
-  //     temp: 24,
-  //     time: '2022-10-12 17:57:44.425084',
-  //     volt: 53.65,
-  //     current: 0,
-  //   },
-  //   {
-  //     id: 6806,
-  //     lat: 36.14533,
-  //     lng: 128.39234,
-  //     pow: 0,
-  //     shock: 0,
-  //     soc: 94,
-  //     stat: 'AA',
-  //     temp: 24,
-  //     time: '2022-10-12 17:57:34.426806',
-  //     volt: 53.65,
-  //     current: 0,
-  //   },
-  //   {
-  //     id: 6805,
-  //     lat: 36.14533,
-  //     lng: 128.39234,
-  //     pow: 0,
-  //     shock: 0,
-  //     soc: 94,
-  //     stat: 'AA',
-  //     temp: 24,
-  //     time: '2022-10-12 17:57:24.426619',
-  //     volt: 53.65,
-  //     current: 0,
-  //   },
-  // ];
+  const sortedData = data.sort((a: DataTypes, b: DataTypes) => b.id - a.id);
 
   return {
-    props: { data },
+    props: { data: sortedData },
   };
-}
+});
 
 export default test;
