@@ -20,11 +20,11 @@ export const scooterStateRequest = createAsyncThunk<ScooterStateSuccess, void, {
   'bike/scooterState',
   async (_: void, { dispatch, rejectWithValue }) => {
     try {
-      // Browser일 경우 일단 clientInfo부터 받기
-      const isBrowser = typeof window === 'object';
-      if (isBrowser) {
-        await requestClientInfo(dispatch);
-      }
+      // // Browser일 경우 일단 clientInfo부터 받기
+      // const isBrowser = typeof window === 'object';
+      // if (isBrowser) {
+      //   await requestClientInfo(dispatch);
+      // }
       const response = await axiosInstance.get('/scooter/state');
       return response.data;
     } catch (error: any) {

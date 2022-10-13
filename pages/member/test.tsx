@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지정
-import wrapper from 'store/configureStore';
 import axios from 'axios';
 import styled from 'styled-components';
 
