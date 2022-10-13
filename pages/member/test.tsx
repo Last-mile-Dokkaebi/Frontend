@@ -15,8 +15,6 @@ interface DataTypes {
   temp: number;
   time: string;
   volt: number;
-  drive_log_id: number;
-  scooter_id: number;
   current: number;
 }
 
@@ -45,8 +43,6 @@ const test: NextPage<TestTypes> = ({ data }) => {
             <th>temp</th>
             <th>time</th>
             <th>volt</th>
-            <th>drive_log_id</th>
-            <th>scooter_id</th>
             <th>current</th>
           </tr>
           {data.map((d) => {
@@ -62,8 +58,6 @@ const test: NextPage<TestTypes> = ({ data }) => {
                 <td>{d.temp}</td>
                 <td>{d.time.toString().substring(10, 8)}</td>
                 <td>{d.volt}</td>
-                <td>{d.drive_log_id}</td>
-                <td>{d.scooter_id}</td>
                 <td>{d.current}</td>
               </tr>
             );
@@ -101,8 +95,6 @@ export async function getServerSideProps() {
   //     temp: 24,
   //     time: '2022-10-12 17:57:54.424466',
   //     volt: 53.65,
-  //     drive_log_id: null,
-  //     scoter_id: 1,
   //     current: 0,
   //   },
   //   {
@@ -116,8 +108,6 @@ export async function getServerSideProps() {
   //     temp: 24,
   //     time: '2022-10-12 17:57:44.425084',
   //     volt: 53.65,
-  //     drive_log_id: null,
-  //     scoter_id: 1,
   //     current: 0,
   //   },
   //   {
@@ -131,8 +121,6 @@ export async function getServerSideProps() {
   //     temp: 24,
   //     time: '2022-10-12 17:57:34.426806',
   //     volt: 53.65,
-  //     drive_log_id: null,
-  //     scoter_id: 1,
   //     current: 0,
   //   },
   //   {
@@ -146,8 +134,6 @@ export async function getServerSideProps() {
   //     temp: 24,
   //     time: '2022-10-12 17:57:24.426619',
   //     volt: 53.65,
-  //     drive_log_id: null,
-  //     scoter_id: 1,
   //     current: 0,
   //   },
   // ];
