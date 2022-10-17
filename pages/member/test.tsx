@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import { AppLayout } from 'components/layout'; // 메인화면 레이아웃 지정
 import axios from 'axios';
 import styled from 'styled-components';
-import wrapper from 'store/configureStore';
 import { useEffect, useState } from 'react';
+import { Button } from 'components/common';
+import { ExportToCsv } from 'export-to-csv';
 
 interface DataTypes {
   id: number;
@@ -31,12 +31,34 @@ const test: NextPage = () => {
   const dataFetch = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/scooter/test`);
 
-    const data: Array<DataTypes> = res.data.map((d: any) => {
-      return { ...d, time: d.time.toString().substring(11, 11 + 8) };
-    });
+    const sortedData = res.data.sort((a: DataTypes, b: DataTypes) => b.id - a.id);
+    setData(sortedData.slice(0, 1000)); //1000건만 자르기
+  };
 
-    const sortedData = data.sort((a: DataTypes, b: DataTypes) => b.id - a.id);
-    setData(sortedData.slice(0, 500)); //500건만 자르기
+  const onClickDownload = () => {
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: data[0].time.toString().substring(0, 19),
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+      filename: data[0].time.toString().substring(0, 19),
+      // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+    };
+
+    const temperature = window.prompt('현재 기온 입력');
+    const humidity = window.prompt('현재 습도 입력');
+
+    const csvExporter = new ExportToCsv(options);
+
+    const csvData = data
+      .map((d) => Object.assign(d, { envTemperature: temperature, humidity }))
+      .sort((a, b) => a.id - b.id);
+    csvExporter.generateCsv(csvData);
   };
 
   useEffect(() => {
@@ -46,6 +68,9 @@ const test: NextPage = () => {
   return (
     <>
       <AppLayout>
+        <Button isPrimary={true} onClick={onClickDownload}>
+          csv로 내보내기
+        </Button>
         <DataTable>
           <thead>
             <tr>
@@ -61,32 +86,24 @@ const test: NextPage = () => {
               <th>speed</th>
             </tr>
           </thead>
-          {/* <th>id</th>
-          <th>time</th>
-          <th>lat</th>
-          <th>lng</th>
-          <th>pow</th>
-          <th>soc</th>
-          <th>temp</th>
-          <th>volt</th>
-          <th>curr</th>
-          <th>speed</th> */}
-          {data.map((d) => {
-            return (
-              <tr key={d.id}>
-                <td>{d.id}</td>
-                <td>{d.time}</td>
-                <td>{d.lat}</td>
-                <td>{d.lng}</td>
-                <td>{d.pow}</td>
-                <td>{d.soc}</td>
-                <td>{d.temp}</td>
-                <td>{d.volt}</td>
-                <td>{d.current}</td>
-                <td>{d.speed}</td>
-              </tr>
-            );
-          })}
+          <tbody>
+            {data.map((d) => {
+              return (
+                <tr key={d.id}>
+                  <td>{d.id}</td>
+                  <td>{d.time.toString().substring(11, 11 + 8)}</td>
+                  <td>{d.lat}</td>
+                  <td>{d.lng}</td>
+                  <td>{d.pow}</td>
+                  <td>{d.soc}</td>
+                  <td>{d.temp}</td>
+                  <td>{d.volt}</td>
+                  <td>{d.current}</td>
+                  <td>{d.speed}</td>
+                </tr>
+              );
+            })}
+          </tbody>
         </DataTable>
       </AppLayout>
     </>
