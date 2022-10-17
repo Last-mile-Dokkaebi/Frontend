@@ -115,36 +115,42 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
   delete axiosInstance.defaults.headers.common['Authorization'];
   delete axiosInstance.defaults.headers.common['refresh_token'];
 
-  if (accessToken && refreshToken) {
-    //로그인 하였던 기록이 있으면 -> 로그인 유지 절차 실행
-    if (isPrivate) {
-      //private 페이지 이면 내 정보를 요청
+  //임시로 /member/test 페이지는 그냥 들어갈 수 있도록 설정
+  if (!(path === '/member/test')) {
+    if (accessToken && refreshToken) {
+      //로그인 하였던 기록이 있으면 -> 로그인 유지 절차 실행
+      if (isPrivate) {
+        //private 페이지 이면 내 정보를 요청
 
-      axiosInstance.defaults.headers.common.Authorization = accessToken;
-      axiosInstance.defaults.headers.common.refresh_token = refreshToken;
-      await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
-      const auth = store.getState().user.auth;
-      const isAdmin = auth === 'ADMIN';
+        axiosInstance.defaults.headers.common.Authorization = accessToken;
+        axiosInstance.defaults.headers.common.refresh_token = refreshToken;
+        await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
+        if (store.getState().user.myInfoError) {
+          res.writeHead(302, { location: '/member' });
+        }
+        const auth = store.getState().user.auth;
+        const isAdmin = auth === 'ADMIN';
 
-      if (!isAdmin && isAdminOnly) {
-        //관리자가 아닌 사람이 관리자 페이지를 들어갈 경우
+        if (!isAdmin && isAdminOnly) {
+          //관리자가 아닌 사람이 관리자 페이지를 들어갈 경우
+          res.writeHead(302, { Location: '/' });
+          res.end();
+        } else if (isAdmin && !isAdminOnly) {
+          //관리자가 일반 페이지 들어갈 경우
+          res.writeHead(302, { Location: '/admin' });
+          res.end();
+        }
+      } else {
+        //로그인이 된 채로 public페이지 접근 하면
         res.writeHead(302, { Location: '/' });
-        res.end();
-      } else if (isAdmin && !isAdminOnly) {
-        //관리자가 일반 페이지 들어갈 경우
-        res.writeHead(302, { Location: '/admin' });
         res.end();
       }
     } else {
-      //로그인이 된 채로 public페이지 접근 하면
-      res.writeHead(302, { Location: '/' });
-      res.end();
-    }
-  } else {
-    // 로그인 하였던 기록이 없으면
-    if (isPrivate) {
-      res.writeHead(302, { Location: '/member' });
-      res.end();
+      // 로그인 하였던 기록이 없으면
+      if (isPrivate) {
+        res.writeHead(302, { Location: '/member' });
+        res.end();
+      }
     }
   }
 });
