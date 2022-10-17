@@ -1,35 +1,29 @@
 import styled from 'styled-components';
-import { BsClockHistory, BsFillBellFill, BsFileEarmarkBarGraph, BsFillPersonFill } from 'react-icons/bs';
+import { BsFileEarmarkBarGraph, BsFillPersonFill, BsFillEyeFill } from 'react-icons/bs';
 import Router from 'next/router';
 import { GiKickScooter } from 'react-icons/gi';
 const NavBar = () => {
-  const onClickAlarm = () => {
-    Router.push('/alarm');
-  };
   const onClickMypage = () => {
     Router.push('/mypage');
-  };
-  const onClickScooter = () => {
-    Router.push('/scooter');
   };
   return (
     <NavWrapper>
       <MenuWrapper>
-        {/* <MenuButtonWrapper onClick={onClickScooter}>
-          <GiKickScooter size={24} />
-          <div>대여 및 주행</div>
-        </MenuButtonWrapper> */}
-        <MenuButtonWrapper onClick={onClickAlarm}>
-          <BsFillBellFill size={24} />
-          <div>알람</div>
-        </MenuButtonWrapper>
         <MenuButtonWrapper>
           <BsFileEarmarkBarGraph size={24} />
           <div>통계</div>
         </MenuButtonWrapper>
+        <MenuButtonWrapper onClick={() => Router.push('/')}>
+          <GiKickScooter size={24} />
+          <div>메인</div>
+        </MenuButtonWrapper>
         <MenuButtonWrapper onClick={onClickMypage}>
           <BsFillPersonFill size={24} />
           <div>마이페이지</div>
+        </MenuButtonWrapper>
+        <MenuButtonWrapper onClick={() => Router.push('/member/test')}>
+          <BsFillEyeFill size={24} />
+          <div>테스트페이지</div>
         </MenuButtonWrapper>
       </MenuWrapper>
     </NavWrapper>
