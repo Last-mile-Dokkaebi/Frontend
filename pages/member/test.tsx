@@ -31,14 +31,12 @@ const test: NextPage = () => {
   const dataFetch = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/scooter/test`);
 
-    console.log(res.data);
-
     const data: Array<DataTypes> = res.data.map((d: any) => {
       return { ...d, time: d.time.toString().substring(11, 11 + 8) };
     });
 
     const sortedData = data.sort((a: DataTypes, b: DataTypes) => b.id - a.id);
-    setData(sortedData);
+    setData(sortedData.slice(0, 500)); //500건만 자르기
   };
 
   useEffect(() => {

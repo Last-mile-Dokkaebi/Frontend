@@ -123,7 +123,7 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
         //private 페이지 이면 내 정보를 요청
 
         axiosInstance.defaults.headers.common.Authorization = accessToken;
-        axiosInstance.defaults.headers.common.refresh_token = refreshToken;
+        // axiosInstance.defaults.headers.common.refresh_token = refreshToken;
         await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
         if (store.getState().user.myInfoError) {
           res.writeHead(302, { location: '/member' });
