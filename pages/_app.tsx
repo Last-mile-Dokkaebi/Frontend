@@ -126,7 +126,8 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
         // axiosInstance.defaults.headers.common.refresh_token = refreshToken;
         await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
         if (store.getState().user.myInfoError) {
-          res.writeHead(302, { location: '/member' });
+          await store.dispatch(logoutAction());
+          // res.writeHead(302, { location: '/member' });
         }
         const auth = store.getState().user.auth;
         const isAdmin = auth === 'ADMIN';
