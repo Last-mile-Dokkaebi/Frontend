@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (logoutDone) {
       dispatch(logoutDoneAction());
-      location.href = '/member';
+      window.location.href = '/member';
     }
   }, [logoutDone]);
 
@@ -70,10 +70,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (myInfoError) {
-      // alert('토큰만료로 로그아웃');
-      dispatch(logoutAction());
       restoreError();
-      console.log('토큰만료로 로그아웃');
     }
   }, [myInfoError]);
 
@@ -128,6 +125,7 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
         if (store.getState().user.myInfoError) {
           await store.dispatch(logoutAction());
           // res.writeHead(302, { location: '/member' });
+          return;
         }
         const auth = store.getState().user.auth;
         const isAdmin = auth === 'ADMIN';
