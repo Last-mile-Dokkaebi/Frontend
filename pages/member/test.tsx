@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { Button } from 'components/common';
 import { ExportToCsv } from 'export-to-csv';
 import { useAppDispatch } from 'store/configureStore';
-import { scooterFinishRequest, scooterStartRequest } from 'actions/bike';
 import { logoutAction } from 'actions/user';
 
 interface DataTypes {
@@ -22,6 +21,7 @@ interface DataTypes {
   volt: number;
   current: string;
   speed: number;
+  altitude: number;
 }
 
 const test: NextPage = () => {
@@ -83,6 +83,7 @@ const test: NextPage = () => {
               <th>time</th>
               <th>lat</th>
               <th>lng</th>
+              <th>alt</th>
               <th>pow</th>
               <th>soc</th>
               <th>temp</th>
@@ -99,6 +100,7 @@ const test: NextPage = () => {
                   <td>{d.time.toString().substring(11, 11 + 8)}</td>
                   <td>{d.lat}</td>
                   <td>{d.lng}</td>
+                  <td>{d.altitude}</td>
                   <td>{d.pow}</td>
                   <td>{d.soc}</td>
                   <td>{d.temp}</td>
