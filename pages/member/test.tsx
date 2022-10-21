@@ -7,6 +7,7 @@ import { Button } from 'components/common';
 import { ExportToCsv } from 'export-to-csv';
 import { useAppDispatch } from 'store/configureStore';
 import { scooterFinishRequest, scooterStartRequest } from 'actions/bike';
+import { logoutAction } from 'actions/user';
 
 interface DataTypes {
   id: number;
@@ -23,10 +24,6 @@ interface DataTypes {
   speed: number;
 }
 
-// interface TestTypes {
-//   data: Array<DataTypes>;
-// }
-
 const test: NextPage = () => {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<Array<DataTypes>>([]);
@@ -35,17 +32,13 @@ const test: NextPage = () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/scooter/test`);
 
     const sortedData = res.data.sort((a: DataTypes, b: DataTypes) => b.id - a.id);
-    // setData(sortedData.slice(0, 1000)); //1000건만 자르기
     setData(sortedData);
   };
 
-  const onClickStartRiding = async () => {
-    await dispatch(scooterStartRequest({ identity: '0020', act: 'on', rentalId: 0 }));
+  const onClickLogout = () => {
+    dispatch(logoutAction());
   };
 
-  const onClickEndRiding = async () => {
-    await dispatch(scooterFinishRequest({ identity: '0020', act: 'off' }));
-  };
   const onClickDownload = () => {
     const options = {
       fieldSeparator: ',',
@@ -82,6 +75,7 @@ const test: NextPage = () => {
         <Button isPrimary={true} onClick={onClickDownload}>
           csv로 내보내기
         </Button>
+        <Button onClick={onClickLogout}>로그아웃</Button>
         <DataTable>
           <thead>
             <tr>
