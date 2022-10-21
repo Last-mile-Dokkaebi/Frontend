@@ -42,13 +42,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [reissueDone]);
 
-  useEffect(() => {
-    if (reissueError) {
-      delete axiosInstance.defaults.headers.common?.Authorization;
-      delete axiosInstance.defaults.headers.common?.refresh_token;
-      dispatch(logoutAction());
-    }
-  }, [reissueError]);
+  // useEffect(() => {
+  //   if (reissueError) {
+  //     delete axiosInstance.defaults.headers.common?.Authorization;
+  //     delete axiosInstance.defaults.headers.common?.refresh_token;
+  //     dispatch(logoutAction());
+  //   }
+  // }, [reissueError]);
 
   useEffect(() => {
     if (logoutDone) {
@@ -122,11 +122,11 @@ MyApp.getInitialProps = wrapper.getInitialPageProps((store) => async (context: M
         axiosInstance.defaults.headers.common.Authorization = accessToken;
         // axiosInstance.defaults.headers.common.refresh_token = refreshToken;
         await store.dispatch(myInfoRequest({ accessToken, refreshToken }));
-        if (store.getState().user.myInfoError) {
-          await store.dispatch(logoutAction());
-          // res.writeHead(302, { location: '/member' });
-          return;
-        }
+        // if (store.getState().user.myInfoError) {
+        //   store.dispatch(logoutAction());
+        //   // res.writeHead(302, { location: '/member' });
+        //   return;
+        // }
         const auth = store.getState().user.auth;
         const isAdmin = auth === 'ADMIN';
 

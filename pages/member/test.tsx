@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Button } from 'components/common';
 import { ExportToCsv } from 'export-to-csv';
+import { useAppDispatch } from 'store/configureStore';
+import { scooterFinishRequest, scooterStartRequest } from 'actions/bike';
 
 interface DataTypes {
   id: number;
@@ -26,15 +28,24 @@ interface DataTypes {
 // }
 
 const test: NextPage = () => {
+  const dispatch = useAppDispatch();
   const [data, setData] = useState<Array<DataTypes>>([]);
 
   const dataFetch = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/scooter/test`);
 
     const sortedData = res.data.sort((a: DataTypes, b: DataTypes) => b.id - a.id);
-    setData(sortedData.slice(0, 1000)); //1000건만 자르기
+    // setData(sortedData.slice(0, 1000)); //1000건만 자르기
+    setData(sortedData);
   };
 
+  const onClickStartRiding = async () => {
+    await dispatch(scooterStartRequest({ identity: '0020', act: 'on', rentalId: 0 }));
+  };
+
+  const onClickEndRiding = async () => {
+    await dispatch(scooterFinishRequest({ identity: '0020', act: 'off' }));
+  };
   const onClickDownload = () => {
     const options = {
       fieldSeparator: ',',
@@ -68,6 +79,9 @@ const test: NextPage = () => {
   return (
     <>
       <AppLayout>
+        <Button></Button>
+        <Button></Button>
+
         <Button isPrimary={true} onClick={onClickDownload}>
           csv로 내보내기
         </Button>
