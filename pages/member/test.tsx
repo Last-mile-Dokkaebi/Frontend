@@ -79,9 +79,6 @@ const test: NextPage = () => {
   return (
     <>
       <AppLayout>
-        <Button></Button>
-        <Button></Button>
-
         <Button isPrimary={true} onClick={onClickDownload}>
           csv로 내보내기
         </Button>

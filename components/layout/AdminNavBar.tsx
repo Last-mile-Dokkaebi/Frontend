@@ -13,7 +13,6 @@ const AdminNavBar = () => {
 
   const onClickLogout = () => {
     dispatch(logoutAction());
-    location.href = '/member';
   };
 
   return (
