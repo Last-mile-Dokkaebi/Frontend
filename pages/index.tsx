@@ -6,8 +6,9 @@ import { Rental, BikeStateMap, BikeRidingMap, Rentaling, FullSizeLoading } from 
 import wrapper, { RootState, useAppDispatch } from 'store/configureStore';
 import { scooterLocationRequest, scooterStateRequest } from 'actions/bike';
 import { useEffect } from 'react';
-import { logoutAction } from 'actions/user';
+import { logoutAction, reissueRequest } from 'actions/user';
 import { useInterval } from 'hooks';
+import { getBrowserToken } from 'utils/token';
 
 // content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" 는 아이폰 확대방지
 
@@ -57,9 +58,18 @@ const Home: NextPage<HomeTypes> = () => {
     }
   }, [scooterFinishDone]);
 
+  const reissue = async () => {
+    const tokens = getBrowserToken();
+    if (tokens !== null) {
+      await dispatch(reissueRequest(tokens));
+    } else {
+      dispatch(logoutAction());
+    }
+  };
+
   useEffect(() => {
     if (scooterStateError) {
-      dispatch(logoutAction());
+      reissue();
     }
   }, [scooterStateError]);
 
