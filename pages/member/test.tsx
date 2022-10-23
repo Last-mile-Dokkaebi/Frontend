@@ -60,8 +60,16 @@ const test: NextPage = () => {
     const csvExporter = new ExportToCsv(options);
 
     const csvData = data
-      .map((d) => Object.assign(d, { envTemperature: temperature, humidity }))
-      .sort((a, b) => a.id - b.id);
+      .sort((a, b) => a.id - b.id)
+      .map((d, index) =>
+        Object.assign(d, {
+          envTemperature: temperature,
+          humidity,
+          distance: `=IFERROR(ACOS(COS(RADIANS(90-H${index + 1}))*COS(RADIANS(90-H${index + 2}))+SIN(RADIANS(90-H${
+            index + 1
+          })) *SIN(RADIANS(90-H${index + 2}))*COS(RADIANS(I${index + 1}-I${index + 2})))*6371, 0)`,
+        }),
+      );
     csvExporter.generateCsv(csvData);
   };
 
