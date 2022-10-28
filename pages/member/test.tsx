@@ -84,6 +84,7 @@ const test: NextPage = () => {
           csv로 내보내기
         </Button>
         <Button onClick={onClickLogout}>로그아웃</Button>
+        <h1>{data[0] && data[0].time.substring(11, 11 + 8)}</h1>
         <DataTable>
           <thead>
             <tr>
