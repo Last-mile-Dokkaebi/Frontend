@@ -89,9 +89,10 @@ const Home: NextPage<HomeTypes> = () => {
 
   return (
     <div>
-      {(scooterRentalLoading || scooterStartLoading || scooterFinishLoading || scooterStateLoading) && (
+      {/* {(scooterRentalLoading || scooterStartLoading || scooterFinishLoading || scooterStateLoading) && (
         <FullSizeLoading />
-      )}
+      )} */}
+      {(scooterRentalLoading || scooterStartLoading || scooterFinishLoading) && <FullSizeLoading />}
       <Head>
         <title>DOKKAEBI - LAST MILE 모빌리티</title>
         <meta name="description" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
