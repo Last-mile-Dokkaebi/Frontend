@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nivo/core": "^0.80.0",
+    "@nivo/line": "^0.80.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@types/react-cookies": "^0.1.0",
     "@types/styled-components": "^5.1.25",
